@@ -1,0 +1,18 @@
+#eureka 服务器端口号
+server:
+  port: 8050
+#eureka相关的配置
+eureka:
+  instance:
+    #主机名称
+    hostname: 10.1.13.74
+  client:
+    #eureka不对外提供接口
+    register-with-eureka: false
+    #是否拉取服务信息,用于注册中心集群
+    fetch-registry: false
+    service-url:
+      defaultZone: http://10.1.13.74:8050/eureka/
+
+
+

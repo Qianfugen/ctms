@@ -1,0 +1,37 @@
+#客户端端口
+server:
+  port: 8090
+
+#连接注册中心的配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.1.13.74:8050/eureka/
+
+#集成oracle
+spring:
+  #该服务在注册中心的名称
+  application:
+    name: manage-server
+  datasource:
+    username: java38
+    password: 123456
+    url: jdbc:oracle:thin:@10.1.13.44:1521:orcl
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+  #关于freemarker配置
+  freemarker:
+    #关闭缓存
+    cache: false
+    #数值不采取三分法
+    settings:
+      number_format: 0.##
+      classic_compatible: true
+    suffix: .html
+
+#集成mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.zl.pojo
+  configuration:
+    jdbc-type-for-null: varchar
+
