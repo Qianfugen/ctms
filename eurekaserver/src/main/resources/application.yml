@@ -5,14 +5,14 @@ server:
 eureka:
   instance:
     #主机名称
-    hostname: 10.1.13.74
+    hostname: localhost
   client:
     #eureka不对外提供接口
     register-with-eureka: false
     #是否拉取服务信息,用于注册中心集群
     fetch-registry: false
     service-url:
-      defaultZone: http://10.1.13.74:8050/eureka/
+      defaultZone: http://localhost:8050/eureka/
 
 
 

@@ -6,7 +6,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://10.1.13.74:8050/eureka/
+      defaultZone: http://localhost:8050/eureka/
 
 #集成oracle
 spring:
