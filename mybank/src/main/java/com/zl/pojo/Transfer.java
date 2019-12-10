@@ -1,7 +1,9 @@
 package com.zl.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,6 +14,8 @@ import java.util.Date;
  *
  * @author root
  */
+@Component
+@Scope("prototype")
 public class Transfer implements Serializable {
     /**
      * 交易流水号
