@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登入</title>
+</head>
+<body>
+<form action="/admin/updateAdminPwd" method="post">
+    <span>${message!""}</span><p></p>
+    用户名：<input type="text" name="name" /><p>
+    请输入旧密码：<input type="text" name="password" /><p>
+    请输入新密码：<input type="text" name="password1" /><p>
+    再次输入新密码：<input type="text" name="password2" /><p>
+    <input type="submit" value="登入" />
+</form>
+</body>
+</html>

@@ -5,4 +5,8 @@
     <select id="loginAdmin" resultType="com.zl.pojo.Admin" parameterType="com.zl.pojo.Admin">
         select * from T_ADMIN where NAME=#{name,jdbcType=VARCHAR} and PASSWORD=#{password,jdbcType=VARCHAR}
     </select>
+
+    <update id="updateAdminPwd" parameterType="com.zl.pojo.Admin">
+        update T_ADMIN set PASSWORD=#{password,jdbcType=VARCHAR} where NAME=#{name,jdbcType=VARCHAR}
+    </update>
 </mapper>

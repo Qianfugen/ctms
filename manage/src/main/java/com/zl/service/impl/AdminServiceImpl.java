@@ -15,4 +15,9 @@ public class AdminServiceImpl implements IAdminService {
     public Admin loginAdmin(Admin admin) {
         return ad.loginAdmin(admin);
     }
+
+    @Override
+    public int updateAdminPwd(Admin admin) {
+        return ad.updateAdminPwd(admin);
+    }
 }

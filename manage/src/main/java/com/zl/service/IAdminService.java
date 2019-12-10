@@ -13,4 +13,11 @@ public interface IAdminService {
      * @return
      */
     Admin loginAdmin(Admin admin);
+
+    /**
+     * 修改管理员密码
+     * @param admin
+     * @return
+     */
+    int updateAdminPwd(Admin admin);
 }
