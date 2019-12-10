@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.dao.ICustomDao">
+    
+    <resultMap id="userCustom" type="com.zl.pojo.User">
+        <id property="userId" column="USER_ID"></id>
+        <result property="userName" column="USER_NAME"></result>
+        <result property="userSex" column="USER_SEX"></result>
+        <result property="userBirthdate" column="USER_BIRTHDATE"></result>
+        <result property="userCertNo" column="USER_CERTNO"></result>
+        <result property="userAddr" column="USER_ADDR"></result>
+        <result property="userZipCode" column="USER_ZIPCODE"></result>
+        <result property="userTelNo" column="USER_TELNO"></result>
+        <result property="userPhoneNo" column="USER_PHONENO"></result>
+        <result property="userEmail" column="USER_EMAIL"></result>
+        <result property="userPwd" column="USER_PWD"></result>
+        <collection property="account" ofType="com.zl.pojo.Account">
+            <id property="accNo" column="ACC_NO"></id>
+            <result property="currType" column="CURR_TYPE"></result>
+            <result property="accBankId" column="ACC_BANKID"></result>
+            <result property="accStatus" column="ACC_STATUS"></result>
+            <result property="accLimit" column="ACC_LIMIT"></result>
+            <result property="accFund" column="ACC_FUND"></result>
+            <result property="accType" column="ACC_TYPE"></result>
+            <result property="accDate" column="ACC_DATE"></result>
+            <result property="accPwd" column="ACC_PWD"></result>
+        </collection>
+    </resultMap>
+
+    <select id="queryAllCustom" resultMap="userCustom">
+        select USER_ID, USER_NAME, USER_SEX, USER_BIRTHDATE, USER_CERTNO, USER_ADDR, USER_ZIPCODE, USER_TELNO, USER_PHONENO, USER_EMAIL, USER_PWD, ACC_NO, CURR_TYPE, ACC_BANKID, ACC_STATUS, ACC_LIMIT, ACC_FUND, ACC_TYPE, ACC_DATE, ACC_PWD from CUSTOM where rownum between 1 and 5
+    </select>
+</mapper>

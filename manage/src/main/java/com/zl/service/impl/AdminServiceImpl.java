@@ -6,6 +6,9 @@ import com.zl.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author junqi
+ */
 @Service
 public class AdminServiceImpl implements IAdminService {
 

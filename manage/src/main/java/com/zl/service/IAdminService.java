@@ -15,7 +15,7 @@ public interface IAdminService {
     Admin loginAdmin(Admin admin);
 
     /**
-     * 修改管理员密码
+     * 修改管理员密码接口
      * @param admin
      * @return
      */

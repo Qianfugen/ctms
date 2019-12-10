@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * 管理员账号操作
  * @author junqi
  */
 @Controller
@@ -18,6 +19,9 @@ public class AdminController {
     @Autowired
     private IAdminService as;
 
+    /**
+     * 管理员登入请求
+     */
     @RequestMapping("/login")
     public ModelAndView loginAdmin(Admin admin){
         ModelAndView mv=new ModelAndView();
@@ -32,6 +36,9 @@ public class AdminController {
         return mv;
     }
 
+    /**
+     * 进入管理员登入页面请求
+     */
     @RequestMapping("/toLogin")
     public ModelAndView toLoginAdmin(String error){
         ModelAndView mv=new ModelAndView();
@@ -40,6 +47,9 @@ public class AdminController {
         return mv;
     }
 
+    /**
+     * 进入修改管理员密码请求
+     */
     @RequestMapping("/toUpdateAdmin")
     public ModelAndView toUpdateAdmin(String message){
         ModelAndView mv=new ModelAndView();
@@ -48,6 +58,9 @@ public class AdminController {
         return mv;
     }
 
+    /**
+     *修改管理员密码请求
+     */
     @RequestMapping("/updateAdminPwd")
     public ModelAndView updateAdminPwd(Admin admin, @RequestParam("password1") String password1, @RequestParam("password2") String password2){
         ModelAndView mv=new ModelAndView();
