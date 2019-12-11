@@ -177,7 +177,7 @@ public class CashSweepServiceImpl implements CashSweepService {
             //调用方法查询主卡的子卡信息
             List<Coll> colls = cashSweepDao.queryMainColl(mainAccount);
             //如果没有子卡信息
-            if(colls==null){
+            if(colls==null||colls.size()==0){
                 mainAccount.setCollStatus("未签约");
                 int flag3 = cashSweepDao.updateCollStatus(mainAccount);
                 //如果更改主卡的签约状态失败，解约方法直接返回失败
@@ -281,12 +281,12 @@ public class CashSweepServiceImpl implements CashSweepService {
 
     /**
      * 查询归集记录
-     * @param account 传入副卡的信息，以账号和交易类型作为查询条件
+     * @param followAcc 传入副卡的信息，以账号和交易类型作为查询条件
      * @return 返回归集转账交易记录
      */
     @Override
-    public List<Transfer> queryTransfers(Account account) {
-        return cashSweepDao.queryTransfers(account);
+    public List<Transfer> queryTransfers(String followAcc) {
+        return cashSweepDao.queryTransfers(followAcc);
     }
 
     /**

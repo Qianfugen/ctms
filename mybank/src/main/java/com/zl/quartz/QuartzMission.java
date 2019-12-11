@@ -20,14 +20,13 @@ public class QuartzMission {
 
     /**
      * 资金归集方法，从子账号将资金高于签约的部分转出到主账户
-     * 定时任务,每月最后一日的上午10:15触发
+     * 定时任务,每月一日早上九点触发
      */
-    @Scheduled(cron = "0 15 10 * * ?")
+    @Scheduled(cron = "0 0 9 1 * ? *")
     public void sweepCash(){
         List<Coll> colls = cashSweepService.queryAllCollInTable();
-        if(colls!=null){
+        if(colls!=null&&colls.size()!=0){
             cashSweepService.sweepCash(colls);
         }
-        System.out.println("归集完成");
     }
 }

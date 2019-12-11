@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,10 +77,8 @@ public class CashSweepController {
         //获取当前登录的账号
         Account loginAccount = (Account) session.getAttribute("loginAccount");
         //获取需要签约的主账号的签约状态
-        String collStatus = cashSweepService.queryCollStatus(coll.getMainAcc());
 
-        //测试代码
-        System.out.println(collStatus);
+        String collStatus = cashSweepService.queryCollStatus(coll.getMainAcc());
 
         //调用签约方法
         int flag = cashSweepService.signColl(loginAccount, coll, collStatus, signFund);
@@ -110,6 +107,7 @@ public class CashSweepController {
         //解除签约是否成功的标志
         int flag = 0;
         //判断是在子账号端进行的取消还是主账户端进行的取消
+
         //如果没有传入子账号的字符串，说明是子账户端的取消
         if (followAcc == null || "".equals(followAcc)) {
             //由传入的主账号mainAcc创建一个用于取消签约的主账号
@@ -121,7 +119,7 @@ public class CashSweepController {
             //如果解约失败，跳转到签约信息页面
             if (flag == 0) {
                 mv.addObject("error", "解约失败");
-                mv.setViewName("redirect:queryColl");
+                mv.setViewName("queryColl");
             }
         }
 
@@ -136,14 +134,14 @@ public class CashSweepController {
             //如果解约失败，跳转到签约信息页面
             if (flag == 0) {
                 mv.addObject("error", "解约失败");
-                mv.setViewName("redirect:queryAllColl");
+                mv.setViewName("queryAllColl");
             }
         }
 
         //解约成功，更新会话中的账号对象的签约状态；跳转到签约状态判断
         loginAccount.setCollStatus(cashSweepService.queryCollStatus(loginAccount.getAccNo()));
         session.setAttribute("loginAccount", loginAccount);
-        mv.setViewName("redirect:loginAccountCollStatus");
+        mv.setViewName("loginAccountCollStatus");
 
         return mv;
     }
@@ -163,9 +161,9 @@ public class CashSweepController {
         //如果修改签约信息失败；修改成功重新跳转到签约状态判断
         if (flag == 0) {
             mv.addObject("error", "修改签约信息失败");
-            mv.setViewName("redirect:queryColl");
+            mv.setViewName("queryColl");
         } else {
-            mv.setViewName("redirect:loginAccountCollStatus");
+            mv.setViewName("loginAccountCollStatus");
         }
         return mv;
     }
@@ -204,34 +202,19 @@ public class CashSweepController {
 
     @RequestMapping("/queryTransfers")
     @ResponseBody
-    public ModelAndView queryTransfers(HttpSession session) {
+    public ModelAndView queryTransfers(String followAcc) {
         ModelAndView mv = new ModelAndView();
 
-        //获取当前登录的账号
-        Account loginAccount = (Account) session.getAttribute("loginAccount");
-
         //查询当前登录账号的归集记录
-        List<Transfer> transfers = cashSweepService.queryTransfers(loginAccount);
+        List<Transfer> transfers = cashSweepService.queryTransfers(followAcc);
 
         //如果没有查询到相关内容，显示“没有相关归集记录”；否则显示相关信息
-        if(transfers==null){
+        if(transfers==null||transfers.size()==0){
             mv.addObject("message","没有相关归集记录！");
         }else {
             mv.addObject("transfers", transfers);
         }
-        mv.setViewName("transfers");
-        return mv;
-    }
-
-    @RequestMapping("/test")
-    public ModelAndView test(HttpSession session){
-        ModelAndView mv=new ModelAndView();
-        System.out.println("连接服务成功");
-        Account loginAccount=new Account();
-//        loginAccount.setCollStatus("主账号");
-        loginAccount.setAccNo("6222308875601202830");
-        session.setAttribute("loginAccount",loginAccount);
-        mv.setViewName("signColl");
+        mv.setViewName("#####转到归集记录页面#####");
         return mv;
     }
 }

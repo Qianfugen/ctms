@@ -68,10 +68,10 @@ public interface CashSweepService {
 
     /**
      * 查询归集记录
-     * @param account 传入副卡的信息，以账号和交易类型作为查询条件
+     * @param followAcc 传入副卡的信息，以账号和交易类型作为查询条件
      * @return 返回归集转账交易记录
      */
-    List<Transfer> queryTransfers(Account account);
+    List<Transfer> queryTransfers(String followAcc);
 
     /**
      * 资金归集

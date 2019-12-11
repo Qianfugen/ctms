@@ -65,7 +65,7 @@ namespace:必须是对应接口的全路径
     <select id="queryAllCollInTable" resultMap="collMap">
         select * from T_COLL
     </select>
-    <select id="queryTransfers" parameterType="account" resultMap="transferMap">
+    <select id="queryTransfers" parameterType="string" resultMap="transferMap">
         select * from T_TRANSFER where ACC_OUT =#{accNo} and KIND ='归集'
     </select>
 </mapper>
