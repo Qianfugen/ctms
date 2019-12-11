@@ -57,6 +57,10 @@ public class Account implements Serializable {
      * 支付密码
      */
     private String accPwd;
+    /**
+     * 归集状态
+     */
+    private String collStatus;
 
     public String getAccNo() {
         return accNo;
@@ -138,6 +142,14 @@ public class Account implements Serializable {
         this.accPwd = accPwd;
     }
 
+    public String getCollStatus() {
+        return collStatus;
+    }
+
+    public void setCollStatus(String collStatus) {
+        this.collStatus = collStatus;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
@@ -151,6 +163,7 @@ public class Account implements Serializable {
                 ", accType='" + accType + '\'' +
                 ", accDate=" + accDate +
                 ", accPwd='" + accPwd + '\'' +
+                ", collStatus='" + collStatus + '\'' +
                 '}';
     }
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:必须是对应接口的全路径
+-->
+<mapper namespace="com.zl.dao.CashSweepDao">
+    <resultMap id="accountMap" type="account">
+        <result property="accNo" column="acc_no"/>
+        <result property="currType" column="curr_type"/>
+        <result property="accBankId" column="acc_bankId"/>
+        <result property="userId" column="user_id"/>
+        <result property="accStatus" column="acc_Status"/>
+        <result property="accLimit" column="acc_Limit"/>
+        <result property="accFund" column="acc_fund"/>
+        <result property="accType" column="acc_type"/>
+        <result property="accDate" column="acc_date"/>
+        <result property="accPwd" column="acc_pwd"/>
+        <result property="collStatus" column="coll_status"/>
+    </resultMap>
+    <resultMap id="collMap" type="coll">
+        <result property="collId" column="coll_id"/>
+        <result property="mainAcc" column="main_acc"/>
+        <result property="followAcc" column="follow_acc"/>
+        <result property="signDate" column="sign_date"/>
+        <result property="signFund" column="sign_fund"/>
+    </resultMap>
+    <resultMap id="transferMap" type="transfer">
+        <result property="dealNo" column="deal_no"/>
+        <result property="dealDate" column="deal_date"/>
+        <result property="transType" column="trans_type"/>
+        <result property="transStatus" column="transStatus"/>
+        <result property="accOut" column="acc_out"/>
+        <result property="accOutName" column="acc_outName"/>
+        <result property="accOutBank" column="acc_outBank"/>
+        <result property="accIn" column="acc_in"/>
+        <result property="accInName" column="acc_inName"/>
+        <result property="accInBank" column="acc_inBank"/>
+        <result property="currency" column="currency"/>
+        <result property="transFund" column="trans_fund"/>
+        <result property="kind" column="kind"/>
+    </resultMap>
+
+    <select id="queryCollStatus" parameterType="string" resultType="string">
+        select COLL_STATUS from T_ACCOUNT where ACC_NO=#{mainAcc}
+    </select>
+    <update id="updateCollStatus" parameterType="account">
+        update T_ACCOUNT set COLL_STATUS = #{collStatus} where ACC_NO=#{accNo}
+    </update>
+    <insert id="addColl" parameterType="coll">
+        insert into T_COLL (coll_id, main_acc, follow_acc, sign_date, sign_fund) values (#{collId},#{mainAcc},#{followAcc},#{signDate},#{signFund})
+    </insert>
+    <select id="queryColl" parameterType="account" resultMap="collMap">
+        select * from T_COLL where FOLLOW_ACC=#{accNo}
+    </select>
+    <update id="updateColl" parameterType="coll">
+        update T_COLL set MAIN_ACC = #{mainAcc},SIGN_DATE =#{signDate},SIGN_FUND = #{signFund} where FOLLOW_ACC=#{followAcc}
+    </update>
+    <delete id="deleteColl" parameterType="account">
+        delete from T_COLL where FOLLOW_ACC=#{accNo}
+    </delete>
+    <select id="queryMainColl" parameterType="account" resultMap="collMap">
+        select * from T_COLL where MAIN_ACC=#{accNo}
+    </select>
+    <select id="queryAllCollInTable" resultMap="collMap">
+        select * from T_COLL
+    </select>
+    <select id="queryTransfers" parameterType="account" resultMap="transferMap">
+        select * from T_TRANSFER where ACC_OUT =#{accNo} and KIND ='归集'
+    </select>
+</mapper>

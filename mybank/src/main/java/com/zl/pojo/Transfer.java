@@ -65,6 +65,10 @@ public class Transfer implements Serializable {
      * 转账金额
      */
     private BigDecimal transFund;
+    /**
+     * 交易类型，就是说，交易属于转账、归集转账还是收款转账
+     */
+    private String kind;
 
     public String getDealNo() {
         return dealNo;
@@ -162,6 +166,14 @@ public class Transfer implements Serializable {
         this.transFund = transFund;
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     @Override
     public String toString() {
         return "Transfer{" +
@@ -177,6 +189,7 @@ public class Transfer implements Serializable {
                 ", accInBank='" + accInBank + '\'' +
                 ", currency='" + currency + '\'' +
                 ", transFund=" + transFund +
+                ", kind='" + kind + '\'' +
                 '}';
     }
 }
