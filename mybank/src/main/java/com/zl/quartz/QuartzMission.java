@@ -22,7 +22,7 @@ public class QuartzMission {
      * 资金归集方法，从子账号将资金高于签约的部分转出到主账户
      * 定时任务,每月最后一日的上午10:15触发
      */
-    @Scheduled(cron = "0 15 10 L * ?")
+    @Scheduled(cron = "0 15 10 * * ?")
     public void sweepCash(){
         List<Coll> colls = cashSweepService.queryAllCollInTable();
         if(colls!=null){

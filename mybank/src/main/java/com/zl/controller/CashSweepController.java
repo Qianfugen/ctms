@@ -12,22 +12,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fm
  * @version 1.0
  * @date 2019/12/10 17:35
  */
-@Controller("/cashSweep")
+@Controller
+@RequestMapping("/cashSweep")
 public class CashSweepController {
     @Autowired
     private CashSweepService cashSweepService;
 
     @RequestMapping("/queryMainAccCollStatus")
     @ResponseBody
-    public String queryMainAccCollStatus(@RequestParam("mainAcc") String mainAcc) {
-        return cashSweepService.queryCollStatus(mainAcc);
+    public Map<String,String> queryMainAccCollStatus(@RequestParam("mainAcc") String mainAcc) {
+        Map<String,String> status=new HashMap<>();
+        String collStatus = cashSweepService.queryCollStatus(mainAcc);
+        status.put("collStatus",collStatus);
+        return status;
     }
 
     @RequestMapping("/loginAccountCollStatus")
@@ -48,12 +55,12 @@ public class CashSweepController {
         //如果签约状态为"未签约"或者null
         if (collStatus == null || "".equals(collStatus) || collStatus1.equals(collStatus)) {
             mv.addObject("message","您还没有签约资金归集，请先签约！");
-            mv.setViewName("signPage");
+            mv.setViewName("####到签约页面####");
         }
 
         //如果签约状态为"已签约"
         if (collStatus2.equals(collStatus)) {
-            mv.setViewName("redirect:queryColl");
+            mv.setViewName("queryColl");
         }
 
         //如果签约状态为"主账号"
@@ -73,18 +80,21 @@ public class CashSweepController {
         //获取需要签约的主账号的签约状态
         String collStatus = cashSweepService.queryCollStatus(coll.getMainAcc());
 
+        //测试代码
+        System.out.println(collStatus);
+
         //调用签约方法
         int flag = cashSweepService.signColl(loginAccount, coll, collStatus, signFund);
 
         //如果签约失败，跳转到签约页面；否则跳转到签约信息页面
         if (flag == 0) {
             mv.addObject("error", "签约失败。。。。");
-            mv.setViewName("signPage");
+            mv.setViewName("####到签约页面####");
         } else {
             //将会话中登录的账号签约信息更新
             loginAccount.setCollStatus(cashSweepService.queryCollStatus(loginAccount.getAccNo()));
             session.setAttribute("loginAccount", loginAccount);
-            mv.setViewName("redirect:loginAccountCollStatus");
+            mv.setViewName("loginAccountCollStatus");
         }
         return mv;
     }
@@ -172,7 +182,7 @@ public class CashSweepController {
         Coll coll = cashSweepService.queryColl(loginAccount);
 
         mv.addObject("coll", coll);
-        mv.setViewName("coll");
+        mv.setViewName("####转到已签约页面#####");
         return mv;
     }
 
@@ -188,7 +198,7 @@ public class CashSweepController {
         List<Coll> colls = cashSweepService.queryMainColl(loginAccount);
 
         mv.addObject("colls", colls);
-        mv.setViewName("colls");
+        mv.setViewName("####转到主账号页面#####");
         return mv;
     }
 
@@ -210,6 +220,18 @@ public class CashSweepController {
             mv.addObject("transfers", transfers);
         }
         mv.setViewName("transfers");
+        return mv;
+    }
+
+    @RequestMapping("/test")
+    public ModelAndView test(HttpSession session){
+        ModelAndView mv=new ModelAndView();
+        System.out.println("连接服务成功");
+        Account loginAccount=new Account();
+//        loginAccount.setCollStatus("主账号");
+        loginAccount.setAccNo("6222308875601202830");
+        session.setAttribute("loginAccount",loginAccount);
+        mv.setViewName("signColl");
         return mv;
     }
 }

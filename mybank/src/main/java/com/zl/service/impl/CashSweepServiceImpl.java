@@ -19,6 +19,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * @author fm
@@ -101,6 +103,11 @@ public class CashSweepServiceImpl implements CashSweepService {
                     }
                 }
             }
+
+            //如果主账号已签约，签约失败
+            if (collStatus2.equals(collStatus)){
+                flag=0;
+            }
         }catch (Exception e){
             flag=0;
             transactionManager.rollback(status);
@@ -115,9 +122,11 @@ public class CashSweepServiceImpl implements CashSweepService {
      */
     private Coll getColl(Coll coll,Account viceAccount,String signFund) {
         if(coll.getCollId()==null){
-            coll.setCollId("");
+
+            //测试代码
+            String id= String.valueOf(new Random().nextInt(9999));
+            coll.setCollId(id);
         }
-        coll.setMainAcc(coll.getMainAcc());
         coll.setFollowAcc(viceAccount.getAccNo());
         coll.setSignDate(new Date());
         coll.setSignFund(new BigDecimal(signFund));
