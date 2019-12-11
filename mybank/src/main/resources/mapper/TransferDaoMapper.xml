@@ -23,4 +23,10 @@
     <select id="queryBalance" parameterType="string" resultType="java.math.BigDecimal">
         select ACC_FUND from T_ACCOUNT where ACC_NO=#{accNo}
     </select>
+    <select id="queryBankName" parameterType="string" resultType="string">
+        select BANK_NAME from T_BANK where BANKID=(select ACC_BANKID from T_ACCOUNT where ACC_NO=#{accNo})
+    </select>
+    <select id="queryUserName" parameterType="string" resultType="string">
+        select USER_NAME from T_USER where USER_ID=(select USER_ID from T_ACCOUNT where ACC_NO=#{accNo})
+    </select>
 </mapper>

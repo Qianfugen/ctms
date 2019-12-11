@@ -39,6 +39,7 @@ public class TransferController {
 
     /**
      * 查询余额
+     * 做测试用
      * @param accNo 卡号
      * @return
      */
@@ -51,6 +52,24 @@ public class TransferController {
         return map;
     }
 
+    /**
+     * 根据卡号查询用户名和银行
+     * 做测试用
+     * @param accNo 卡号
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/queryBankAndUserName")
+    public Map<String, String> queryBankAndUserName(@RequestParam("accNo") String accNo){
+        Map<String,String> map=transferService.queryBankAndUserName(accNo);
+        return map;
+    }
+
+    /**
+     * 根据流水号查账单信息
+     * @param dealNo 流水号
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/queryTransferByDealNo")
     public Transfer queryTransferByDealNo(@RequestParam("dealNo") String dealNo) {
