@@ -1,6 +1,7 @@
 package com.zl.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  * 登入记录表
  */
 @Component
+@Scope("prototype")
 public class Login implements Serializable {
     /**
      * 账号

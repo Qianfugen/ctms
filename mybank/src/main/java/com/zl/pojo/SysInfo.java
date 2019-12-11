@@ -1,6 +1,7 @@
 package com.zl.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * 系统通知表
  */
 @Component
+@Scope("prototype")
 public class SysInfo implements Serializable {
     /**
      * 转入账号

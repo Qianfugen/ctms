@@ -1,6 +1,7 @@
 package com.zl.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author root
  */
 @Component
+@Scope("prototype")
 public class Transfer implements Serializable {
     /**
      * 交易流水号
@@ -67,6 +69,19 @@ public class Transfer implements Serializable {
      * 转账金额
      */
     private BigDecimal transFund;
+
+    /**
+     * 业务类型
+     */
+    private String kind;
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
 
     public String getDealNo() {
         return dealNo;
@@ -179,6 +194,7 @@ public class Transfer implements Serializable {
                 ", accInBank='" + accInBank + '\'' +
                 ", currency='" + currency + '\'' +
                 ", transFund=" + transFund +
+                ", kind='" + kind + '\'' +
                 '}';
     }
 }
