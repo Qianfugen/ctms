@@ -11,81 +11,18 @@
 <script type="text/javascript" src="../static/js/jquery.js" ></script>
 <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
-	//卡号的正则表达式验证(18位)
-	$(function(){
-		$("#card").blur(function(){
-			var card=$("#card").val();
-			var textCard = /^[1-9][0-9]{17}$/;
-			if(textCard.test(card)){
-				//进行ajax查询
-				$("#card").blur(function () {
-                //发送ajax请求
-                $.ajax({
-                    //该ajax发送请求到那个地址处理
-                    url: "/students/regName",
-                    //请求方式
-                    type: "post",
-                    //预计服务器返回的数据格式
-                    dataType: "json",
-                    //发送的数据(姓名和卡号)
-                    data: {"card": $("#card").val()},
-                    /*
-                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-                     */
-                    success: function (data) {
-                        if (data.flag) {
-                        	$("#cardSpan").html("卡号正确").css({"color": "green", "font-size": "5"});
-                        } else {
-                            $("#cardSpan").html("不存在此账户！").css({"color": "red", "font-size": "5"});
-                        }
-                    },
-                    //响应失败以后执行的回调函数
-                    error: function () {
-                        alert("失败....");
-                    }
-                })
-            })
-				
-			}else{
-				$("#cardSpan").html("输入格式错误！").css({"color": "red", "font-size": "5"});
-			}
-		})
-	});
-
-	//卡号和名字ajax验证(18位)
-	$(function(){
-		$("#name").blur(function () {
-                //发送ajax请求
-                $.ajax({
-                    //该ajax发送请求到那个地址处理
-                    url: "/students/regName",
-                    //请求方式
-                    type: "post",
-                    //预计服务器返回的数据格式
-                    dataType: "json",
-                    //发送的数据(姓名和卡号)
-                    data: {"name": $("#name").val(),"card": $("#card").val()},
-                    /*
-                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-                     */
-                    success: function (data) {
-                        if (data.flag) {
-                           $("#nameSpan").html("姓名正确").css({"color": "green", "font-size": "5"});
-                        } else {
-                           $("#nameSpan").html("姓名和卡号不一致").css({"color": "green", "font-size": "5"});
-                        }
-                    },
-                    //响应失败以后执行的回调函数
-                    error: function () {
-                        alert("失败....");
-                    }
-                })
-            })
-	});
-	
-
-            
-            
+    //卡号的正则表达式验证(18位)
+    $(function(){
+        $("#card").blur(function(){
+            var card=$("#card").val();
+            var textCard = /^[1-9][0-9]{17}$/;
+            if(textCard.test(card)){
+                $("#cardSpan").html("格式正确").css({"color": "green", "font-size": "5"});
+            }else{
+                $("#cardSpan").html("请输入18位卡号").css({"color": "red", "font-size": "5"});
+            }
+        })
+    })
 </script>
 </head>
 <body>
@@ -181,7 +118,16 @@
 								<td>&nbsp;500</td>
 								<td>&nbsp;<input id="money"  value="" required="required" /><span id="moneySpan"></span> </td>
 							</tr>
-							<!--<#list students as stu>
+							<!--<#list payees as p>
+                                <tr>
+                                    <td>&nbsp;&nbsp;<input type="checkbox" name="" value="" /> </td>
+                                    <td>&nbsp;&nbsp;${p.debtor}  </td>
+                                    <td>&nbsp;&nbsp;${p.} </td>
+                                    <td>&nbsp;<a href="#">修改</a></td>
+                                    <td>&nbsp;<a href="#">删除</a> </td>
+                                    <td>&nbsp;500</td>
+                                    <td>&nbsp;<input id="money"  value="" required="required" /><span id="moneySpan"></span> </td>
+                                </tr>
 					            <tr>
 					                <td><input type="checkbox" name="ids" value="${n.id}"> </td>
 			                        <td>${n.id}</td>
@@ -198,7 +144,7 @@
 					        </#list>-->
 							<tr>
 								<td></td>
-								<td><h3><input type="submit" value="批量转账" /> </h3></td>
+								<td><h3><input type="submit" value="批量收款" /> </h3></td>
 								<td></td>
 							</tr>
 	

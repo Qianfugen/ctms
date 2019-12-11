@@ -16,11 +16,11 @@ public class Query implements Serializable {
      */
     private String creditorAcc;
     /**
-     * 借方账号
+     * 借方账号（查询的卡号）
      */
     private String debtor;
     /**
-     *借方用户名
+     *借方用户名（查询输入的用户名)
      */
     private String debtorName;
 
