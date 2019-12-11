@@ -70,6 +70,19 @@ public class Transfer implements Serializable {
      */
     private BigDecimal transFund;
 
+    /**
+     * 业务类型
+     */
+    private String kind;
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     public String getDealNo() {
         return dealNo;
     }
@@ -181,6 +194,7 @@ public class Transfer implements Serializable {
                 ", accInBank='" + accInBank + '\'' +
                 ", currency='" + currency + '\'' +
                 ", transFund=" + transFund +
+                ", kind='" + kind + '\'' +
                 '}';
     }
 }

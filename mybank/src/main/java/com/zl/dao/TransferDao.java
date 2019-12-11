@@ -2,6 +2,8 @@ package com.zl.dao;
 
 import com.zl.pojo.Transfer;
 
+import java.math.BigDecimal;
+
 /**
  * @author root
  */
@@ -21,6 +23,15 @@ public interface TransferDao {
      * @return
      */
     public int subMoney(Transfer transfer);
+
+    /**
+     * 写入交易记录
+     * @param transfer
+     * @return
+     */
+    public int writeDeal(Transfer transfer);
+
+    public BigDecimal queryBalance(String accNo);
 
     /**
      * 根据流水号查询交易记录

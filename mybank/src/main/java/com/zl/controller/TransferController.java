@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,20 @@ public class TransferController {
         Map<String, Integer> map = new HashMap<>();
         transferService.transferMoney(transfer);
         map.put("status",200);
+        return map;
+    }
+
+    /**
+     * 查询余额
+     * @param accNo 卡号
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/queryBalance")
+    public Map<String, BigDecimal> queryBalance(@RequestParam("accNo") String accNo) {
+        Map<String, BigDecimal> map = new HashMap<>();
+        BigDecimal balance=transferService.queryBalance(accNo);
+        map.put("balance",balance);
         return map;
     }
 

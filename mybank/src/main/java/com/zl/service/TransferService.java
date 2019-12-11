@@ -2,6 +2,8 @@ package com.zl.service;
 
 import com.zl.pojo.Transfer;
 
+import java.math.BigDecimal;
+
 /**
  * 转账service层接口
  * @author root
@@ -13,6 +15,20 @@ public interface TransferService {
      * @return
      */
     public void transferMoney(Transfer transfer);
+
+    /**
+     * 写入交易记录
+     * @param transfer
+     * @return
+     */
+    public int writeDeal(Transfer transfer);
+
+    /**
+     * 根据卡号查询余额
+     * @param accNo 卡号
+     * @return 余额
+     */
+    public BigDecimal queryBalance(String accNo);
 
     /**
      * 根据流水号查询交易记录
