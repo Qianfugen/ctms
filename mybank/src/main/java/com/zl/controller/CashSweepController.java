@@ -1,4 +1,4 @@
-package com.zl.control;
+package com.zl.controller;
 
 import com.zl.pojo.Account;
 import com.zl.pojo.Coll;
