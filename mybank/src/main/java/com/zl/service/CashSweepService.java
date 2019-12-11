@@ -76,7 +76,6 @@ public interface CashSweepService {
     /**
      * 资金归集
      * @param colls 归集信息
-     * @return 返回归集结果
      */
-    int sweepCash(List<Coll> colls);
+    void sweepCash(List<Coll> colls);
 }
