@@ -3,34 +3,26 @@ package com.zl.pojo;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
- * 收款
- * @author root
+ * 收款人分页查询的条件
+ * @author 徐浩杰
+ * @version 1.0 2019-12-10
  */
 @Component
-public class Payee implements Serializable {
+public class Query implements Serializable {
     /**
      * 贷方账号
      */
     private String creditorAcc;
     /**
-     * 贷方姓名
-     */
-    private String creditorName;
-    /**
      * 借方账号
      */
     private String debtor;
     /**
-     * 借方姓名
+     *借方用户名
      */
     private String debtorName;
-    /**
-     * 借贷金额
-     */
-    private BigDecimal fund;
 
     public String getCreditorAcc() {
         return creditorAcc;
@@ -38,14 +30,6 @@ public class Payee implements Serializable {
 
     public void setCreditorAcc(String creditorAcc) {
         this.creditorAcc = creditorAcc;
-    }
-
-    public String getCreditorName() {
-        return creditorName;
-    }
-
-    public void setCreditorName(String creditorName) {
-        this.creditorName = creditorName;
     }
 
     public String getDebtor() {
@@ -64,22 +48,12 @@ public class Payee implements Serializable {
         this.debtorName = debtorName;
     }
 
-    public BigDecimal getFund() {
-        return fund;
-    }
-
-    public void setFund(BigDecimal fund) {
-        this.fund = fund;
-    }
-
     @Override
     public String toString() {
-        return "Payee{" +
+        return "Query{" +
                 "creditorAcc='" + creditorAcc + '\'' +
-                ", creditorName='" + creditorName + '\'' +
                 ", debtor='" + debtor + '\'' +
                 ", debtorName='" + debtorName + '\'' +
-                ", fund=" + fund +
                 '}';
     }
 }

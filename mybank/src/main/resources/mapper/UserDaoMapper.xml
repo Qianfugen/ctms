@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:必须是对应接口的全路径
+-->
+<mapper namespace="com.zl.dao.UserDao">
+
+    <select id="checkIdAndName" parameterType="user" resultType="user">
+        select * from t_user where user_Id=#{userId}
+    </select>
+    
+    <select id="queryNameByAccNo" parameterType="string" resultType="string">
+        select user_name from (select * from T_ACCOUNT a,T_USER u where a.USER_ID=u.USER_ID) where ACC_NO=#{accNo}
+    </select>
+</mapper>

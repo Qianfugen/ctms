@@ -1,5 +1,7 @@
 package com.zl.pojo;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -7,6 +9,7 @@ import java.math.BigDecimal;
  * @author junqi
  * 常用收款人
  */
+@Component
 public class UsualColl implements Serializable {
     /**
      * 自己账号

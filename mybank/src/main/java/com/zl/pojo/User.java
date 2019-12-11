@@ -2,6 +2,7 @@ package com.zl.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
  *
  * @author root
  */
-
+@Component
 public class User implements Serializable {
     /**
      * 客户号
