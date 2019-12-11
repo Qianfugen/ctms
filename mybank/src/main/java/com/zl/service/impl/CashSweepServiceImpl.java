@@ -7,6 +7,8 @@ import com.zl.pojo.Transfer;
 import com.zl.service.CashSweepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -40,6 +42,7 @@ public class CashSweepServiceImpl implements CashSweepService {
      * @return 返回签约结果 0失败 1成功
      */
     @Override
+    @Transactional
     public int signColl(Account viceAccount,Coll coll,String collStatus,String signFund) {
         //定义签约状态的字符串
         String collStatus2="已签约";
