@@ -14,6 +14,9 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 转账service层实现类
@@ -30,12 +33,34 @@ public class TransferServiceImpl implements TransferService {
     /**
      * 同行转账
      * 只涉及金额的变动
+     *
      * @param transfer 交易对象
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @Override
     public void transferMoney(Transfer transfer) {
+        //生成流水号
+        String[] uuids = UUID.randomUUID().toString().split("-");
+        StringBuffer uuid = new StringBuffer();
+        for (String str : uuids) {
+            uuid.append(str);
+        }
+        transfer.setDealNo(uuid.toString());
+        //设置类型kind
+        transfer.setKind("转账");
+        //补充交易对象信息
+        transfer.setCurrency("CNY");
+        //收入行信息
+        String accIn = transfer.getAccIn();
+        Map<String, String> mapIn = queryBankAndUserName(accIn);
+        transfer.setAccInName(mapIn.get("userName"));
+        transfer.setAccInBank(mapIn.get("bankName"));
+        //转出行信息
+        String accOut = transfer.getAccOut();
+        Map<String, String> mapOut = queryBankAndUserName(accOut);
+        transfer.setAccOutName(mapOut.get("userName"));
+        transfer.setAccOutBank(mapOut.get("bankName"));
         //添加事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setName("SomeTxName");
@@ -48,7 +73,7 @@ public class TransferServiceImpl implements TransferService {
             //转账成功，设置交易状态为“成功”
             transfer.setTransStatus("成功");
             //如果转账类型为空，则设为同行转账，代号0
-            if(transfer.getTransType()==null){
+            if (transfer.getTransType() == null) {
                 transfer.setTransType(0);
             }
             //写入交易记录
@@ -63,6 +88,7 @@ public class TransferServiceImpl implements TransferService {
     /**
      * 写入交易记录
      * 转账、资金归集、主动收款都要写入交易记录
+     *
      * @param transfer
      * @return
      */
@@ -82,6 +108,22 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public BigDecimal queryBalance(String accNo) {
         return transferDao.queryBalance(accNo);
+    }
+
+    /**
+     * 根据卡号查询用户名和银行
+     *
+     * @param accNo 卡号
+     * @return
+     */
+    @Override
+    public Map<String, String> queryBankAndUserName(String accNo) {
+        Map<String, String> map = new HashMap<>();
+        String bankName = transferDao.queryBankName(accNo);
+        String userName = transferDao.queryUserName(accNo);
+        map.put("bankName", bankName);
+        map.put("userName", userName);
+        return map;
     }
 
     /**
