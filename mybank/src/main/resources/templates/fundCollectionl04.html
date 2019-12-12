@@ -98,9 +98,9 @@
 						<#list colls as coll>
 							<tr>
 								<td> ${coll.followAcc} </td>
-								<td> 张三 </td>
+								<td> ${coll.followUser} </td>
 								<td> ${coll.signFund}</td>
-								<td> 中国银行 </td>
+								<td> ${coll.followBank} </td>
 								<td> <a href="/cashSweep/queryTransfers?followAcc=${coll.followAcc}">查询归集记录</a> </td>
 								<td> <a href="/cashSweep/cancelColl?followAcc=${coll.followAcc}">解约</a> </td>
 							</tr>

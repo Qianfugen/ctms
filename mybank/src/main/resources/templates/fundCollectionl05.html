@@ -93,24 +93,25 @@
 				</div>
 				<div align="center">
 					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
-						<#if (transfers=null)>
+						<#if transfers??>
 							${message}
 						<#else>
 							<tr>
 								<td> 转入账号 </td>
 								<td> 用户名 </td>
 								<td> 转入金额 </td>
+								<td> 转入银行 </td>
 								<td> 转入时间 </td>
 								<td> 流水号 </td>
 							</tr>
-							<#list transfers as trans>
+							<#list deal as t>
 								<tr>
-									<td> ${trans.accIn} </td>
-									<td> 张三 </td>
-									<td> ${trans.transFund}</td>
-									<td> 中国银行 </td>
-									<td> ${trans.dealDate}</td>
-									<td> ${trans.dealNo}</td>
+									<td> ${t.accIn} </td>
+									<td> ${t.accInName} </td>
+									<td> ${t.transFund}</td>
+									<td> ${t.accInBank} </td>
+									<td><#if t.dealDate??>${t.dealDate?string('yyyy-MM-dd')}</#if></td>
+									<td> ${t.dealNo}</td>
 								</tr>
 							</#list>
 						</#if>

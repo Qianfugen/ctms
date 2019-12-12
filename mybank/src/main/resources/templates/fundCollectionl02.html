@@ -84,7 +84,7 @@
 					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
 						<tr>
 							<td> 用户名 ：</td>
-							<td> <input id="username" type="text" name="username" value="${message.userName}" readonly="readonly"  /></td>
+							<td> <input id="username" type="text" name="mainUser" value="${coll.mainUser}" readonly="readonly"  /></td>
 							<td> <span id="nameSpan"></span></td>
 						</tr>
 						<tr>
@@ -93,7 +93,7 @@
 						</tr>
 						<tr>
 							<td> 开户行： </td>
-							<td> <input id="bankName" name="bankName" value="${message.bankName}"/></td>
+							<td> <input id="bankName" name="mainBank" value="${coll.mainBank}"/></td>
 						</tr>
 						<tr>
 							<td> 签约金额 ： </td>
@@ -106,7 +106,6 @@
 						</tr>
 					</table>
 					</form>
-					
 				</div>
 			</div>
 		</div>

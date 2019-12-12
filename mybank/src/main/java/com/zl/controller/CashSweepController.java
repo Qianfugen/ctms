@@ -249,7 +249,7 @@ public class CashSweepController {
         if(transfers==null||transfers.size()==0){
             mv.addObject("message","没有相关归集记录！");
         }else {
-            mv.addObject("transfers", transfers);
+            mv.addObject("deal", transfers);
         }
         mv.setViewName("fundCollectionl05");
         return mv;
@@ -263,7 +263,7 @@ public class CashSweepController {
         String accNo="6222308875601202830";
         String mainAcc1="6222309814494189020";
         String mainAcc2="6222306452796804332";
-        Account loginAccount=cashSweepService.queryAccount(accNo);
+        Account loginAccount=cashSweepService.queryAccount(maccNo);
         System.out.println(transferService.queryBankAndUserName(mainAcc1));
         System.out.println(transferService.queryBankAndUserName(mainAcc2));
 
