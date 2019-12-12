@@ -41,12 +41,8 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public void transferMoney(Transfer transfer) {
         //生成流水号
-        String[] uuids = UUID.randomUUID().toString().split("-");
-        StringBuffer uuid = new StringBuffer();
-        for (String str : uuids) {
-            uuid.append(str);
-        }
-        transfer.setDealNo(uuid.toString());
+        String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
+        transfer.setDealNo(dealNo);
         //设置类型kind
         transfer.setKind("转账");
         //补充交易对象信息
