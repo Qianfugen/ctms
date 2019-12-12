@@ -1,7 +1,6 @@
 package com.zl.service.impl;
 
 import com.zl.dao.CashSweepDao;
-import com.zl.dao.TransferDao;
 import com.zl.pojo.Account;
 import com.zl.pojo.Coll;
 import com.zl.pojo.Transfer;
@@ -17,10 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author fm
@@ -60,12 +56,11 @@ public class CashSweepServiceImpl implements CashSweepService {
      * 资金归集功能签约
      * @param viceAccount  需要签约为副卡的账号
      * @param coll 签约信息
-     * @param collStatus 主账号的签约状态
      * @return 返回签约结果 0失败 1成功
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public int signColl(Account viceAccount,Coll coll,String collStatus,String signFund) {
+    public int signColl(Account viceAccount,Coll coll) {
         //定义签约状态的字符串
         String collStatus2="已签约";
         String collStatus3="主账号";
@@ -77,12 +72,18 @@ public class CashSweepServiceImpl implements CashSweepService {
         //设置回滚点
         TransactionStatus status = transactionManager.getTransaction(def);
 
+        //获取主账号
+        String mainAcc=coll.getMainAcc();
+        //获取需要签约的主账号的签约状态
+        String collStatus = cashSweepDao.queryCollStatus(mainAcc);
+
+        //定义方法执行结果标志
         int flag=1;
         try {
             //如果需要签约为主卡的账号的签约状态不是“已签约”
             if (!collStatus2.equals(collStatus)) {
                 //调用处理签约信息对象的方法，获得签约对象
-                coll = getColl(coll,viceAccount,signFund);
+                coll = getColl(coll,viceAccount);
                 //调用添加归集信息对象的方法
                 int flag1 = cashSweepDao.addColl(coll);
                 //如果添加失败，签约方法直接返回失败
@@ -101,8 +102,6 @@ public class CashSweepServiceImpl implements CashSweepService {
 
                 //如果主账号的签约状态不是“主账号”
                 if(!collStatus3.equals(collStatus)){
-                    //获取主账号
-                    String mainAcc=coll.getMainAcc();
                     //修改主账号的签约状态为“主账号”
                     Account mainAccount = getAccount(mainAcc);
                     mainAccount.setCollStatus(collStatus3);
@@ -130,16 +129,25 @@ public class CashSweepServiceImpl implements CashSweepService {
      * 处理归集信息对象的方法，用于添加归集信息时的信息处理
      * @return 返回归集信息对象
      */
-    private Coll getColl(Coll coll,Account viceAccount,String signFund) {
+    private Coll getColl(Coll coll,Account viceAccount) {
         if(coll.getCollId()==null){
 
             //测试代码
             String id= String.valueOf(new Random().nextInt(9999));
             coll.setCollId(id);
         }
+        //查询主账号的用户信息，并设置到coll中
+        Map<String, String> mainUserMessage = transferService.queryBankAndUserName(coll.getMainAcc());
+        coll.setMainUser(mainUserMessage.get("userName"));
+        coll.setMainBank(mainUserMessage.get("bankName"));
         coll.setFollowAcc(viceAccount.getAccNo());
+
+        //查询子账号的用户信息，并设置到coll中
+        Map<String, String> followUserMessage = transferService.queryBankAndUserName(viceAccount.getAccNo());
+        coll.setFollowUser(followUserMessage.get("userName"));
+        coll.setFollowBank(followUserMessage.get("bankName"));
+
         coll.setSignDate(new Date());
-        coll.setSignFund(new BigDecimal(signFund));
         return coll;
     }
 
@@ -169,7 +177,7 @@ public class CashSweepServiceImpl implements CashSweepService {
         int flag=1;
         try {
             //调用方法删除副卡的归集信息
-            int flag1 = cashSweepDao.deleteColl(viceAccount);
+            int flag1 = cashSweepDao.deleteColl(viceAccount.getAccNo());
             //如果删除归集信息失败，解约方法直接返回失败
             if(flag1==0){
                 throw new Exception("删除归集信息失败!");
@@ -185,7 +193,7 @@ public class CashSweepServiceImpl implements CashSweepService {
 
             //判断主账号是否还有子账号，需不需要更改主卡的签约状态
             //调用方法查询主卡的子卡信息
-            List<Coll> colls = cashSweepDao.queryMainColl(mainAccount);
+            List<Coll> colls = cashSweepDao.queryMainColl(mainAccount.getAccNo());
             //如果没有子卡信息
             if(colls==null||colls.size()==0){
                 mainAccount.setCollStatus("未签约");
@@ -207,13 +215,11 @@ public class CashSweepServiceImpl implements CashSweepService {
      * 修改副卡的归集信息
      * @param reviseColl 传入修改后的归集信息
      * @param viceAccount 子账号
-     * @param signFund 签约金额的字符串
-     * @param collStatus 修改后的主账户的签约状态
      * @return 返回归集信息修改结果，大于0成功
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public int updateColl(Coll reviseColl,Account viceAccount,String signFund,String collStatus) {
+    public int updateColl(Coll reviseColl,Account viceAccount) {
         //添加事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setName("updateColl");
@@ -222,7 +228,7 @@ public class CashSweepServiceImpl implements CashSweepService {
         TransactionStatus status = transactionManager.getTransaction(def);
 
         //查询要修改的归集信息
-        Coll oldColl = cashSweepDao.queryColl(viceAccount);
+        Coll oldColl = cashSweepDao.queryColl(viceAccount.getAccNo());
 
         //获取修改前后的主账号
         String newMainAcc=reviseColl.getMainAcc();
@@ -241,7 +247,7 @@ public class CashSweepServiceImpl implements CashSweepService {
                 }
 
                 //解约成功，调用签约方法将子账户与新的主账号签约
-                int flag2=signColl(viceAccount,reviseColl,collStatus,signFund);
+                int flag2=signColl(viceAccount,reviseColl);
                 //如果签约失败，修改方法直接失败
                 if(flag2==0){
                     throw new Exception("签约失败!");
@@ -256,28 +262,28 @@ public class CashSweepServiceImpl implements CashSweepService {
 
         //如果如果归集信息中的主账号没有改变
         //处理归集信息对象
-        reviseColl=getColl(reviseColl,viceAccount,signFund);
+        reviseColl=getColl(reviseColl,viceAccount);
         return cashSweepDao.updateColl(reviseColl);
     }
 
     /**
      * 查询副卡的归集信息
-     * @param account 传入账号信息（副卡）
+     * @param accNo 传入账号信息（副卡）
      * @return 返回当前副卡的归集信息
      */
     @Override
-    public Coll queryColl(Account account) {
-        return cashSweepDao.queryColl(account);
+    public Coll queryColl(String accNo) {
+        return cashSweepDao.queryColl(accNo);
     }
 
     /**
      * 查询主卡的归集信息（子卡信息）
-     * @param account 传入账号信息（主卡）
+     * @param mainAcc 传入账号信息（主卡）
      * @return 返回主卡下的所有子卡的归集信息
      */
     @Override
-    public List<Coll> queryMainColl(Account account) {
-        return cashSweepDao.queryMainColl(account);
+    public List<Coll> queryMainColl(String mainAcc) {
+        return cashSweepDao.queryMainColl(mainAcc);
     }
 
     /**

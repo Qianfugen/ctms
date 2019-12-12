@@ -26,9 +26,25 @@ public class Coll implements Serializable {
      */
     private String mainAcc;
     /**
+     *主账号持卡人
+     */
+    private String mainUser;
+    /**
+     * 主账号开户行
+     */
+    private String mainBank;
+    /**
      * 子账号
      */
     private String followAcc;
+    /**
+     *主账号持卡人
+     */
+    private String followUser;
+    /**
+     * 主账号开户行
+     */
+    private String followBank;
     /**
      * 签约时间
      */
@@ -80,12 +96,48 @@ public class Coll implements Serializable {
         this.signFund = signFund;
     }
 
+    public String getMainUser() {
+        return mainUser;
+    }
+
+    public void setMainUser(String mainUser) {
+        this.mainUser = mainUser;
+    }
+
+    public String getMainBank() {
+        return mainBank;
+    }
+
+    public void setMainBank(String mainBank) {
+        this.mainBank = mainBank;
+    }
+
+    public String getFollowUser() {
+        return followUser;
+    }
+
+    public void setFollowUser(String followUser) {
+        this.followUser = followUser;
+    }
+
+    public String getFollowBank() {
+        return followBank;
+    }
+
+    public void setFollowBank(String followBank) {
+        this.followBank = followBank;
+    }
+
     @Override
     public String toString() {
         return "Coll{" +
                 "collId='" + collId + '\'' +
                 ", mainAcc='" + mainAcc + '\'' +
+                ", mainUser='" + mainUser + '\'' +
+                ", mainBank='" + mainBank + '\'' +
                 ", followAcc='" + followAcc + '\'' +
+                ", followUser='" + followUser + '\'' +
+                ", followBank='" + followBank + '\'' +
                 ", signDate=" + signDate +
                 ", signFund=" + signFund +
                 '}';

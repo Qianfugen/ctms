@@ -79,16 +79,34 @@
 				<h2 class="mbx">资金归集</h2>
 				<b></b>
 				<div align="center">
-					<h2>您已经签约，签约信息如下：</h2>
-					<form action="/cashSweep/beforeUpdate" method="post" ><br />
-					<h3>用户名 ：<input id="username" type="text" name="username" value="${message.userName}" readonly="readonly"  /></h3> <span id="nameSpan"></span> </p>
-					<h3>签约卡号 ：<input id="mainAcc" type="text" name="mainAcc" value="${coll.mainAcc}" readonly="readonly"  /></h3> </p>
-						<h3>开户行：<input id="bankName" name="bankName" value="${message.bankName}"/></h3>    </p>
-					<h3>签约金额 ：<input id="signFund" type="text" name="signFund" value="${coll.signFund}" readonly="readonly" /></h3>	</p>
-						<input id="sub" type="submit" value="修改签约信息" />&nbsp;&nbsp;&nbsp;&nbsp;
-						<button><a href="/cashSweep/cancelColl?mainAcc=${coll.mainAcc}">解除签约</a></button>
-					</p> 
+					<h5>您已经签约，签约信息如下：</h5><br />
+					<form action="/cashSweep/beforeUpdate" method="post" >
+					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
+						<tr>
+							<td> 用户名 ：</td>
+							<td> <input id="username" type="text" name="username" value="${message.userName}" readonly="readonly"  /></td>
+							<td> <span id="nameSpan"></span></td>
+						</tr>
+						<tr>
+							<td> 签约卡号 ：</td>
+							<td> <input id="mainAcc" type="text" name="mainAcc" value="${coll.mainAcc}" readonly="readonly"  /></td>
+						</tr>
+						<tr>
+							<td> 开户行： </td>
+							<td> <input id="bankName" name="bankName" value="${message.bankName}"/></td>
+						</tr>
+						<tr>
+							<td> 签约金额 ： </td>
+							<td> <input id="signFund" type="text" name="signFund" value="${coll.signFund}" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td> </td>
+							<td> <input id="sub" type="submit" value="修改签约" /><button>&nbsp;&nbsp;<a href="/cashSweep/cancelColl?mainAcc=${coll.mainAcc}">解除签约</a></button></td>
+							<td> </td>
+						</tr>
+					</table>
 					</form>
+					
 				</div>
 				
 				

@@ -41,10 +41,10 @@ public interface CashSweepDao {
 
     /**
      * 查询副卡的归集信息
-     * @param account 传入账号信息（副卡）
+     * @param accNo 传入账号信息（副卡）
      * @return 返回当前副卡的归集信息
      */
-    Coll queryColl(Account account);
+    Coll queryColl(String accNo);
 
     /**
      * 修改副卡的归集信息
@@ -55,17 +55,17 @@ public interface CashSweepDao {
 
     /**
      * 删除签约信息，删除签约信息的同时需要用updateCollStatus方法更新签约状态为“未签约”
-     * @param account 传入归集的子账号，按照子账号来删除，子账号唯一（即一张卡不能归集到多张卡）
+     * @param followAcc 传入归集的子账号，按照子账号来删除，子账号唯一（即一张卡不能归集到多张卡）
      * @return 返回删除结果，大于0成功
      */
-    int deleteColl(Account account);
+    int deleteColl(String followAcc);
 
     /**
      * 查询主卡的归集信息（子卡信息）
-     * @param account 传入账号信息（主卡）
+     * @param mainAcc 传入账号信息（主卡）
      * @return 返回主卡下的所有子卡的归集信息
      */
-    List<Coll> queryMainColl(Account account);
+    List<Coll> queryMainColl(String mainAcc);
 
     /**
      * 查询归集记录

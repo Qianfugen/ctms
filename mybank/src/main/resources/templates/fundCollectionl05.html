@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>签约查询信息界面</title>
+<title>归集转账信息界面</title>
 	<link href="/css/ks.css" rel="stylesheet" type="text/css" />
 	<link href="/css/bootstrap.css" type="text/css"  rel="stylesheet"  />
 	<link href="/css/Customer.css" type="text/css"  rel="stylesheet" />
@@ -10,12 +10,8 @@
 	<script type="text/javascript" src="/js/jquery-2.1.4/jquery.js" ></script>
 	<script src="/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
-	//点击返回按钮返回上一个界面
-	$(function(){
-		$("#back").click(function(){
-			history.back();
-		})
-	})
+
+
 </script>
 </head>
 <body>
@@ -88,21 +84,36 @@
 					<button><a href="/cashSweep/cancelColl?followAcc=${followAcc}">解除签约</a></button>
 				</div>
 				<div align="center">
+					<form action="" method="post">
+						用户名：<input type="text"name="" required="required" />&nbsp;
+						转入开始时间：<input type="date" name="" required="required" />&nbsp;
+						转入结束时间：<input type="date" name="" />&nbsp;
+						<input type="submit" value="点击查询" />
+					</form>
+				</div>
+				<div align="center">
 					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
-						<tr>
-							<td> 转入账号 </td>
-							<td> 用户名 </td>
-							<td> 归集金额 </td>
-							<td> 转入时间 </td>
-							<td> 流水号 </td>
-						</tr>
-						<tr>
-							<td> 12345678901234567 </td>
-							<td> 张三 </td>
-							<td> 1000</td>
-							<td> 未定格式 </td>
-							<td> 12342342435</td>
-						</tr>
+						<#if (transfers=null)>
+							${message}
+						<#else>
+							<tr>
+								<td> 转入账号 </td>
+								<td> 用户名 </td>
+								<td> 转入金额 </td>
+								<td> 转入时间 </td>
+								<td> 流水号 </td>
+							</tr>
+							<#list transfers as trans>
+								<tr>
+									<td> ${trans.accIn} </td>
+									<td> 张三 </td>
+									<td> ${trans.transFund}</td>
+									<td> 中国银行 </td>
+									<td> ${trans.dealDate}</td>
+									<td> ${trans.dealNo}</td>
+								</tr>
+							</#list>
+						</#if>
 					</table>
 				</div>
 			</div>

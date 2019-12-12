@@ -26,13 +26,11 @@ public interface CashSweepService {
     String queryCollStatus(String accNo);
     /**
      * 资金归集功能签约
-     * @param account 需要签约为副卡的账号
+     * @param viceAccount 需要签约为副卡的账号
      * @param coll 签约信息
-     * @param collStatus 主卡的签约状态
-     * @param signFund 签约金额
      * @return 返回签约结果 0失败 1成功
      */
-    int signColl(Account account,Coll coll,String collStatus,String signFund);
+    int signColl(Account viceAccount,Coll coll);
 
     /**
      * 资金归集功能解约
@@ -46,25 +44,23 @@ public interface CashSweepService {
      * 修改副卡的归集信息
      * @param reviseColl 传入修改后的归集信息
      * @param viceAccount 子账号
-     * @param signFund 签约金额的字符串
-     * @param collStatus 修改后的主账户的签约状态
      * @return 返回归集信息修改结果，大于0成功
      */
-    int updateColl(Coll reviseColl,Account viceAccount,String signFund,String collStatus);
+    int updateColl(Coll reviseColl,Account viceAccount);
 
     /**
      * 查询副卡的归集信息
-     * @param account 传入账号信息（副卡）
+     * @param accNo 传入账号信息（副卡）
      * @return 返回当前副卡的归集信息
      */
-    Coll queryColl(Account account);
+    Coll queryColl(String accNo);
 
     /**
      * 查询主卡的归集信息（子卡信息）
-     * @param account 传入账号信息（主卡）
+     * @param mainAcc 传入账号信息（主卡）
      * @return 返回主卡下的所有子卡的归集信息
      */
-    List<Coll> queryMainColl(Account account);
+    List<Coll> queryMainColl(String mainAcc);
 
     /**
      * 查询库中所有的归集信息

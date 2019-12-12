@@ -21,7 +21,11 @@ namespace:必须是对应接口的全路径
     <resultMap id="collMap" type="coll">
         <result property="collId" column="coll_id"/>
         <result property="mainAcc" column="main_acc"/>
+        <result property="mainUser" column="main_user"/>
+        <result property="mainBank" column="main_bank"/>
         <result property="followAcc" column="follow_acc"/>
+        <result property="followUser" column="follow_user"/>
+        <result property="followBank" column="follow_bank"/>
         <result property="signDate" column="sign_date"/>
         <result property="signFund" column="sign_fund"/>
     </resultMap>
@@ -51,18 +55,18 @@ namespace:必须是对应接口的全路径
         update T_ACCOUNT set COLL_STATUS = #{collStatus} where ACC_NO=#{accNo}
     </update>
     <insert id="addColl" parameterType="coll">
-        insert into T_COLL (coll_id, main_acc, follow_acc, sign_date, sign_fund) values (#{collId},#{mainAcc},#{followAcc},#{signDate},#{signFund})
+        insert into T_COLL (coll_id, main_acc,MAIN_USER,MAIN_BANK, follow_acc,FOLLOW_USER,FOLLOW_BANK, sign_date, sign_fund) values (#{collId},#{mainAcc},#{mainUser},#{mainBank},#{followAcc},#{followUser},#{followBank},#{signDate},#{signFund})
     </insert>
-    <select id="queryColl" parameterType="account" resultMap="collMap">
+    <select id="queryColl" parameterType="string" resultMap="collMap">
         select * from T_COLL where FOLLOW_ACC=#{accNo}
     </select>
     <update id="updateColl" parameterType="coll">
         update T_COLL set MAIN_ACC = #{mainAcc},SIGN_DATE =#{signDate},SIGN_FUND = #{signFund} where FOLLOW_ACC=#{followAcc}
     </update>
-    <delete id="deleteColl" parameterType="account">
+    <delete id="deleteColl" parameterType="string">
         delete from T_COLL where FOLLOW_ACC=#{accNo}
     </delete>
-    <select id="queryMainColl" parameterType="account" resultMap="collMap">
+    <select id="queryMainColl" parameterType="string" resultMap="collMap">
         select * from T_COLL where MAIN_ACC=#{accNo}
     </select>
     <select id="queryAllCollInTable" resultMap="collMap">

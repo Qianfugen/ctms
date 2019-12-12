@@ -103,17 +103,14 @@ public class CashSweepController {
 
     @RequestMapping("/signColl")
     @ResponseBody
-    public ModelAndView signColl(HttpSession session, Coll coll, String signFund) {
+    public ModelAndView signColl(HttpSession session, Coll coll) {
         ModelAndView mv = new ModelAndView();
 
         //获取当前登录的账号
         Account loginAccount = (Account) session.getAttribute("loginAccount");
-        //获取需要签约的主账号的签约状态
-
-        String collStatus = cashSweepService.queryCollStatus(coll.getMainAcc());
 
         //调用签约方法
-        int flag = cashSweepService.signColl(loginAccount, coll, collStatus, signFund);
+        int flag = cashSweepService.signColl(loginAccount, coll);
 
         //如果签约失败，跳转到签约页面；否则跳转到签约信息页面
         if (flag == 0) {
@@ -180,25 +177,23 @@ public class CashSweepController {
 
     @RequestMapping("/beforeUpdate")
     @ResponseBody
-    public ModelAndView beforeUpdate(Coll coll,String username){
+    public ModelAndView beforeUpdate(Coll coll){
         ModelAndView mv=new ModelAndView();
         mv.addObject("coll",coll);
-        mv.addObject("username",username);
         mv.setViewName("fundCollectionl03");
         return mv;
     }
 
     @RequestMapping("/updateColl")
     @ResponseBody
-    public ModelAndView updateColl(Coll reviseColl, String signFund, HttpSession session) {
+    public ModelAndView updateColl(Coll reviseColl, HttpSession session) {
         ModelAndView mv = new ModelAndView();
 
         //获取当前登录的账号
         Account loginAccount = (Account) session.getAttribute("loginAccount");
 
-        //获取需要修改签约的主账号的签约状态,并调用修改签约的方法
-        String collStatus = cashSweepService.queryCollStatus(reviseColl.getMainAcc());
-        int flag = cashSweepService.updateColl(reviseColl, loginAccount, signFund, collStatus);
+        //调用修改签约的方法
+        int flag = cashSweepService.updateColl(reviseColl, loginAccount);
 
         //如果修改签约信息失败；修改成功重新跳转到签约状态判断
         if (flag == 0) {
@@ -219,11 +214,8 @@ public class CashSweepController {
         Account loginAccount = (Account) session.getAttribute("loginAccount");
 
         //查询当前账号（子账号）的归集签约信息
-        Coll coll = cashSweepService.queryColl(loginAccount);
-        //查询归集信息中主账号的用户信息
-        Map<String, String> message = transferService.queryBankAndUserName(coll.getMainAcc());
+        Coll coll = cashSweepService.queryColl(loginAccount.getAccNo());
 
-        mv.addObject("message",message);
         mv.addObject("coll", coll);
         mv.setViewName("fundCollectionl02");
         return mv;
@@ -238,7 +230,7 @@ public class CashSweepController {
         Account loginAccount = (Account) session.getAttribute("loginAccount");
 
         //查询当前账号（主账号）的归集签约信息
-        List<Coll> colls = cashSweepService.queryMainColl(loginAccount);
+        List<Coll> colls = cashSweepService.queryMainColl(loginAccount.getAccNo());
 
         mv.addObject("colls", colls);
         mv.setViewName("fundCollectionl04");
@@ -271,7 +263,7 @@ public class CashSweepController {
         String accNo="6222308875601202830";
         String mainAcc1="6222309814494189020";
         String mainAcc2="6222306452796804332";
-        Account loginAccount=cashSweepService.queryAccount(maccNo);
+        Account loginAccount=cashSweepService.queryAccount(accNo);
         System.out.println(transferService.queryBankAndUserName(mainAcc1));
         System.out.println(transferService.queryBankAndUserName(mainAcc2));
 
