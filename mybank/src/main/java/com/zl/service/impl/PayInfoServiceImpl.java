@@ -51,18 +51,12 @@ public class PayInfoServiceImpl implements PayInfoService {
 
     /**
      * 发送消息通知
-     * @param payInfos
-     * @return 成功的条数
+     * @param payInfo
+     * @return
      */
     @Override
-    public int addPayInfo(List<PayInfo> payInfos) {
-        //批量发送
-        int count = 0;
-        for (PayInfo p : payInfos) {
-            pid.addPayInfo(p);
-            count++;
-        }
-        return count;
+    public int addPayInfo(PayInfo payInfo) {
+        return pid.addPayInfo(payInfo);
     }
 
 }

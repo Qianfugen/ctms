@@ -1,6 +1,7 @@
 package com.zl.dao;
 
 import com.zl.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户信息操作
@@ -15,8 +16,8 @@ public interface UserDao {
     User checkIdAndName(User user);
 
     /**
-     * 根据卡号查姓名
+     * 根据卡号查用户
      */
-    String queryNameByAccNo(String accNo);
+    User queryNameByAccNo(String accNo);
 
 }

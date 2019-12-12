@@ -20,9 +20,4 @@ public interface PayeeService {
      */
     List<Payee> queryPayeeByPaging(Paging paging);
 
-    /**
-     * 处理还款
-     * @param transfer
-     */
-    void doPayee(Transfer transfer);
 }
