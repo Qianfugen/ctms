@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>资金归集</title>
+	<link href="/css/ks.css" rel="stylesheet" type="text/css" />
+	<link href="/css/bootstrap.css" type="text/css"  rel="stylesheet"  />
+	<link href="/css/Customer.css" type="text/css"  rel="stylesheet" />
+	<link rel="stylesheet" href="/css/bootstrap.css" />
+	<script type="text/javascript" src="/js/jquery-2.1.4/jquery.js" ></script>
+	<script src="/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+
+	<div class="banner">
+		<div class="bgh">
+			<div class="page">
+				<div id="logo">
+					<a href="../Index.html"> 
+						<img src="/images/Student/logo2.png" alt="" width="48" height="48" />
+					</a>
+				</div>
+				<div class="topxx">
+					<h1>xxx，欢迎您！</h1>
+					<a href="../../User/Account/ChangePasswd.html">密码修改</a>
+					<a href="####">安全退出</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="page">
+		<div class="box mtop">
+			<div class="leftbox">
+				<div class="l_nav2">
+					<div class="ta1">
+						<strong>个人中心</strong>
+						<div class="leftbgbt"></div>
+					</div>
+					<div class="cdlist">
+						<div>
+							<a href="MyInfo/StudentInfo.html">我的信息</a>
+						</div>
+						<div>
+							<a href="">收账人管理</a>
+						</div>
+						<div>
+							<a href="">消息通知</a>
+						</div>
+						<div>
+							<a href="">交易记录</a>
+						</div>
+					</div>
+					<div class="ta1">
+						<strong>业务中心</strong>
+						<div class="leftbgbt2"></div>
+					</div>
+					<div class="cdlist">
+						<div>
+							<a href="">转账</a>
+						</div>
+						<div>
+							<a href="">主动收款</a>
+						</div>
+						<div>
+							<a href="/cashSweep/loginAccountCollStatus">资金归集</a>
+						</div>
+						<div>
+							<a href="">注销登录</a>
+						</div>
+					</div>
+					<!--结束-->
+				</div>
+			</div>
+			<div class="rightbox">
+				<h2 class="mbx">资金归集</h2>
+				<b></b>
+				<div align="center">
+					<h1>您已经签约，签约信息如下：</h1>
+					<form action="/cashSweep/beforeUpdate" method="post" ><br />
+					<p><h3><span id="nameSpan"></span></h3></p>
+					<p><h3>用户名 ：<input id="username" type="text" name="" value="" readonly="readonly"  /></h3> </p>
+					<p><h3>签约卡号 ：<input id="mainAcc" type="text" name="mainAcc" value="${coll.mainAcc}" readonly="readonly"  /></h3> </p>
+					<p><h3>签约金额 ：<input id="signFund" type="text" name="signFund" value="${coll.signFund}" readonly="readonly" /></h3>	</p>
+					<p> </p>
+					<p>
+						<input id="sub" type="submit" value="修改签约信息" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<button><a href="/cashSweep/cancelColl?mainAcc=${coll.mainAcc}">解除签约</a></button>
+					</p> 
+					</form>
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

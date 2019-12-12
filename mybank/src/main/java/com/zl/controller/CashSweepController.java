@@ -54,7 +54,7 @@ public class CashSweepController {
         //如果签约状态为"未签约"或者null
         if (collStatus == null || "".equals(collStatus) || collStatus1.equals(collStatus)) {
             mv.addObject("message","您还没有签约资金归集，请先签约！");
-            mv.setViewName("####到签约页面####");
+            mv.setViewName("fundCollectionl01");
         }
 
         //如果签约状态为"已签约"
@@ -86,7 +86,7 @@ public class CashSweepController {
         //如果签约失败，跳转到签约页面；否则跳转到签约信息页面
         if (flag == 0) {
             mv.addObject("error", "签约失败。。。。");
-            mv.setViewName("####到签约页面####");
+            mv.setViewName("fundCollectionl01");
         } else {
             //将会话中登录的账号签约信息更新
             loginAccount.setCollStatus(cashSweepService.queryCollStatus(loginAccount.getAccNo()));
@@ -146,6 +146,16 @@ public class CashSweepController {
         return mv;
     }
 
+    @RequestMapping("/beforeUpdate")
+    @ResponseBody
+    public ModelAndView beforeUpdate(Coll coll,String username){
+        ModelAndView mv=new ModelAndView();
+        mv.addObject("coll",coll);
+        mv.addObject("username",username);
+        mv.setViewName("fundCollectionl03");
+        return mv;
+    }
+
     @RequestMapping("/updateColl")
     @ResponseBody
     public ModelAndView updateColl(Coll reviseColl, String signFund, HttpSession session) {
@@ -180,7 +190,7 @@ public class CashSweepController {
         Coll coll = cashSweepService.queryColl(loginAccount);
 
         mv.addObject("coll", coll);
-        mv.setViewName("####转到已签约页面#####");
+        mv.setViewName("fundCollectionl02");
         return mv;
     }
 
@@ -196,7 +206,7 @@ public class CashSweepController {
         List<Coll> colls = cashSweepService.queryMainColl(loginAccount);
 
         mv.addObject("colls", colls);
-        mv.setViewName("####转到主账号页面#####");
+        mv.setViewName("fundCollectionl04");
         return mv;
     }
 
@@ -214,7 +224,19 @@ public class CashSweepController {
         }else {
             mv.addObject("transfers", transfers);
         }
-        mv.setViewName("#####转到归集记录页面#####");
+        mv.setViewName("fundCollectionl05");
+        return mv;
+    }
+
+    @RequestMapping("/test")
+    public ModelAndView test(HttpSession session){
+        ModelAndView mv=new ModelAndView();
+        System.out.println("连接服务成功");
+        Account loginAccount=new Account();
+        loginAccount.setCollStatus("已签约");
+        loginAccount.setAccNo("6222304497903198673");
+        session.setAttribute("loginAccount",loginAccount);
+        mv.setViewName("loginAccountCollStatus");
         return mv;
     }
 }
