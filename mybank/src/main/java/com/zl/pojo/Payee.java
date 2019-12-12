@@ -1,5 +1,8 @@
 package com.zl.pojo;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -7,6 +10,8 @@ import java.math.BigDecimal;
  * 收款
  * @author root
  */
+@Component
+@Scope("prototype")
 public class Payee implements Serializable {
     /**
      * 贷方账号

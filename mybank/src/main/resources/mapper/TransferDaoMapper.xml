@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zl.dao.TransferDao">
+    <update id="addMoney" parameterType="transfer">
+        update T_ACCOUNT set ACC_FUND=ACC_FUND+#{transFund} WHERE ACC_NO=#{accIn}
+    </update>
+    <update id="subMoney" parameterType="transfer">
+        update T_ACCOUNT set ACC_FUND=ACC_FUND-#{transFund} WHERE ACC_NO=#{accOut}
+    </update>
+    <select id="queryTransferByDealNo" parameterType="string" resultType="transfer">
+        select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
+        ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
+        CURRENCY currency, TRANS_FUND transFund from T_TRANSFER WHERE DEAL_NO=#{dealNo}
+    </select>
+    <insert id="writeDeal" parameterType="transfer">
+        insert into T_TRANSFER(deal_no, deal_date, trans_type, trans_status, acc_out, acc_outname, acc_outbank, acc_in,
+        acc_inname, acc_inbank, currency, trans_fund, kind)
+        values(#{dealNo},#{dealDate},#{transType},#{transStatus},#{accOut},#{accOutName},#{accOutBank},#{accIn},
+        #{accInName},#{accInBank},#{currency},#{transFund},#{kind})
+    </insert>
+    <select id="queryBalance" parameterType="string" resultType="java.math.BigDecimal">
+        select ACC_FUND from T_ACCOUNT where ACC_NO=#{accNo}
+    </select>
+    <select id="queryBankName" parameterType="string" resultType="string">
+        select BANK_NAME from T_BANK where BANKID=(select ACC_BANKID from T_ACCOUNT where ACC_NO=#{accNo})
+    </select>
+    <select id="queryUserName" parameterType="string" resultType="string">
+        select USER_NAME from T_USER where USER_ID=(select USER_ID from T_ACCOUNT where ACC_NO=#{accNo})
+    </select>
+</mapper>
