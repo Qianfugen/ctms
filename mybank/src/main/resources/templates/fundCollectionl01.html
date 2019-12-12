@@ -1,139 +1,135 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>资金归集</title>
-<link href="/css/ks.css" rel="stylesheet" type="text/css" />
-<link href="/css/bootstrap.css" type="text/css"  rel="stylesheet"  />
-<link href="/css/Customer.css" type="text/css"  rel="stylesheet" />
-<link rel="stylesheet" href="/css/bootstrap.css" />
-<script type="text/javascript" src="/js/jquery-2.1.4/jquery.js" ></script>
-<script src="/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript">
-	//卡号的正则表达式验证
-	$(function(){
-				$("#card").blur(function(){
-					var card=$("#card").val();
-					var textCard = /^[1-9][0-9]{17}$/;
-					if(textCard.test(card)){
-						$("#cardSpan").html("卡号正确").css({"color": "green", "font-size": "5"});
-					}else{
-						$("#cardSpan").html("请输入正确的18位卡号").css({"color": "red", "font-size": "5"});
-					}
-				})
-			});
-	//验证是否有这个人和卡号
-$(function () {
-            $("#mainAcc").blur(function () {
-                //发送ajax请求
-                $.ajax({
-                    //该ajax发送请求到那个地址处理
-                    url: "/cashSweep/queryMainAccCollStatus",
-                    //请求方式
-                    type: "post",
-                    //预计服务器返回的数据格式
-                    dataType: "json",
-                    //发送的数据(姓名和卡号)
-                    data: {"username": $("#username").val(),"card": $("#mainAcc").val()},
-                    /*
-                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-                     */
-                    success: function (data) {
-                        if (data.flag) {
-                           $("#sub").attr("disabled",false);
-                           $("#nameSpan").html("用户正确").css({"color": "green", "font-size": "5"});
-                        } else {
-                            $("#nameSpan").html("账户或用户名不匹配").css({"color": "red", "font-size": "5"});
-                        }
-                    },
-                    //响应失败以后执行的回调函数
-                    error: function () {
-                        alert("失败....");
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>资金归集</title>
+    <link href="/css/ks.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/Customer.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script type="text/javascript" src="/js/jquery-2.1.4/jquery.js"></script>
+    <script src="/js/bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        //卡号的正则表达式验证，正则通过后ajax提交
+        $(function () {
+            $("#mainAcc,#username,#signFund,#bankName").blur(function () {
+                var mainAcc = $("#mainAcc").val();
+                var textCard = /^[1-9][0-9]{18}$/;
+                var username = $("#username").val();
+                if (textCard.test(mainAcc)) {
+					$("#cardSpan").html("合法的卡号").css({"color": "green", "font-size": "5"});
+                    if (username !== "") {
+                        //发送ajax请求
+                        $.ajax({
+                            //该ajax发送请求到那个地址处理
+                            url: "/cashSweep/queryMainAccCollStatus",
+                            //请求方式
+                            type: "post",
+                            //预计服务器返回的数据格式
+                            dataType: "json",
+                            //发送的数据(姓名和卡号)
+                            data: {"username": username, "mainAcc": mainAcc},
+                            /*
+                                响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                             */
+                            success: function (data) {
+                                if (data.flag) {
+                                    $("#sub").attr("disabled", false);
+                                    $("#bankName").val(data.bankName);
+                                    $("#nameSpan").html("用户正确").css({"color": "green", "font-size": "5"});
+                                } else {
+                                    $("#nameSpan").html(data.error).css({"color": "red", "font-size": "5"});
+                                }
+                            },
+                            //响应失败以后执行的回调函数
+                            error: function () {
+                                alert("失败....");
+                            }
+                        })
                     }
-                })
+                } else {
+                    $("#cardSpan").html("请输入正确的19位卡号").css({"color": "red", "font-size": "5"});
+                }
             })
         });
-
-        
-</script>
+    </script>
 </head>
 <body>
 
-	<div class="banner">
-		<div class="bgh">
-			<div class="page">
-				<div id="logo">
-					<a href="../Index.html"> 
-						<img src="/images/Student/logo2.png" alt="" width="48" height="48" />
-					</a>
-				</div>
-				<div class="topxx">
-					<h1>xxx，欢迎您！</h1>
-					<a href="####">安全退出</a>
-				</div>
+<div class="banner">
+    <div class="bgh">
+        <div class="page">
+            <div id="logo">
+                <a href="../Index.html">
+                    <img src="/images/Student/logo2.png" alt="" width="48" height="48"/>
+                </a>
+            </div>
+            <div class="topxx">
+                <h1>xxx，欢迎您！</h1>
+                <a href="####">安全退出</a>
+            </div>
 
-			</div>
-		</div>
-	</div>
-	<div class="page">
-		<div class="box mtop">
-			<div class="leftbox">
-				<div class="l_nav2">
-					<div class="ta1">
-						<strong>个人中心</strong>
-						<div class="leftbgbt"></div>
-					</div>
-					<div class="cdlist">
-						<div>
-							<a href="MyInfo/StudentInfo.html">我的信息</a>
-						</div>
-						<div>
-							<a href="">收账人管理</a>
-						</div>
-						<div>
-							<a href="">消息通知</a>
-						</div>
-						<div>
-							<a href="">交易记录</a>
-						</div>
-					</div>
-					<div class="ta1">
-						<strong>业务中心</strong>
-						<div class="leftbgbt2"></div>
-					</div>
-					<div class="cdlist">
-						<div>
-							<a href="">转账</a>
-						</div>
-						<div>
-							<a href="">主动收款</a>
-						</div>
-						<div>
-							<a href="/cashSweep/loginAccountCollStatus">资金归集</a>
-						</div>
-						<div>
-							<a href="">注销登录</a>
-						</div>
-					</div>
-					<!--结束-->
-				</div>
-			</div>
-			<div class="rightbox">
-				<h2 class="mbx">资金归集</h2>
-				<b></b>
-				<div align="center">
-					<h1>您还没有签约，请签约。</h1>
-					<form action="/cashSweep/signColl" method="post" ><br />
-					<p><h3><span id="nameSpan"></span></h3></p>
-					<p><h3>用户名 ：<input id="username" type="text" required="required" name="username" value=""  /></h3> </p>
-					<p><h3>签约卡号 ：<input id="mainAcc" type="text" required="required" name="mainAcc" value=""  /></h3><span id="cardSpan"></span> </p>
-					<p><h3>开户行：<input id="bankName" name="bankName" value=""  /></h3>	</p>
-					<p><h3>签约金额 ：<input id="signFund" type="text" required="required" name="signFund" value=""  /></h3>	</p>
-					<p><h3><input id="sub" type="submit" disabled="disabled" value="提交" /></h3></p>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
+</div>
+<div class="page">
+    <div class="box mtop">
+        <div class="leftbox">
+            <div class="l_nav2">
+                <div class="ta1">
+                    <strong>个人中心</strong>
+                    <div class="leftbgbt"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="MyInfo/StudentInfo.html">我的信息</a>
+                    </div>
+                    <div>
+                        <a href="">收账人管理</a>
+                    </div>
+                    <div>
+                        <a href="">消息通知</a>
+                    </div>
+                    <div>
+                        <a href="">交易记录</a>
+                    </div>
+                </div>
+                <div class="ta1">
+                    <strong>业务中心</strong>
+                    <div class="leftbgbt2"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="">转账</a>
+                    </div>
+                    <div>
+                        <a href="">主动收款</a>
+                    </div>
+                    <div>
+                        <a href="/cashSweep/loginAccountCollStatus">资金归集</a>
+                    </div>
+                    <div>
+                        <a href="">注销登录</a>
+                    </div>
+                </div>
+                <!--结束-->
+            </div>
+        </div>
+        <div class="rightbox">
+            <h2 class="mbx">资金归集</h2>
+            <b></b>
+            <div align="center">
+                <h2>您还没有签约，请签约。</h2>
+                <form action="/cashSweep/signColl" method="post"><br/>
+                    <h3>用户名 ：<input id="username" type="text" required="required" name="username" value=""/></h3> <span id="nameSpan"></span></p>
+                    <h3>签约卡号 ：<input id="mainAcc" type="text" required="required" name="mainAcc" value=""/></h3><span id="cardSpan"></span> </p>
+                    <h3>开户行：<input id="bankName" name="bankName" value=""/></h3>    </p>
+                    <h3>签约金额 ：<input id="signFund" type="text" required="required" name="signFund" value=""/></h3>    </p>
+                    <h3><input id="sub" type="submit" disabled="disabled" value="提交"/></h3></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

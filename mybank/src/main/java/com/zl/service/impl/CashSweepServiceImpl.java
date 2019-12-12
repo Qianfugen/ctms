@@ -37,6 +37,16 @@ public class CashSweepServiceImpl implements CashSweepService {
     private TransferService transferService;
 
     /**
+     * 查询账号信息
+     * @param accNo 账号
+     * @return 返回账号实体
+     */
+    @Override
+    public Account queryAccount(String accNo) {
+        return cashSweepDao.queryAccount(accNo);
+    }
+
+    /**
      * 签约时，查询需要签约作为主账号的账户的签约状态，为“已签约”则不可作为主账户签约
      * @param mainAcc 传入需要作为主账户的账号
      * @return 返回该账户的签约状态

@@ -13,6 +13,12 @@ import java.util.List;
  */
 public interface CashSweepDao {
     /**
+     * 查询账号信息
+     * @param accNo 账号
+     * @return 返回账号实体
+     */
+    Account queryAccount(String accNo);
+    /**
      * 查询签约状态
      * @param accNo 传入需要需要查询的账号
      * @return 返回该账户的签约状态

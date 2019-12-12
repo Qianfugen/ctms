@@ -41,6 +41,9 @@ namespace:必须是对应接口的全路径
         <result property="kind" column="kind"/>
     </resultMap>
 
+    <select id="queryAccount" parameterType="string" resultMap="accountMap">
+        select * from T_ACCOUNT where ACC_NO=#{mainAcc}
+    </select>
     <select id="queryCollStatus" parameterType="string" resultType="string">
         select COLL_STATUS from T_ACCOUNT where ACC_NO=#{mainAcc}
     </select>

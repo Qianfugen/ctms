@@ -4,6 +4,7 @@ import com.zl.pojo.Account;
 import com.zl.pojo.Coll;
 import com.zl.pojo.Transfer;
 import com.zl.service.CashSweepService;
+import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +27,45 @@ import java.util.Map;
 public class CashSweepController {
     @Autowired
     private CashSweepService cashSweepService;
+    @Autowired
+    private TransferService transferService;
 
     @RequestMapping("/queryMainAccCollStatus")
     @ResponseBody
-    public Map<String,String> queryMainAccCollStatus(@RequestParam("mainAcc") String mainAcc) {
-        Map<String,String> status=new HashMap<>();
-        String collStatus = cashSweepService.queryCollStatus(mainAcc);
-        status.put("collStatus",collStatus);
-        return status;
+    public Map<String,Object> queryMainAccCollStatus(@RequestParam("mainAcc") String mainAcc,@RequestParam("username") String username) {
+        Map<String, Object> result=new HashMap<>();
+        //查询账号
+        Account account = cashSweepService.queryAccount(mainAcc);
+        //如果账号不存在
+        if(account==null){
+            result.put("flag",false);
+            result.put("error","账号不存在");
+            //直接返回
+            return result;
+        }
+        // 账号存在，判断账号的签约状态
+        String collStatus=account.getCollStatus();
+        //如果账号签约状态为已签约，校验失败
+        if("已签约".equals(collStatus)){
+            //不可签约
+            result.put("flag",false);
+            result.put("error","该账号不可签约");
+            return result;
+        }
+
+        //如果可以签约，校验用户名
+        Map<String, String> message = transferService.queryBankAndUserName(mainAcc);
+        if(username.equals(message.get("userName"))){
+            //名字通过校验,返回账号的开户行
+            result.put("flag",true);
+            result.put("bankName",message.get("bankName"));
+        }else {
+            //用户名与卡号不对应
+            result.put("flag",false);
+            result.put("error","用户名与卡号不对应");
+            return result;
+        }
+        return result;
     }
 
     @RequestMapping("/loginAccountCollStatus")
@@ -188,7 +220,10 @@ public class CashSweepController {
 
         //查询当前账号（子账号）的归集签约信息
         Coll coll = cashSweepService.queryColl(loginAccount);
+        //查询归集信息中主账号的用户信息
+        Map<String, String> message = transferService.queryBankAndUserName(coll.getMainAcc());
 
+        mv.addObject("message",message);
         mv.addObject("coll", coll);
         mv.setViewName("fundCollectionl02");
         return mv;
@@ -232,9 +267,14 @@ public class CashSweepController {
     public ModelAndView test(HttpSession session){
         ModelAndView mv=new ModelAndView();
         System.out.println("连接服务成功");
-        Account loginAccount=new Account();
-        loginAccount.setCollStatus("已签约");
-        loginAccount.setAccNo("6222304497903198673");
+        String maccNo="6222306645598761176";
+        String accNo="6222308875601202830";
+        String mainAcc1="6222309814494189020";
+        String mainAcc2="6222306452796804332";
+        Account loginAccount=cashSweepService.queryAccount(maccNo);
+        System.out.println(transferService.queryBankAndUserName(mainAcc1));
+        System.out.println(transferService.queryBankAndUserName(mainAcc2));
+
         session.setAttribute("loginAccount",loginAccount);
         mv.setViewName("loginAccountCollStatus");
         return mv;
