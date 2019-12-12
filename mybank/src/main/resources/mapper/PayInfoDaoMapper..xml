@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:必须是对应接口的全路径
+-->
+<mapper namespace="com.zl.dao.PayInfoDao">
+
+    <!--查看全部催款记录-->
+    <select id="queryPayInfoByPaging" parameterType="paging" resultType="PayInfo">
+        select * from (select t.*,rownum r from (select * from T_PayInfo
+        <where>
+            <if test="debtor!=null and debtor!=''">
+                and debtor=#{query.debtor}
+            </if>
+        </where>
+        ) t ) where r>#{rowStart} and r<![CDATA[<=]]>#{rowEnd}
+    </select>
+
+    <!--查询符合要求记录数-->
+    <select id="queryPayInfoCount" parameterType="query" resultType="int">
+        select count(1) from T_PayInfo
+        <where>
+            <if test="debtor!=null and debtor!=''">
+                and debtor=#{debtor}
+            </if>
+        </where>
+    </select>
+
+    <!--    发送催款消息通知-->
+    <insert id="addPayInfo" parameterType="payInfo">
+        insert into T_PAYINFO values (#{creditorAcc},#{creditorName},#{fund},#{infoTime},#{debtor},#{debtorName})
+    </insert>
+</mapper>
