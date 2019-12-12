@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 转账service层实现类
@@ -39,8 +40,17 @@ public class TransferServiceImpl implements TransferService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @Override
     public void transferMoney(Transfer transfer) {
+        //生成流水号
+        String[] uuids = UUID.randomUUID().toString().split("-");
+        StringBuffer uuid = new StringBuffer();
+        for (String str : uuids) {
+            uuid.append(str);
+        }
+        transfer.setDealNo(uuid.toString());
+        //设置类型kind
+        transfer.setKind("转账");
         //补充交易对象信息
-        transfer.setCurrency("人民币");
+        transfer.setCurrency("CNY");
         //收入行信息
         String accIn = transfer.getAccIn();
         Map<String, String> mapIn = queryBankAndUserName(accIn);

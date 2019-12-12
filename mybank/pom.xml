@@ -21,6 +21,11 @@
     </properties>
 
     <dependencies>
+        <!--quartz定时任务-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
         <!--数据库驱动包-->
         <dependency>
             <groupId>com.oracle</groupId>
