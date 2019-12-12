@@ -17,7 +17,7 @@
     <insert id="writeDeal" parameterType="transfer">
         insert into T_TRANSFER(deal_no, deal_date, trans_type, trans_status, acc_out, acc_outname, acc_outbank, acc_in,
         acc_inname, acc_inbank, currency, trans_fund, kind)
-        values(sys_guid(),#{dealDate},#{transType},#{transStatus},#{accOut},#{accOutName},#{accOutBank},#{accIn},
+        values(#{dealNo},#{dealDate},#{transType},#{transStatus},#{accOut},#{accOutName},#{accOutBank},#{accIn},
         #{accInName},#{accInBank},#{currency},#{transFund},#{kind})
     </insert>
     <select id="queryBalance" parameterType="string" resultType="java.math.BigDecimal">
