@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * 管理员账号操作
  * @author junqi
@@ -23,14 +25,16 @@ public class AdminController {
      * 管理员登入请求
      */
     @RequestMapping("/login")
-    public ModelAndView loginAdmin(Admin admin){
+    public ModelAndView loginAdmin(Admin admin, HttpSession session){
         ModelAndView mv=new ModelAndView();
         admin=as.loginAdmin(admin);
         System.out.println(admin+"**************登入用户***************");
         if (admin!=null){
-            mv.setViewName("adminMain");
+            session.setAttribute("loginUser",admin);
+            mv.addObject("message","欢迎您再次登入");
+            mv.setViewName("redirect:/custom/allCustom");
         }else {
-            mv.addObject("error","用户名或密码错误，请重新登入");
+            mv.addObject("message","用户名或密码错误，请重新登入");
             mv.setViewName("redirect:toLogin");
         }
         return mv;
@@ -40,10 +44,10 @@ public class AdminController {
      * 进入管理员登入页面请求
      */
     @RequestMapping("/toLogin")
-    public ModelAndView toLoginAdmin(String error){
+    public ModelAndView toLoginAdmin(String message){
         ModelAndView mv=new ModelAndView();
-        mv.addObject("error",error);
-        mv.setViewName("login");
+        mv.addObject("message",message);
+        mv.setViewName("Systemlogin");
         return mv;
     }
 
@@ -53,8 +57,21 @@ public class AdminController {
     @RequestMapping("/toUpdateAdmin")
     public ModelAndView toUpdateAdmin(String message){
         ModelAndView mv=new ModelAndView();
-        mv.addObject("message",message);
-        mv.setViewName("updateAdmin");
+        if (message!=null&&!"".equals(message)){
+            mv.addObject("message",message);
+        }
+        mv.setViewName("systemChangePasswd");
+        return mv;
+    }
+
+    /**
+     * 退出登入请求
+     */
+    @RequestMapping("/logout")
+    public ModelAndView logout(HttpSession session){
+        ModelAndView mv=new ModelAndView();
+        session.invalidate();
+        mv.setViewName("redirect:toLogin");
         return mv;
     }
 
@@ -69,8 +86,8 @@ public class AdminController {
                 admin.setPassword(password1);
                 System.out.println(admin+"****************修改密码*******************");
                 int flag=as.updateAdminPwd(admin);
-                mv.addObject("message","修改成功！");
-                mv.setViewName("redirect:toUpdateAdmin");
+                mv.addObject("message","修改密码成功，请重新登入！");
+                mv.setViewName("redirect:toLogin");
             }else {
                 mv.addObject("message","修改失败！请重新输入");
                 mv.setViewName("redirect:toUpdateAdmin");
