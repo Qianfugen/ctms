@@ -16,6 +16,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ownbank" target="1.8" />
+      <module name="quartzjob" target="1.8" />
       <module name="selfbank" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -27,6 +28,7 @@
       <module name="mybank" options="-parameters" />
       <module name="overseas" options="-parameters" />
       <module name="ownbank" options="-parameters" />
+      <module name="quartzjob" options="-parameters" />
       <module name="selfbank" options="-parameters" />
     </option>
   </component>

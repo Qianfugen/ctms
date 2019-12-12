@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="ctms@10.1.13.44" uuid="ad065c52-8ded-4c17-b4a1-590fbd58cc77">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://10.1.13.44:3306/ctms</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="@10.1.13.44" uuid="1450b8b2-42f3-4de6-a4ec-2920932e11b4">
+      <driver-ref>oracle</driver-ref>
+      <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@10.1.13.44:1521:orcl</jdbc-url>
+    </data-source>
+  </component>
+</project>
