@@ -7,7 +7,6 @@
     <file type="web" url="file://$PROJECT_DIR$/mybank" />
     <file type="web" url="file://$PROJECT_DIR$/overseas" />
     <file type="web" url="file://$PROJECT_DIR$/ownbank" />
-    <file type="web" url="file://$PROJECT_DIR$/quartzjob" />
     <file type="web" url="file://$PROJECT_DIR$/selfbank" />
   </component>
   <component name="MavenProjectsManager">
@@ -22,7 +21,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

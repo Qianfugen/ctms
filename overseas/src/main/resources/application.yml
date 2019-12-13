@@ -27,6 +27,11 @@ spring:
       number_format: 0.##
       classic_compatible: true
     suffix: .html
+  rabbitmq:
+    port: 5672
+    host: 10.1.13.74
+    username: admin
+    password: 123456
 
 #集成mybatis
 mybatis:
