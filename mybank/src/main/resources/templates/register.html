@@ -1,108 +1,109 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+        "http://www.w3.org/TR/html4/strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>网银转账管理系统用户注册界面</title>
-		<link href="/css/login.css" type="text/css"  rel="stylesheet" />
-		<script type="text/javascript" src="/js/jquery.js"></script>
-		<link rel="stylesheet" href="/css/bootstrap.css" />
-		<script type="text/javascript" src="/js/bootstrap.js" ></script>
-		<script type="text/javascript">
-			$(function(){
-				//验证注册
-				$("#username").blur(function(){
-					var username=$("#username").val();
-					var cardNumber = /^[1-9][0-9]{15,18}$/;
-					if(cardNumber.test(username)){
-				        //发送ajax请求
-		                $.ajax({
-		                    //该ajax发送请求到那个地址处理
-		                    url:"/user/regName",
-		                    //请求方式
-		                    type:"post",
-		                    //预计服务器返回的数据格式
-		                    dataType:"json",
-		                    //发送的数据
-		                    data:{"accNo":$("#username").val()},
-		                    /*
-		                    	    响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-		                     */
-		                    success:function(data){
-		                        if(data.flag){
-		                            $("#nameSpan").html("可用").css({"color":"green","font-size":"10"});
-		                        }else{
-		                            $("#nameSpan").html("卡号已存在").css({"color":"red","font-size":"10"});
-		                        }
-		                    },
-		                    //响应失败以后执行的回调函数
-		                    error:function(){
-		                        alert("失败....");
-		                    }
-		                });
-						            
-					}else{
-						$("#nameSpan").html("卡号格式不正确").css({"color": "red", "font-size": "5"});
-					}
-				})
-				
-			})
-			
-			//验证再次输入密码格式
-			$(function(){
-				$("#sure_password").blur(function(){
-					var pwd01=$("#pwd").val();
-					var pwd02=$("#sure_password").val();
-					if(pwd02!=null&&pwd02!=""&&pwd02==pwd01){
-						$("#surePasswordSpan").html("二次输入密码正确").css({"color": "green", "font-size": "5"});
-					}else{
-						$("#surePasswordSpan").html("二次输入密码不一致！").css({"color": "red", "font-size": "5"});
-					}
-				})
-			})
-		</script>
-	</head>
-<body style="background: url(/images/16sucai_P591F7B181.JPG);background-repeat: no-repeat;background-size:cover ;" >
-    <form action="####" method="post">
-        <div class="mycenter">
-            <div class="mysign">
-                <div class="col-lg-11 text-center text-info">
-                  	<h3>请输入注册信息</h3>
-                </div>
-                <form action="/user/register" method="post">
-                	<div class="col-lg-10">
-                  	<input type="text" class="form-control" id="username" name="accNo"  placeholder="请输入用户名(16-19位银行卡号)" required="required" autofocus/>
-                  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="nameSpan"></span>
-                </div>
-                
-                <div class="col-lg-10">
-                	  <input id="pwd" type="password" class="form-control" name="password" placeholder="请输入密码" required="required" autofocus/>
-                </div>
-                <div class="col-lg-10">
-                	  <input id="sure_password" type="password" class="form-control" name="sure_password" placeholder="再次输入密码" required="required" autofocus/>
-                	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="surePasswordSpan"></span>
-                </div>
-                
-                <div class="col-lg-10"></div>
-                <div class="col-lg-10 mycheckbox checkbox">
-                  	&nbsp;&nbsp;<input type="checkbox" class="col-lg-1">保密协议</input>
-                </div>
-                <div class="col-lg-10">
-                 	<input align="center" type="submit" class="btn btn-success col-lg-12"  value="点击注册"/>
-                </div>
-                <div  class="col-lg-10">
-                 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                 	<span id="surePasswordSpan"></span>
-                </div>
-                </form>
-                
-                <div class="btn btn-success col-lg-12">
-                	<a href="/user/toLogin">已经注册？去登录页面</a>
-                </div>
-                
-            </div>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>网银转账管理系统用户注册界面</title>
+    <link href="/css/login.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //验证注册
+            $("#username").blur(function () {
+                var username = $("#username").val();
+                var cardNumber = /^[1-9][0-9]{15,18}$/;
+                if (cardNumber.test(username)) {
+                    //发送ajax请求
+                    $.ajax({
+                        //该ajax发送请求到那个地址处理
+                        url: "/user/regName",
+                        //请求方式
+                        type: "post",
+                        //预计服务器返回的数据格式
+                        dataType: "json",
+                        //发送的数据
+                        data: {"accNo": $("#username").val()},
+                        /*
+                                响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                         */
+                        success: function (data) {
+                            if (data.flag) {
+                                $("#nameSpan").html("可用").css({"color": "green", "font-size": "10"});
+                            } else {
+                                $("#nameSpan").html("卡号已存在").css({"color": "red", "font-size": "10"});
+                            }
+                        },
+                        //响应失败以后执行的回调函数
+                        error: function () {
+                            alert("失败....");
+                        }
+                    });
+
+                } else {
+                    $("#nameSpan").html("卡号格式不正确").css({"color": "red", "font-size": "5"});
+                }
+            })
+
+        })
+
+        //验证再次输入密码格式
+        $(function () {
+            $("#sure_password").blur(function () {
+                var pwd01 = $("#pwd").val();
+                var pwd02 = $("#sure_password").val();
+                if (pwd02 != null && pwd02 != "" && pwd02 == pwd01) {
+                    $("#surePasswordSpan").html("二次输入密码正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#surePasswordSpan").html("二次输入密码不一致！").css({"color": "red", "font-size": "5"});
+                }
+            })
+        })
+    </script>
+</head>
+<body style="background: url(/images/16sucai_P591F7B181.JPG);background-repeat: no-repeat;background-size:cover ;">
+<div class="mycenter">
+    <div class="mysign">
+        <div class="col-lg-11 text-center text-info">
+            <h3>请输入注册信息</h3>
         </div>
-    </form>
+        <form action="/user/register" method="post">
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="username" name="accNo" placeholder="请输入用户名(16-19位银行卡号)"
+                       required="required" autofocus/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="nameSpan"></span>
+            </div>
+
+            <div class="col-lg-10">
+                <input id="pwd" type="password" class="form-control" name="password" placeholder="请输入密码"
+                       required="required" autofocus/>
+            </div>
+            <div class="col-lg-10">
+                <input id="sure_password" type="password" class="form-control" name="sure_password" placeholder="再次输入密码"
+                       required="required" autofocus/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="surePasswordSpan"></span>
+            </div>
+
+            <div class="col-lg-10"></div>
+            <div class="col-lg-10 mycheckbox checkbox">
+                &nbsp;&nbsp;<input type="checkbox" class="col-lg-1">保密协议</input>
+            </div>
+            <div class="col-lg-10">
+                <input align="center" type="submit" class="btn btn-success col-lg-12" value="点击注册"/>
+            </div>
+            <div class="col-lg-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="surePasswordSpan"></span>
+            </div>
+        </form>
+
+        <div class="btn btn-success col-lg-12">
+            <a href="/user/toLogin">已经注册？去登录页面</a>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

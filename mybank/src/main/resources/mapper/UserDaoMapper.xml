@@ -6,8 +6,9 @@ namespace:必须是对应接口的全路径
 -->
 <mapper namespace="com.zl.dao.UserDao">
     
-    <select id="queryNameByAccNo" parameterType="string" resultType="user">
-        select * from (select * from T_ACCOUNT a,T_USER u where a.USER_ID=u.USER_ID) where ACC_NO=#{accNo}
+    <select id="queryUserByAccNo" parameterType="string" resultType="user">
+        select USER_ID userId,USER_NAME userName,USER_SEX userSex,USER_BIRTHDATE userBirthdate,USER_CERTNO userCertNo,
+       USER_ADDR userAddr,USER_ZIPCODE userZipCode,USER_TELNO userTelNo,USER_PHONENO userPhone,USER_EMAIL userEmail,USER_PWD userPwd from CUSTOM where ACC_NO=#{accNo}
     </select>
 
 </mapper>

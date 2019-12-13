@@ -13,7 +13,7 @@ public interface UserService {
     /**
      * 根据卡号查用户
      */
-    User queryNameByAccNo(String accNo);
+    User queryUserByAccNo(String accNo);
 
     /**
      * 用户注册（修改密码为加密密码）

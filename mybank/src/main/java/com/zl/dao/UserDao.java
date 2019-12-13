@@ -12,6 +12,6 @@ public interface UserDao {
     /**
      * 根据卡号查用户
      */
-    User queryNameByAccNo(String accNo);
+    User queryUserByAccNo(String accNo);
 
 }

@@ -1,145 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>主动收款</title>
-<link href="../static/css/StudentStyle.css" rel="stylesheet" type="text/css" />
-<link href="../static/css/ks.css" rel="stylesheet" type="text/css" />
-<link href="Script/bootstrap/bootstrap.css" type="text/css"  rel="stylesheet"  />
-<link href="../static/css/Customer.css" type="text/css"  rel="stylesheet" />
-<link rel="stylesheet" href="../static/css/bootstrap.css" />
-<script type="text/javascript" src="../static/js/jquery.js" ></script>
-<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript">
-    //卡号的正则表达式验证(18位)
-    $(function(){
-        $("#card").blur(function(){
-            var card=$("#card").val();
-            var textCard = /^[1-9][0-9]{17}$/;
-            if(textCard.test(card)){
-                $("#cardSpan").html("格式正确").css({"color": "green", "font-size": "5"});
-            }else{
-                $("#cardSpan").html("请输入18位卡号").css({"color": "red", "font-size": "5"});
-            }
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>主动收款</title>
+    <link href="/css/Customer.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/ks.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        //卡号的正则表达式验证(18位)
+        $(function () {
+            $("#card").blur(function () {
+                var card = $("#card").val();
+                var textCard = /^[1-9][0-9]{17}$/;
+                if (textCard.test(card)) {
+                    $("#cardSpan").html("格式正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#cardSpan").html("请输入18位卡号").css({"color": "red", "font-size": "5"});
+                }
+            })
         })
-    })
-</script>
+    </script>
 </head>
 <body>
 
-	<div class="banner">
-		<div class="bgh">
-			<div class="page">
-				<div id="logo">
-					<a href="../Index.html"> 
-						<img src="../static/images/Images/Student/logo2.png" alt="" width="48" height="48" />
-					</a>
-				</div>
-				<div class="topxx">
-					<h1>xxx，欢迎您！</h1>
-					<a href="../../User/Account/ChangePasswd.html">密码修改</a> 
-					<a href="####">安全退出</a>
-				</div>
+<div class="banner">
+    <div class="bgh">
+        <div class="page">
+            <div id="logo">
+                <a href="../Index.html">
+                    <img src="../static/images/Images/Student/logo2.png" alt="" width="48" height="48"/>
+                </a>
+            </div>
+            <div class="topxx">
+                <h1>xxx，欢迎您！</h1>
+                <a href="../../User/Account/ChangePasswd.html">密码修改</a>
+                <a href="/user/toLogin">安全退出</a>
+            </div>
 
-			</div>
-		</div>
-	</div>
-	<div class="page">
-		<div class="box mtop">
-			<div class="leftbox">
-				<div class="l_nav2">
-					<div class="ta1">
-						<strong>个人中心</strong>
-						<div class="leftbgbt"></div>
-					</div>
-					<div class="cdlist">
-						<div>
-							<a href="MyInfo/StudentInfo.html">我的信息</a>
-						</div>
-						<div>
-							<a href="">收账人管理</a>
-						</div>
-						<div>
-							<a href="">消息通知</a>
-						</div>
-						<div>
-							<a href="">交易记录</a>
-						</div>
-					</div>
-					<div class="ta1">
-						<strong>业务中心</strong>
-						<div class="leftbgbt2"></div>
-					</div>
-					<div class="cdlist">
-						<div>
-							<a href="">转账</a>
-						</div>
-						<div>
-							<a href="">主动收款</a>
-						</div>
-						<div>
-							<a href="">资金归集</a>
-						</div>
-						<div>
-							<a href="">注销登录</a>
-						</div>
-					</div>
-					<!--结束-->
-				</div>
-			</div>
-			<div class="rightbox">
-				<h2 class="mbx">主动收款</h2>
-				<b></b>
-				<div>
-					<form action="/payee/activeCollection" method="get">
-						卡号：<input id="card" type="text" name="" value="" /><span id="cardSpan"></span>
-						付款人：<input id="name" type="text" name="" value="" /><span id="nameSpan"></span>
-						<input type="submit" value="查询" />
-					</form>
-				</div>
-				<form action="#" method="get">
-					<div>
-						<table align="center" style="border-collapse:separate; border-spacing:0px 10px;">
-							<tr>
-								<td>&nbsp;&nbsp;全选  </td>
-								<td>&nbsp;&nbsp;卡号  </td>
-								<td>&nbsp;&nbsp;用户名 </td>
-								<td>&nbsp;欠款金额 </td>
-								<td>&nbsp;收款金额 </td>
-							</tr>
-							<#list payees as p>
-                                <tr>
-                                    <td>&nbsp;&nbsp;<input type="checkbox" name="debtor" value="${p.debtor}" /> </td>
-                                    <td>&nbsp;&nbsp;${p.debtor}  </td>
-                                    <td>&nbsp;&nbsp;<input type="text" name="debtorName" value="${p.debtorName}" readonly="readonly" />${p.debtorName} </td>
-                                    <td>&nbsp;${p.fund}</td>
-                                    <td>&nbsp;<input id="money"  name="fund" value="${p.fund}" required="required" /><span id="moneySpan"></span> </td>
-                                </tr>
-					        </#list>
-						</table>
-						<a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=1">首页</a>
+        </div>
+    </div>
+</div>
+<div class="page">
+    <div class="box mtop">
+        <div class="leftbox">
+            <div class="l_nav2">
+                <div class="ta1">
+                    <strong>个人中心</strong>
+                    <div class="leftbgbt"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="MyInfo/StudentInfo.html">我的信息</a>
+                    </div>
+                    <div>
+                        <a href="">收账人管理</a>
+                    </div>
+                    <div>
+                        <a href="">消息通知</a>
+                    </div>
+                    <div>
+                        <a href="">交易记录</a>
+                    </div>
+                </div>
+                <div class="ta1">
+                    <strong>业务中心</strong>
+                    <div class="leftbgbt2"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="">转账</a>
+                    </div>
+                    <div>
+                        <a href="">主动收款</a>
+                    </div>
+                    <div>
+                        <a href="">资金归集</a>
+                    </div>
+                    <div>
+                        <a href="">注销登录</a>
+                    </div>
+                </div>
+                <!--结束-->
+            </div>
+        </div>
+        <div class="rightbox">
+            <h2 class="mbx">主动收款</h2>
+            <b></b>
+            <div>
+                <form action="/payee/activeCollection" method="get">
+                    卡号：<input id="card" type="text" name="" value=""/><span id="cardSpan"></span>
+                    付款人：<input id="name" type="text" name="" value=""/><span id="nameSpan"></span>
+                    <input type="submit" value="查询"/>
+                </form>
+            </div>
+            <form action="#" method="get">
+                <div>
+                    <table align="center" style="border-collapse:separate; border-spacing:0px 10px;">
+                        <tr>
+                            <td>&nbsp;&nbsp;全选</td>
+                            <td>&nbsp;&nbsp;卡号</td>
+                            <td>&nbsp;&nbsp;用户名</td>
+                            <td>&nbsp;欠款金额</td>
+                            <td>&nbsp;收款金额</td>
+                        </tr>
+                        <#list payees as p>
+                            <tr>
+                                <td>&nbsp;&nbsp;<input type="checkbox" name="debtor" value="${p.debtor}"/></td>
+                                <td>&nbsp;&nbsp;${p.debtor}  </td>
+                                <td>&nbsp;&nbsp;<input type="text" name="debtorName" value="${p.debtorName}"
+                                                       readonly="readonly"/>${p.debtorName} </td>
+                                <td>&nbsp;${p.fund}</td>
+                                <td>&nbsp;<input id="money" name="fund" value="${p.fund}" required="required"/><span
+                                            id="moneySpan"></span></td>
+                            </tr>
+                        </#list>
+                    </table>
+                    <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=1">首页</a>
 
-						<#if paging.currentPage<=1>
-						上一页
-						<#else>
-						<a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage-1}">上一页</a>
-					</#if>
+                    <#if paging.currentPage<=1>
+                        上一页
+                    <#else>
+                        <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage-1}">上一页</a>
+                    </#if>
 
-					<#if paging.currentPage=paging.pages || paging.pages=0>
-					下一页
-					<#else>
-					<a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage+1}">下一页</a>
-				</#if>
+                    <#if paging.currentPage=paging.pages || paging.pages=0>
+                        下一页
+                    <#else>
+                        <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage+1}">下一页</a>
+                    </#if>
 
-				<a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.pages}">尾页</a>
-				&nbsp;当前第${paging.currentPage}页&nbsp;共${paging.pages}页
-	
+                    <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.pages}">尾页</a>
+                    &nbsp;当前第${paging.currentPage}页&nbsp;共${paging.pages}页
 
-				<h3><input type="submit" value="批量收款" /> </h3>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+
+                    <h3><input type="submit" value="批量收款"/></h3>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

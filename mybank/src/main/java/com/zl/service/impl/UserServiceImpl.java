@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
      * @param accNo
      */
     @Override
-    public User queryNameByAccNo(String accNo) {
-        return ud.queryNameByAccNo(accNo);
+    public User queryUserByAccNo(String accNo) {
+        return ud.queryUserByAccNo(accNo);
     }
 
     /**
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
      */
     public Map<String, Object> regName(String accNo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        User user = ud.queryNameByAccNo(accNo);
+        User user = ud.queryUserByAccNo(accNo);
         if (user.getUserPwd() != null) {
             //重复注册
             result.put("flag", false);
@@ -57,9 +57,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void register(String accNo, String password) {
-        User user = ud.queryNameByAccNo(accNo);
+        System.out.println("进入登录service");
+        User user = ud.queryUserByAccNo(accNo);
         EncryptionUtil encryptionUtil = new EncryptionUtil();
         Map<String ,String> encrypt = encryptionUtil.encryption(password);
         user.setUserPwd(encrypt.get("password"));
+        System.out.println("加密password"+user.getUserPwd());
     }
 }

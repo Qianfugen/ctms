@@ -87,7 +87,7 @@ public class PayeeController {
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         //查询出当前登录卡的用户
-        User loginUser = us.queryNameByAccNo(loginAccNo);
+        User loginUser = us.queryUserByAccNo(loginAccNo);
         int index = 0;//成功的条数
         for (Payee p : payees) {
             PayInfo payInfo = new PayInfo();

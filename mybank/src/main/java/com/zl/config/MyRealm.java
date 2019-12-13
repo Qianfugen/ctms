@@ -37,7 +37,7 @@ public class MyRealm extends AuthorizingRealm {
         //获取用户输入的账号
         String loginAccNo = (String) token.getPrincipal();
         System.out.println("token:"+token);
-        User user = us.queryNameByAccNo(loginAccNo);
+        User user = us.queryUserByAccNo(loginAccNo);
         if(user == null){
             throw new UnknownAccountException();
         }
