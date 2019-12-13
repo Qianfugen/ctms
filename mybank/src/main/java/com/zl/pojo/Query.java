@@ -23,6 +23,7 @@ public class Query implements Serializable {
     private String qType;
     private String qMainAccNo;
     private String qFollowAccNo;
+    private String creditorAcc;
 
     @Override
     public String toString() {
@@ -34,6 +35,7 @@ public class Query implements Serializable {
                 ", qType='" + qType + '\'' +
                 ", qMainAccNo='" + qMainAccNo + '\'' +
                 ", qFollowAccNo='" + qFollowAccNo + '\'' +
+                ", creditorAcc='" + creditorAcc + '\'' +
                 '}';
     }
 
@@ -91,5 +93,13 @@ public class Query implements Serializable {
 
     public void setqType(String qType) {
         this.qType = qType;
+    }
+
+    public String getCreditorAcc() {
+        return creditorAcc;
+    }
+
+    public void setCreditorAcc(String creditorAcc) {
+        this.creditorAcc = creditorAcc;
     }
 }
