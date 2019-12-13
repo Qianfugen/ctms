@@ -1,7 +1,9 @@
 @charset "utf-8";
 /* CSS Document */
 
-
+body {
+    background:url(../img/16sucai_P591F7B181.JPG) no-repeat #f8f6e9;
+}
 .mycenter{
     margin-top: 100px;
     margin-left: auto;

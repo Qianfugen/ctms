@@ -9,7 +9,6 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -65,31 +64,28 @@ public class UserController {
      * @return
      */
     @RequestMapping("/login")
-    public ModelAndView login(@RequestParam String accNo, @RequestParam String password){
-        System.out.println("登录控制层:" +accNo+"...."+password);
-        UsernamePasswordToken token = new UsernamePasswordToken(accNo, password);
+    public ModelAndView login(String accNo,  String password){
+        ModelAndView mv = new ModelAndView();
+        // 从SecurityUtils里边创建一个 subject
         Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        System.out.println("......登录验证");
+        // 在认证提交前准备 token（令牌）
+        UsernamePasswordToken token = new UsernamePasswordToken(accNo, password);
+        System.out.println("登录控制层:" +accNo+"...."+password);
+
         try {
+            //执行认证
             subject.login(token);
         } catch (IncorrectCredentialsException ice) {
             System.out.println("ice异常......");
-            ModelAndView mv = new ModelAndView("login");
-            mv.addObject("error", "用户名或密码错误");
-            return mv;
         } catch (UnknownAccountException uae) {
             System.out.println("uae异常......");
-            ModelAndView mv = new ModelAndView("login");
-            mv.addObject("error", "用户名或密码错误");
-            return mv;
         } catch (Exception e) {
             System.out.println("e异常......");
-            ModelAndView mv = new ModelAndView("login");
-            mv.addObject("error", "请输入正确用户名或密码");
-            return mv;
         }
-        return new ModelAndView("index");
+        System.out.println("验证通过");
+        mv.setViewName("index");
+        System.out.println("进入index");
+        return mv;
     }
 
     @RequestMapping("/toLogin")
@@ -100,6 +96,16 @@ public class UserController {
     @RequestMapping("/toRegister")
     public String toRegister(){
         return "register";
+    }
+
+    @RequestMapping("/toIndex")
+    public String toIndex(){
+        return "index";
+    }
+
+    @RequestMapping("/notLogin")
+    public String notLogin(){
+        return "notLogin";
     }
 
 }
