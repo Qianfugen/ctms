@@ -81,13 +81,12 @@
 				<b></b>
 				<div align="center">
 					<button> <a href="javascript:history.go(-1)">返回</a></button>&nbsp;&nbsp;&nbsp;
-					<button><a href="/cashSweep/cancelColl?followAcc=${followAcc}">解除签约</a></button>
+					<button><a href="/cashSweep/cancelColl?followAcc=${fenYe.query.qAccNo}">解除签约</a></button>
 				</div>
 				<div align="center">
-					<form action="" method="post">
-						用户名：<input type="text"name="" required="required" />&nbsp;
-						转入开始时间：<input type="date" name="" required="required" />&nbsp;
-						转入结束时间：<input type="date" name="" />&nbsp;
+					<form action="/cashSweep/queryTransfersByFenYe?query.qAccNo=${fenYe.query.qAccNo}" method="post">
+						转入开始时间：<input type="date" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd hh:mm:ss')}</#if>" />&nbsp;
+						转入结束时间：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd hh:mm:ss')}</#if>"/>&nbsp;
 						<input type="submit" value="点击查询" />
 					</form>
 				</div>
@@ -104,18 +103,50 @@
 								<td> 转入时间 </td>
 								<td> 流水号 </td>
 							</tr>
-							<#list deal as t>
+							<#list transfers as t>
 								<tr>
-									<td> ${t.accIn} </td>
-									<td> ${t.accInName} </td>
-									<td> ${t.transFund}</td>
-									<td> ${t.accInBank} </td>
+									<td> ${t.accIn!""} </td>
+									<td> ${t.accInName!""} </td>
+									<td> ${t.transFund!""}</td>
+									<td> ${t.accInBank!""} </td>
 									<td><#if t.dealDate??>${t.dealDate?string('yyyy-MM-dd')}</#if></td>
-									<td> ${t.dealNo}</td>
+									<td> ${t.dealNo!""}</td>
 								</tr>
 							</#list>
 						</#if>
 					</table>
+
+					<#if (fenYe.pageCount>=2)>
+					<#if fenYe.page=1||fenYe.page=0>
+						首页
+					<#else>
+						<a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&page=1">首页</a>
+					</#if>
+
+					<#if fenYe.page=1||fenYe.page=0>
+						上一页
+					<#else >
+						<a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&page=${fenYe.page-1}">上一页</a>
+					</#if>
+					<#if (fenYe.pageCount>1)>
+						<#list 1..fenYe.pageCount as i>
+							<a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&page=${i}">${i}</a>
+						</#list>
+					</#if>
+
+					<#if fenYe.page=fenYe.pageCount||fenYe.page=0>
+						下一页
+					<#else >
+						<a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&page=${fenYe.page+1}">下一页</a>
+					</#if>
+
+					<#if fenYe.page=fenYe.pageCount||fenYe.page=0>
+						尾页
+					<#else >
+						<a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd hh:mm:ss')}</#if>&page=${fenYe.pageCount}">尾页</a>
+					</#if>
+					当前第${fenYe.page}页，共${fenYe.pageCount}页。<p>
+					</#if>
 				</div>
 			</div>
 		</div>

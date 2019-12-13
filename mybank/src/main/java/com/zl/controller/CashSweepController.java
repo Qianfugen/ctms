@@ -246,11 +246,13 @@ public class CashSweepController {
         //查询当前登录账号的归集记录
         List<Transfer> transfers = cashSweepService.queryTransfersByFenYe(fenYe);
 
+        System.out.println(transfers);
         //如果没有查询到相关内容，显示“没有相关归集记录”；否则显示相关信息
         if(transfers==null||transfers.size()==0){
             mv.addObject("message","没有相关归集记录！");
         }else {
-            mv.addObject("deal", transfers);
+            mv.addObject("fenYe",fenYe);
+            mv.addObject("transfers", transfers);
         }
         mv.setViewName("fundCollectionl05");
         return mv;
