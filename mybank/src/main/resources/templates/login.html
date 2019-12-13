@@ -14,9 +14,9 @@
 				//验证手机号或者银行卡号
 				$("#username").blur(function(){
 					var username=$("#username").val();
-					var cardNumber = /^[1-9][0-9]{15,18}$/;
+					var cardNumber = /^[1-9][0-9]{15,19}$/;
 					var phoneNumber = /^[1-9][0-9]{10}$/;
-					var a=/^123$/;
+
 					if(phoneNumber.test(username)|| cardNumber.test(username)){
 						if(cardNumber.test(username)){
 							$("#nameSpan").html("格式正确").css({"color": "green", "font-size": "5"});
@@ -93,6 +93,7 @@
                 <div class="col-lg-10"></div>
                 <div id="sub" class="col-lg-10">
                   	&nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12">登录</button>
+                    <a href="/user/toRegister"><input value="注册"/></a>
                 </div>
             </div>
         </div>

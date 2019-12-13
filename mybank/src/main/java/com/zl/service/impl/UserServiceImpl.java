@@ -20,26 +20,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao ud;
 
-    /**
-     * 验证卡号和客户名合法性
-     * 合法则msg=""
-     */
-    @Override
-    public String checkIdAndName(User user) {
-        String msg = "";
-        User u = ud.checkIdAndName(user);
-        //卡号不存在
-        if (u == null) {
-            msg = "该客户号不存在";
-            return msg;
-        }
-        //卡号和姓名不一致
-        if (!u.getUserName().equals(u.getUserName())) {
-            msg = "客户号和客户名不一致";
-            return msg;
-        }
-        return msg;
-    }
+
 
     /**
      * 根据卡号查用户
@@ -57,8 +38,8 @@ public class UserServiceImpl implements UserService {
      */
     public Map<String, Object> regName(String accNo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        User u = ud.queryNameByAccNo(accNo);
-        if (u.getUserPwd() != null) {
+        User user = ud.queryNameByAccNo(accNo);
+        if (user.getUserPwd() != null) {
             //重复注册
             result.put("flag", false);
         } else {

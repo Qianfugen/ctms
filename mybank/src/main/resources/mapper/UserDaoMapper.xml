@@ -5,13 +5,9 @@
 namespace:必须是对应接口的全路径
 -->
 <mapper namespace="com.zl.dao.UserDao">
-
-    <select id="checkIdAndName" parameterType="user" resultType="user">
-        select * from t_user where user_Id=#{userId}
-    </select>
     
     <select id="queryNameByAccNo" parameterType="string" resultType="user">
-        select u.* from (select * from T_ACCOUNT a,T_USER u where a.USER_ID=u.USER_ID) where ACC_NO=#{accNo}
+        select * from (select * from T_ACCOUNT a,T_USER u where a.USER_ID=u.USER_ID) where ACC_NO=#{accNo}
     </select>
 
 </mapper>
