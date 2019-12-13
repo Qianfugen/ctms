@@ -266,13 +266,8 @@ public class CashSweepController {
     public ModelAndView test(HttpSession session){
         ModelAndView mv=new ModelAndView();
         System.out.println("连接服务成功");
-        String maccNo="6222306645598761176";
-        String accNo="6222308875601202830";
-        String mainAcc1="6222309814494189020";
-        String mainAcc2="6222306452796804332";
-        Account loginAccount=cashSweepService.queryAccount("6222306645598761176");
-        System.out.println(transferService.queryBankAndUserName(mainAcc1));
-        System.out.println(transferService.queryBankAndUserName(maccNo));
+        Account loginAccount=cashSweepService.queryAccount("6222302919195600644");
+        System.out.println(transferService.queryBankAndUserName("6222307120415995107"));
 
         session.setAttribute("loginAccount",loginAccount);
         mv.setViewName("loginAccountCollStatus");

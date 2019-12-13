@@ -38,11 +38,11 @@ public class Coll implements Serializable {
      */
     private String followAcc;
     /**
-     *主账号持卡人
+     *子账号持卡人
      */
     private String followUser;
     /**
-     * 主账号开户行
+     * 子账号开户行
      */
     private String followBank;
     /**
