@@ -1,0 +1,492 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>转账业务平台</title>
+    <link href="/css/ks.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/Customer.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script src="/js/jquery.js/"></script>
+    <script src="/js/bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        //（境内转账）单选按钮的点击事件
+        $(function () {
+            $("#bank01").click(function () {
+                $("#our").css("display", "block")
+                $("#other").css("display", "none")
+            })
+
+        });
+        //（跨境转账）单选按钮的点击事件
+        $(function () {
+            $("#bank02").click(function () {
+                $("#our").css("display", "none"),
+                    $("#other").css("display", "block")
+            })
+
+        });
+
+        //(境内转账)姓名的正则表达式验证
+        $(function () {
+            $("#name").blur(function () {
+                var name = $("#name").val();
+                var textName = /^[\u4e00-\u9fa5]{2,6}$/;
+                if (textName.test(name)) {
+                    $("#nameSpan").html("格式正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#nameSpan").html("请输入正确的姓名").css({"color": "red", "font-size": "5"});
+                }
+            })
+        });
+
+        //余额查询
+        $(function () {
+            $("#queryBalance").click(function () {
+                //余额
+                var balance=0;
+                //发送ajax请求
+                $.ajax({
+                    //该ajax发送请求到那个地址处理
+                    url: "/transfer/queryBalance",
+                    //请求方式
+                    type: "post",
+                    //预计服务器返回的数据格式
+                    dataType: "json",
+                    //发送的数据(姓名和卡号)
+                    data: {"accNo": $("#accNo").val()},
+                    /*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                     */
+                    success: function (data) {
+                        balance=data.balance;
+                        $("#balance").html(":￥"+balance.toString()+" 元").css({"color": "green", "font-size": "5"});
+                    },
+                    //响应失败以后执行的回调函数
+                    error: function () {
+                        alert("失败....");
+                    }
+                });
+
+            })
+        });
+        //（境内转账）卡号的正则表达式验证
+        $(function () {
+            $("#accNo").blur(function () {
+                var accNo = $("#accNo").val();
+                var textCard = /^[1-9][0-9]{18}$/;
+                if (textCard.test(accNo)) {
+                    $("#accNoSpan").html("卡号正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#accNoSpan").html("请输入正确的18位卡号").css({"color": "red", "font-size": "5"});
+                }
+            })
+        });
+        //（境内转账）的ajax方法
+        $(function () {
+            $("#accNo").blur(function () {
+                //发送ajax请求
+                $.ajax({
+                    //该ajax发送请求到那个地址处理
+                    url: "/transfer/checkUser",
+                    //请求方式
+                    type: "post",
+                    //预计服务器返回的数据格式
+                    dataType: "json",
+                    //发送的数据(姓名和卡号)
+                    data: {"userName": $("#name").val(), "accNo": $("#accNo").val()},
+                    /*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                     */
+                    success: function (data) {
+                        if (data.status) {
+                            $("#sub").attr("disabled", false);
+                        } else {
+                            alert("收款人或者卡号有误！！！");
+                            ;
+                        }
+                    },
+                    //响应失败以后执行的回调函数
+                    error: function () {
+                        alert("失败....");
+                    }
+                })
+            })
+        });
+        //(跨境转账)姓名的正则表达式验证
+        $(function () {
+            $("#name02").blur(function () {
+                var name = $("#name02").val();
+                var textName = /^[a-zA-Z]{2,20}$/;
+                if (textName.test(name)) {
+                    $("#nameSpan02").html("格式正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#nameSpan02").html("请输入正确的姓名").css({"color": "red", "font-size": "5"});
+                }
+            })
+        });
+        //（跨境转账）卡号的正则表达式验证
+        $(function () {
+            $("#accNo02").blur(function () {
+                var accNo = $("#accNo02").val();
+                var textCard = /^[1-9][0-9]{17}$/;
+                if (textCard.test(accNo)) {
+                    $("#accNoSpan02").html("卡号正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#accNoSpan02").html("请输入正确的18位卡号").css({"color": "red", "font-size": "5"});
+                }
+            })
+        });
+        //（跨境转账）的ajax方法
+        $(function () {
+            $("#accNo02").blur(function () {
+                //发送ajax请求
+                $.ajax({
+                    //该ajax发送请求到那个地址处理
+                    url: "/students/regName",
+                    //请求方式
+                    type: "post",
+                    //预计服务器返回的数据格式
+                    dataType: "json",
+                    //发送的数据(姓名和卡号)
+                    data: {"name": $("#name02").val(), "accNo": $("#accNo02").val()},
+                    /*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                     */
+                    success: function (data) {
+                        if (data.flag) {
+                            $("#sub02").attr("disabled", false);
+                        } else {
+                            alert("收款人或者卡号有误！！！");
+                            ;
+                        }
+                    },
+                    //响应失败以后执行的回调函数
+                    error: function () {
+                        alert("失败....");
+                    }
+                })
+            })
+        });
+
+
+    </script>
+
+</head>
+<body>
+
+<div class="banner">
+    <div class="bgh">
+        <div class="page">
+            <div id="logo">
+                <a href="Index.aspx.html"> <img src="../../img/Images/Student/logo2.png"
+                                                alt="" width="48" height="48"/>
+                </a>
+            </div>
+            <div class="topxx ">
+                <h1>xxx，欢迎您！</h1>
+                <a href="../User/Account/ChangePasswd.html">密码修改</a>
+                <a href="####">安全退出</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page">
+    <div class="box mtop">
+        <div class="leftbox">
+            <div class="l_nav2">
+                <div class="ta1">
+                    <strong>个人中心</strong>
+                    <div class="leftbgbt"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="CustermInfo.html">我的信息</a>
+                    </div>
+                    <div>
+                        <a href="">收账人管理</a>
+                    </div>
+                    <div>
+                        <a href="">消息通知</a>
+                    </div>
+                    <div>
+                        <a href="">交易记录</a>
+                    </div>
+                </div>
+                <div class="ta1">
+                    <strong>业务中心</strong>
+                    <div class="leftbgbt2"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="">转账</a>
+                    </div>
+                    <div>
+                        <a href="">主动收款</a>
+                    </div>
+                    <div>
+                        <a href="">资金归集</a>
+                    </div>
+                    <div>
+                        <a href="">注销登录</a>
+                    </div>
+                </div>
+
+                <!--结束-->
+            </div>
+        </div>
+        <div class="rightbox">
+            <h2 class="mbx">转账&nbsp;&nbsp;&nbsp;</h2>
+
+            <p style="text-align: center;">
+                <input type="radio" id="bank01" name="bank"/> 境内转账&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" id="bank02" name="bank"/> 跨境转账
+            </p>
+            <div>
+                <hr>
+            </div>
+            <!--（境内转账）输入界面-->
+            <div id="our" style="margin-top: 20px;" align="center">
+                <form action="#" method="post">
+                    <table style="border-collapse:separate; border-spacing:0px 10px;">
+                        <tr>
+                            <td>收款人姓名 ：</td>
+                            <td><input id="name" type="text" required="required" value="" placeholder="支持首字母搜索收款人"
+                                       style="width: 300px;"/></td>
+                            <td>
+                                &nbsp;<!-- 按钮触发模态框 -->
+                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal01">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                </button>
+                            </td>
+                        </tr>
+                        <!--正则表达式返回框-->
+                        <tr>
+                            <td></td>
+                            <td><span id="nameSpan"></span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>收款卡号 ：</td>
+                            <td><input id="accNo" type="text" required="required" value="" placeholder="18位银行卡号"
+                                       style="width: 300px;"/></td>
+                        </tr>
+                        <!--正则表达式返回框-->
+                        <tr>
+                            <td></td>
+                            <td><span id="accNoSpan"></span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>收款银行 ：</td>
+                            <td>
+                                <select>
+                                    <option value=""></option>
+                                    <option value="">工商银行</option>
+                                    <option value="">中国银行</option>
+                                    <option value="">农业银行</option>
+                                    <option value="">建设银行</option>
+                                    <option value="">交通银行</option>
+                                    <option value="">平安银行</option>
+                                    <option value="">招商银行</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>汇款金额 ：</td>
+                            <td><input type="text" required="required" style="width: 300px;"/></td>
+                            <td> <button id="queryBalance">余额<span id="balance"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td>汇款时间 ：</td>
+                            <td>
+                                <select>
+                                    <option value="">普通汇款</option>
+                                    <option value="">实时汇款</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr align="center">
+                            <td></td>
+                            <td><input id="sub" type="submit" disabled="disabled" value="确认转账"/></td>
+                        </tr>
+                    </table>
+                </form>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade" id="myModal01" tabindex="-1" role="dialog" aria-labelledby="myModalLabel01"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel01">
+                                    常用收款人
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
+                                    <tr>
+                                        <td>姓名</td>
+                                        <td>&nbsp;&nbsp;&nbsp;卡号</td>
+                                        <td>&nbsp;&nbsp;&nbsp;开户行</td>
+                                        <td>操作</td>
+                                    </tr>
+                                    <tr>
+                                        <td>张三</td>
+                                        <td>&nbsp;&nbsp;&nbsp;123456789012345678</td>
+                                        <td>&nbsp;&nbsp;&nbsp;中国银行</td>
+                                        <td><a href=""> 选择</a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">关闭
+                                </button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+            <!--（行内转账）输入界面(末尾)-->
+
+            <!--（跨境转账）输入界面-->
+            <div id="other" style="margin-top: 20px;display: none;" align="center" ;>
+                <form action="#" method="post">
+                    <table style="border-collapse:separate; border-spacing:0px 10px;">
+                        <tr>
+                            <td>收款人姓名 ：</td>
+                            <td><input id="name02" type="text" required="required" value="" placeholder="请填写拼音或英文"
+                                       style="width: 300px;"/></td>
+                            <td>
+                                &nbsp;<!-- 按钮触发模态框 -->
+                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal02">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                </button>
+                            </td>
+                        </tr>
+                        <!--正则表达式返回框-->
+                        <tr>
+                            <td></td>
+                            <td><span id="nameSpan02"></span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>收款行所在国家（地区） :</td>
+                            <td>
+                                <select>
+                                    <option value=""></option>
+                                    <option value="">美国</option>
+                                    <option value="">英国</option>
+                                    <option value="">法国</option>
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>收款币种 :</td>
+                            <td>
+                                <select>
+                                    <option value=""></option>
+                                    <option value="">人民币</option>
+                                    <option value="">美元</option>
+                                    <option value="">欧元</option>
+                                    <option value="">英镑</option>
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>收款人账号 ：</td>
+                            <td><input id="accNo02" type="text" required="required" value="" placeholder="18位银行卡号"
+                                       style="width: 300px;"/></td>
+                            <td> 欧盟国家请输入IBAN号</td>
+                        </tr>
+                        <!--正则表达式返回框-->
+                        <tr>
+                            <td></td>
+                            <td><span id="accNoSpan02"></span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>收款人常驻国家（地区） :</td>
+                            <td>
+                                <select>
+                                    <option value=""></option>
+                                    <option value="">美国</option>
+                                    <option value="">英国</option>
+                                    <option value="">法国</option>
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>汇款金额 ：</td>
+                            <td><input type="text" required="required" style="width: 300px;" placeholder="请选择币种单位"/>
+                            </td>
+                            <td> 余额 ：<a href="#">待查询</a></td>
+                        </tr>
+                        <tr>
+                            <td>汇款时间 ：</td>
+                            <td>
+                                <select>
+                                    <option value="">普通汇款</option>
+                                    <option value="">实时汇款</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr align="center">
+                            <td></td>
+                            <td><input id="sub02" type="submit" disabled="disabled" value="确认转账"/></td>
+                        </tr>
+                    </table>
+                </form>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade" id="myModal02" tabindex="-1" role="dialog" aria-labelledby="myModalLabel02"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel01">
+                                    常用收款人
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <table>
+                                    <tr>
+                                        <td>姓名</td>
+                                        <td>&nbsp;&nbsp;&nbsp;卡号</td>
+                                        <td>&nbsp;&nbsp;&nbsp;开户行</td>
+                                    </tr>
+                                    <tr>
+                                        <td>李四</td>
+                                        <td>&nbsp;&nbsp;&nbsp;123456789012345678</td>
+                                        <td>&nbsp;&nbsp;&nbsp;中国银行</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">关闭
+                                </button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+            <!--（跨境转账）输入界面（末尾）-->
+        </div>
+
+
+    </div>
+
+</div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>管理员登录</title>
+        <link href="/css/login.css" type="text/css"  rel="stylesheet" />
+		<script type="text/javascript" src="/js/jquery.js"></script>
+		<link rel="stylesheet" href="/css/bootstrap.css" />
+		<script type="text/javascript" src="/js/bootstrap.js" ></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#username").blur(function(){
+					var username=$("#username").val();
+					var a=/^[\u2E80-\u9FFF]{2,4}$/;
+					if(a.test(username)){
+						$("#nameSpan").html("格式正确").css({"color": "green", "font-size": "5"});
+					}else{
+						$("#nameSpan").html("请输入2-4位中文").css({"color": "red", "font-size": "5"});
+					}
+				});
+                if ($("#message").html()!=null&&$("#message").html()!=""){
+                    alert($("#message").html());
+                };
+			})
+		</script>
+	</head>
+<body style="background-image: url(/images/Images/16sucai_P591F7B181.JPG);background-size: cover;">
+    <div style="position: absolute;left: 10px;top: 10px">
+        <img src="/images/Images/Student/logo2.png" width="48" height="48" />
+    </div>
+    <div id="message" style="display: none">${message!""}</div>
+    <form action="/admin/login" method="post">
+        <div class="mycenter">
+            <div class="mysign">
+                <div class="col-lg-11 text-center text-info">
+                  	<h2>管理员登录</h2>
+                </div>
+                <div class="col-lg-10" style="">
+                  	<input type="text" class="form-control" id="username" name="name"  placeholder="请输入银行卡号/手机号" required autofocus/>
+                  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="nameSpan"></span>
+                </div>
+                <div class="col-lg-10"></div>
+                <div class="col-lg-10" style="">
+                  	<input type="password" class="form-control" id="new" name="password" placeholder="请输入密码" required autofocus/>
+                </div>
+                <div class="col-lg-10"></div>
+                <div class="col-lg-10 mycheckbox checkbox">
+                </div>
+                <div class="col-lg-10"></div>
+                <div id="sub" class="col-lg-10">
+                  	&nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12">登录</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

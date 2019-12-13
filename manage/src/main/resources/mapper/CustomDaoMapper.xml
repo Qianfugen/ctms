@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.dao.ICustomDao">
+    
+    <resultMap id="userCustom" type="com.zl.pojo.User">
+        <id property="userId" column="USER_ID"></id>
+        <result property="userName" column="USER_NAME"></result>
+        <result property="userSex" column="USER_SEX"></result>
+        <result property="userBirthdate" column="USER_BIRTHDATE"></result>
+        <result property="userCertNo" column="USER_CERTNO"></result>
+        <result property="userAddr" column="USER_ADDR"></result>
+        <result property="userZipCode" column="USER_ZIPCODE"></result>
+        <result property="userTelNo" column="USER_TELNO"></result>
+        <result property="userPhoneNo" column="USER_PHONENO"></result>
+        <result property="userEmail" column="USER_EMAIL"></result>
+        <result property="userPwd" column="USER_PWD"></result>
+        <collection property="account" ofType="com.zl.pojo.Account">
+            <id property="accNo" column="ACC_NO"></id>
+            <result property="currType" column="CURR_TYPE"></result>
+            <result property="accBankId" column="ACC_BANKID"></result>
+            <result property="accStatus" column="ACC_STATUS"></result>
+            <result property="accLimit" column="ACC_LIMIT"></result>
+            <result property="accFund" column="ACC_FUND"></result>
+            <result property="accType" column="ACC_TYPE"></result>
+            <result property="accDate" column="ACC_DATE"></result>
+            <result property="accPwd" column="ACC_PWD"></result>
+        </collection>
+    </resultMap>
+
+    <select id="queryAllCustom" parameterType="com.zl.pojo.FenYe" resultMap="userCustom">
+        select * from(
+            select e.*,rownum r from(
+                select USER_ID, USER_NAME, USER_SEX, USER_BIRTHDATE, USER_CERTNO, USER_ADDR, USER_ZIPCODE, USER_TELNO,
+                USER_PHONENO, USER_EMAIL, USER_PWD, ACC_NO, CURR_TYPE, ACC_BANKID, ACC_STATUS, ACC_LIMIT, ACC_FUND, ACC_TYPE,
+                ACC_DATE, ACC_PWD from CUSTOM
+                    <where>
+                        <if test="query!=null">
+                            <if test="query.qname!=null and query.qname!=''">
+                                and user_name like concat('%',concat(#{query.qname},'%'))
+                            </if>
+                            <if test="query.qAccNo!=null and query.qAccNo!=''">
+                                and Acc_no=#{query.qAccNo}
+                            </if>
+                            <if test="query.qType!=null and query.qType!=''">
+                                and acc_status=#{query.qType}
+                            </if>
+                        </if>
+                        and rownum between 1 and 100
+                    </where>
+            ) e) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
+    </select>
+
+    <select id="queryByLike" resultType="int" parameterType="com.zl.pojo.Query">
+        select count(1) from CUSTOM
+        <where>
+            <if test="qname!=null and qname!=''">
+                and user_name like concat('%',concat(#{qname},'%'))
+            </if>
+            <if test="qAccNo!=null and qAccNo!=''">
+                and Acc_no=#{qAccNo}
+            </if>
+            <if test="qType!=null and qType!=''">
+                and acc_status=#{qType}
+            </if>
+            and rownum between 1 and 100
+        </where>
+    </select>
+
+    <update id="updateCustom" parameterType="com.zl.pojo.User">
+        update CUSTOM set user_name=#{userName,jdbcType=VARCHAR}, user_sex=#{userSex,jdbcType=INTEGER}, user_birthdate=#{userBirthdate,jdbcType=TIMESTAMP}, user_certno=#{userCertNo,jdbcType=VARCHAR}, user_addr=#{userAddr,jdbcType=VARCHAR}, user_zipcode=#{userZipCode,jdbcType=VARCHAR}, user_telno=#{userTelNo,jdbcType=VARCHAR}, user_phoneno=#{userPhoneNo,jdbcType=VARCHAR}, user_email=#{userEmail,jdbcType=VARCHAR}, user_pwd=#{userPwd,jdbcType=VARCHAR}, acc_status=#{account.accStatus,jdbcType=INTEGER}, acc_limit=#{account.accLimit,jdbcType=DECIMAL}, acc_fund=#{account.accFund,jdbcType=DECIMAL}, acc_type=#{account.accType,jdbcType=VARCHAR}, acc_pwd=#{account.accPwd,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateStatus" parameterType="com.zl.pojo.User">
+        update CUSTOM set acc_status=#{account.accStatus,jdbcType=INTEGER} where USER_ID=#{userId,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteCustom" parameterType="string">
+        delete from CUSTOM where USER_ID=#{userId}
+</delete>
+
+    <select id="queryCustom" parameterType="string" resultMap="userCustom">
+        select * from CUSTOM where USER_ID=#{userId}
+</select>
+
+<!--<insert>-->
+<!--insert into CUSTOM(user_id, user_name, user_sex, user_birthdate, user_certno, user_addr, user_zipcode, user_telno, user_phoneno, user_email, user_pwd, acc_no, curr_type, acc_bankid, acc_status, acc_limit, acc_fund, acc_type, acc_date, acc_pwd, coll_status)-->
+<!--</insert>-->
+</mapper>

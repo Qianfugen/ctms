@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>所有账户</title>
+	<link href="/css/ks.css" rel="stylesheet" type="text/css" />
+	<link href="/css/bootstrap.css" type="text/css"  rel="stylesheet"  />
+	<link href="/css/manager.css" type="text/css"  rel="stylesheet" />
+	<link rel="stylesheet" href="/css/bootstrap.css" />
+	<script type="text/javascript" src="/js/jquery.js" ></script>
+	<script src="/js/bootstrap.js" type="text/javascript"></script>
+	<script type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function(){
+			if ($("#message").html()!=null&&$("#message").html()!=""){
+				alert($("#message").html());
+			}
+		})
+	</script>
+</head>
+<body>
+
+	<div class="banner">
+		<div class="bgh">
+			<div class="page">
+				<div id="logo">
+					<a href="../Index.html"> 
+						<img src="/images/Images/Student/logo2.png" style="width: 48px; height: 48px;" />
+					</a>
+				</div>
+				<div class="topxx">
+					<h1>${loginUser.name!""} 管理员，欢迎您！</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="page">
+		<div class="box mtop">
+			<div class="leftbox">
+				<div class="l_nav2">
+					<div class="ta1">
+						<strong>管理中心</strong>
+						<div class="leftbgbt"></div>
+					</div>
+					<div class="cdlist">
+						<div>
+							<a href="/custom/allCustom">所有账户</a>
+						</div>
+						<div>
+							<a href="/custom/toAllException">异常信息</a>
+						</div>
+						<div>
+							<a href="/admin/toUpdateAdmin">修改密码</a>
+						</div>
+						<div>
+							<a href="/custom/toAllRecord">交易总记录</a>
+						</div>
+						<div>
+							<a href="/admin/logout">注销登录</a>
+						</div>
+					</div>
+					
+					<!--结束-->
+				</div>
+			</div>
+			<div class="rightbox">
+				<h2 class="mbx">所有用户信息</h2>
+				<b></b>
+				<div align="center">
+					<form action="/custom/allCustom" method="post">
+						卡号 ： <input type="text" name="query.qAccNo" value="<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>" />
+						用户名： <input type="text" name="query.qname" value="<#if fenYe.query??>${fenYe.query.qname!''}</#if>" />
+						状态： <select name="query.qType">
+									<option value="">请选择</option>
+									<option value="1" <#if fenYe.query??&&fenYe.query.qType='1'>selected="selected"</#if>>启用</option>
+									<option value="0" <#if fenYe.query??&&fenYe.query.qType='0'>selected="selected"</#if>>冻结</option>
+							  </select>
+						<input type="submit" value="查询"/>
+					</form>
+				</div>
+				<div align="center">
+					<form action="" method="post">
+						<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
+						<tr>
+							<td>序号</td>
+							<td>用户名</td>
+							<td>性别</td>
+							<td>身份证号</td>
+							<td> 电话 </td>
+							<td> 邮箱 </td>
+							<td> 卡号 </td>
+							<td> 余额 </td>
+							<td> 上限 </td>
+							<td> 类型 </td>
+							<td> 状态 </td>
+							<td> 操作 </td>
+							<td> 删除 </td>
+							<td> 详情 </td>
+						</tr>
+						<#list customs as n>
+							<tr>
+								<td>${n_index!""}</td>
+								<td>${n.userName}</td>
+								<td>${n.userSex}</td>
+								<td>${n.userCertNo}</td>
+								<td>${n.userPhoneNo}</td>
+								<td>${n.email}</td>
+								<td>${n.account.accNo}</td>
+								<td>${n.account.accFund}</td>
+								<td>${n.account.accLimit!""}</td>
+								<td>${n.account.accType}</td>
+								<td>${(n.account.accStatus=='0') ?string('冻结','启用')}</td>
+								<td><a href="/custom/updateStatus?accStatus=${(n.account.accStatus=='0') ?string('1','0')}&userId=${n.userId}&query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&page=${fenYe.page}">操作</a></td>
+								<td> <a href="/custom/deleteCustom?userId=${n.userId}&query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&page=${fenYe.page}">删除</a> </td>
+								<td> <a href="/custom/toInformation?userId=${n.userId}">详情</a> </td>
+							</tr>
+					     </#list>
+						
+					</table>
+					</form>
+					<a href="/custom/allCustom?query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=1">首页</a>
+					<#if fenYe.page<=1>
+					上一页
+					<#else>
+					<a href="/custom/allCustom?query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page-1}">上一页</a>
+					</#if>
+					<#if fenYe.page=fenYe.pageCount || fenYe.pageCount=0>
+					下一页
+					<#else>
+					<a href="/custom/allCustom?query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page+1}">下一页</a>
+					</#if>
+					<a href="/custom/allCustom?query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.pageCount}">尾页</a>
+				&nbsp;	当前第${fenYe.page}页&nbsp;共${fenYe.pageCount}页
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+	<div id="message" style="display: none">${message!""}</div>
+</body>
+</html>

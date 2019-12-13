@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登入</title>
+</head>
+<body>
+<form action="/admin/login" method="post">
+    <span>${error!""}</span><p></p>
+    用户名：<input type="text" name="name" /><p>
+    密码：<input type="text" name="password" /><p>
+    <input type="submit" value="登入" />
+</form>
+</body>
+</html>

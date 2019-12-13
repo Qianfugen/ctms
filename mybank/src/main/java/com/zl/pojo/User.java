@@ -1,7 +1,9 @@
 package com.zl.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +13,8 @@ import java.util.Date;
  *
  * @author root
  */
-
+@Component
+@Scope("prototype")
 public class User implements Serializable {
     /**
      * 客户号
@@ -59,6 +62,18 @@ public class User implements Serializable {
      * 登录密码
      */
     private String userPwd;
+    /**
+     * 用户卡
+     */
+    private Account account;
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     public String getUserId() {
         return userId;
@@ -162,6 +177,7 @@ public class User implements Serializable {
                 ", userPhoneNo='" + userPhoneNo + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 ", userPwd='" + userPwd + '\'' +
+                ", account=" + account +
                 '}';
     }
 }
