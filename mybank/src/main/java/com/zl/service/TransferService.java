@@ -1,6 +1,7 @@
 package com.zl.service;
 
 import com.zl.pojo.Transfer;
+import com.zl.pojo.User;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -42,6 +43,15 @@ public interface TransferService {
      * @return
      */
     public Map<String, String> queryBankAndUserName(String accNo);
+
+
+    /**
+     * 根据卡号和用户名验证用户是否存在
+     * @param userName 用户名
+     * @param accNo 卡号
+     * @return
+     */
+    public Boolean checkUser(String userName,String accNo);
 
     /**
      * 根据流水号查询交易记录

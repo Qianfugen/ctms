@@ -1,6 +1,7 @@
 package com.zl.dao;
 
 import com.zl.pojo.Transfer;
+import com.zl.pojo.User;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -52,6 +53,13 @@ public interface TransferDao {
      * @return
      */
     public String queryUserName(String accNo);
+
+    /**
+     * 根据用户名和卡号判断是否存在
+     * @param user 用户对象
+     * @return
+     */
+    public User checkUser(User user);
 
     /**
      * 根据流水号查询交易记录
