@@ -62,6 +62,18 @@ public class User implements Serializable {
      * 登录密码
      */
     private String userPwd;
+    /**
+     * 用户卡
+     */
+    private Account account;
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     public String getUserId() {
         return userId;
@@ -165,6 +177,7 @@ public class User implements Serializable {
                 ", userPhoneNo='" + userPhoneNo + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 ", userPwd='" + userPwd + '\'' +
+                ", account=" + account +
                 '}';
     }
 }

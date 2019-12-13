@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/payee")
 public class PayeeController {
 
-    @Autowired
+    @Autowired(required = false)
     private PayeeService ps;
     @Autowired
     private UserService us;
