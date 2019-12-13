@@ -276,12 +276,33 @@ public class CashSweepServiceImpl implements CashSweepService {
 
     /**
      * 查询主卡的归集信息（子卡信息）
-     * @param mainAcc 传入账号信息（主卡）
+     * @param fenYe 传入账号信息（主卡）
      * @return 返回主卡下的所有子卡的归集信息
      */
     @Override
-    public List<Coll> queryMainColl(String mainAcc) {
-        return cashSweepDao.queryMainColl(mainAcc);
+    public List<Coll> queryMainCollByFenYe(FenYe fenYe) {
+        Query query = fenYe.getQuery();
+        int rowCount = cashSweepDao.countsMainColl(query);
+        getFenYe(fenYe, rowCount);
+        return cashSweepDao.queryMainCollByFenYe(fenYe);
+    }
+
+    private void getFenYe(FenYe fenYe, int rowCount) {
+        fenYe.setRowCount(rowCount);
+        if(rowCount>0){
+            if(fenYe.getPage()!=null&&!"".equals(fenYe.getPage())){
+                if(fenYe.getPage()<=0){
+                    fenYe.setPage(1);
+                }
+                if(fenYe.getPage()>fenYe.getRowCount()){
+                    fenYe.setPage(fenYe.getRowCount());
+                }
+            }else {
+                fenYe.setPage(1);
+            }
+        }else {
+            fenYe.setPage(0);
+        }
     }
 
     /**
@@ -302,21 +323,7 @@ public class CashSweepServiceImpl implements CashSweepService {
     public List<Transfer> queryTransfersByFenYe(FenYe fenYe) {
         Query query = fenYe.getQuery();
         int rowCount = cashSweepDao.countsTransfersByQuery(query);
-        fenYe.setRowCount(rowCount);
-        if(rowCount>0){
-            if(fenYe.getPage()!=null&&!"".equals(fenYe.getPage())){
-                if(fenYe.getPage()<=0){
-                    fenYe.setPage(1);
-                }
-                if(fenYe.getPage()>fenYe.getRowCount()){
-                    fenYe.setPage(fenYe.getRowCount());
-                }
-            }else {
-                fenYe.setPage(1);
-            }
-        }else {
-            fenYe.setPage(0);
-        }
+        getFenYe(fenYe, rowCount);
         return cashSweepDao.queryTransfersByFenYe(fenYe);
     }
 

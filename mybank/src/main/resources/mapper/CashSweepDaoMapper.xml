@@ -66,8 +66,47 @@ namespace:必须是对应接口的全路径
     <delete id="deleteColl" parameterType="string">
         delete from T_COLL where FOLLOW_ACC=#{accNo}
     </delete>
+    <select id="countsMainColl" parameterType="query" resultType="int">
+        select count(*) from T_COLL
+        <where>
+            and MAIN_ACC =#{qMainAccNo}
+            <if test="qFollowAccNo!=null">
+                and FOLLOW_ACC like concat('%',concat(#{qFollowAccNo},'%'))
+            </if>
+            <if test="qname!=null">
+                and FOLLOW_USER like concat('%',concat(#{qname},'%'))
+            </if>
+            <if test="startDate!=null">
+                and deal_date>#{startDate}
+            </if>
+            <if test="endDate!=null">
+                and deal_date<![CDATA[<]]>#{endDate}
+            </if>
+        </where>
+    </select>
+    <select id="queryMainCollByFenYe" parameterType="fenYe" resultMap="collMap">
+        select * from(
+        select tc.*,rownum r from(
+        select * from T_COLL
+        <where>
+            and MAIN_ACC =#{query.qMainAccNo}
+            <if test="query.qFollowAccNo!=null">
+                and FOLLOW_ACC like concat('%',concat(#{query.qFollowAccNo},'%'))
+            </if>
+            <if test="query.qname!=null">
+                and FOLLOW_USER like concat('%',concat(#{query.qname},'%'))
+            </if>
+            <if test="query.startDate!=null">
+                and deal_date>#{query.startDate}
+            </if>
+            <if test="query.endDate!=null">
+                and deal_date<![CDATA[<]]>#{query.endDate}
+            </if>
+        </where>
+        ) tc) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
+    </select>
     <select id="queryMainColl" parameterType="string" resultMap="collMap">
-        select * from T_COLL where MAIN_ACC=#{accNo}
+        select * from T_COLL where MAIN_ACC=#{mainAcc}
     </select>
     <select id="queryAllCollInTable" resultMap="collMap">
         select * from T_COLL

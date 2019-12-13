@@ -1,9 +1,6 @@
 package com.zl.controller;
 
-import com.zl.pojo.Account;
-import com.zl.pojo.Coll;
-import com.zl.pojo.FenYe;
-import com.zl.pojo.Transfer;
+import com.zl.pojo.*;
 import com.zl.service.CashSweepService;
 import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +94,7 @@ public class CashSweepController {
 
         //如果签约状态为"主账号"
         if (collStatus3.equals(collStatus)) {
-            mv.setViewName("queryAllColl");
+            mv.setViewName("queryMainCollByFenYe");
         }
         return mv;
     }
@@ -164,7 +161,7 @@ public class CashSweepController {
             //如果解约失败，跳转到签约信息页面
             if (flag == 0) {
                 mv.addObject("error", "解约失败");
-                mv.setViewName("queryAllColl");
+                mv.setViewName("queryMainCollByFenYe");
             }
         }
 
@@ -222,18 +219,22 @@ public class CashSweepController {
         return mv;
     }
 
-    @RequestMapping("/queryAllColl")
+    @RequestMapping("/queryMainCollByFenYe")
     @ResponseBody
-    public ModelAndView queryAllColl(HttpSession session) {
+    public ModelAndView queryMainCollByFenYe(HttpSession session,FenYe fenYe) {
         ModelAndView mv = new ModelAndView();
 
         //获取当前登录的账号
         Account loginAccount = (Account) session.getAttribute("loginAccount");
 
+        Query query =new Query();
+        query.setqMainAccNo(loginAccount.getAccNo());
+        fenYe.setQuery(query);
         //查询当前账号（主账号）的归集签约信息
-        List<Coll> colls = cashSweepService.queryMainColl(loginAccount.getAccNo());
+        List<Coll> colls = cashSweepService.queryMainCollByFenYe(fenYe);
 
         mv.addObject("colls", colls);
+        mv.addObject("fenYe",fenYe);
         mv.setViewName("fundCollectionl04");
         return mv;
     }
@@ -244,15 +245,14 @@ public class CashSweepController {
         ModelAndView mv = new ModelAndView();
 
         //查询当前登录账号的归集记录
-        List<Transfer> transfers = cashSweepService.queryTransfersByFenYe(fenYe);
+        List<Transfer> trans = cashSweepService.queryTransfersByFenYe(fenYe);
 
-        System.out.println(transfers);
         //如果没有查询到相关内容，显示“没有相关归集记录”；否则显示相关信息
-        if(transfers==null||transfers.size()==0){
+        if(trans==null||trans.size()==0){
             mv.addObject("message","没有相关归集记录！");
         }else {
             mv.addObject("fenYe",fenYe);
-            mv.addObject("transfers", transfers);
+            mv.addObject("trans", trans);
         }
         mv.setViewName("fundCollectionl05");
         return mv;
@@ -266,9 +266,9 @@ public class CashSweepController {
         String accNo="6222308875601202830";
         String mainAcc1="6222309814494189020";
         String mainAcc2="6222306452796804332";
-        Account loginAccount=cashSweepService.queryAccount(maccNo);
+        Account loginAccount=cashSweepService.queryAccount("6222306645598761176");
         System.out.println(transferService.queryBankAndUserName(mainAcc1));
-        System.out.println(transferService.queryBankAndUserName(mainAcc2));
+        System.out.println(transferService.queryBankAndUserName(maccNo));
 
         session.setAttribute("loginAccount",loginAccount);
         mv.setViewName("loginAccountCollStatus");

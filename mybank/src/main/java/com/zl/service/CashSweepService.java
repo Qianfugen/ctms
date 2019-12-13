@@ -1,9 +1,6 @@
 package com.zl.service;
 
-import com.zl.pojo.Account;
-import com.zl.pojo.Coll;
-import com.zl.pojo.FenYe;
-import com.zl.pojo.Transfer;
+import com.zl.pojo.*;
 
 import java.util.List;
 
@@ -58,10 +55,10 @@ public interface CashSweepService {
 
     /**
      * 查询主卡的归集信息（子卡信息）
-     * @param mainAcc 传入账号信息（主卡）
+     * @param fenYe 传入账号信息（主卡）
      * @return 返回主卡下的所有子卡的归集信息
      */
-    List<Coll> queryMainColl(String mainAcc);
+    List<Coll> queryMainCollByFenYe(FenYe fenYe);
 
     /**
      * 查询库中所有的归集信息

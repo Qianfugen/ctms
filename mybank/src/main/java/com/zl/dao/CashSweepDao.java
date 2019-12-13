@@ -59,9 +59,23 @@ public interface CashSweepDao {
     int deleteColl(String followAcc);
 
     /**
+     * 查询符合条件的子卡信息的条数
+     * @param query 查询条件
+     * @return 返回记录条数
+     */
+    int countsMainColl(Query query);
+
+    /**
      * 查询主卡的归集信息（子卡信息）
-     * @param mainAcc 传入账号信息（主卡）
+     * @param fenYe 传入账号信息（主卡）
      * @return 返回主卡下的所有子卡的归集信息
+     */
+    List<Coll> queryMainCollByFenYe(FenYe fenYe);
+
+    /**
+     * 查询主账号的子卡信息
+     * @param mainAcc 主卡号
+     * @return 返回归集信息集合
      */
     List<Coll> queryMainColl(String mainAcc);
 

@@ -80,8 +80,10 @@
 				<b></b>
 				<div align="center">
 					<form action="" method="post">
+						子账号：<input type="text" name="">
 						用户名   ：<input type="text" name="" />
-						开户行  ：<input type="text" name="" />
+						签约开始时间：<input type="date" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>" />&nbsp;
+						签约结束时间：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>"/>&nbsp;
 						<input type="submit" value="查询" />
 					</form>
 				</div>

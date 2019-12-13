@@ -13,14 +13,16 @@ import java.util.Date;
 @Component
 public class Query implements Serializable {
     private String qname;
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     private String qAccNo;
     private String qType;
+    private String qMainAccNo;
+    private String qFollowAccNo;
 
     @Override
     public String toString() {
@@ -30,7 +32,25 @@ public class Query implements Serializable {
                 ", endDate=" + endDate +
                 ", qAccNo='" + qAccNo + '\'' +
                 ", qType='" + qType + '\'' +
+                ", qMainAccNo='" + qMainAccNo + '\'' +
+                ", qFollowAccNo='" + qFollowAccNo + '\'' +
                 '}';
+    }
+
+    public String getqMainAccNo() {
+        return qMainAccNo;
+    }
+
+    public void setqMainAccNo(String qMainAccNo) {
+        this.qMainAccNo = qMainAccNo;
+    }
+
+    public String getqFollowAccNo() {
+        return qFollowAccNo;
+    }
+
+    public void setqFollowAccNo(String qFollowAccNo) {
+        this.qFollowAccNo = qFollowAccNo;
     }
 
     public String getQname() {
