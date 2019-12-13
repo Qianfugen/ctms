@@ -2,6 +2,7 @@ package com.zl.controller;
 
 import com.zl.pojo.Account;
 import com.zl.pojo.Coll;
+import com.zl.pojo.FenYe;
 import com.zl.pojo.Transfer;
 import com.zl.service.CashSweepService;
 import com.zl.service.TransferService;
@@ -237,13 +238,13 @@ public class CashSweepController {
         return mv;
     }
 
-    @RequestMapping("/queryTransfers")
+    @RequestMapping("/queryTransfersByFenYe")
     @ResponseBody
-    public ModelAndView queryTransfers(String followAcc) {
+    public ModelAndView queryTransfersByFenYe(FenYe fenYe) {
         ModelAndView mv = new ModelAndView();
 
         //查询当前登录账号的归集记录
-        List<Transfer> transfers = cashSweepService.queryTransfers(followAcc);
+        List<Transfer> transfers = cashSweepService.queryTransfersByFenYe(fenYe);
 
         //如果没有查询到相关内容，显示“没有相关归集记录”；否则显示相关信息
         if(transfers==null||transfers.size()==0){

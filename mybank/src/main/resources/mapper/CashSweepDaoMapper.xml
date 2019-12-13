@@ -72,7 +72,31 @@ namespace:必须是对应接口的全路径
     <select id="queryAllCollInTable" resultMap="collMap">
         select * from T_COLL
     </select>
-    <select id="queryTransfers" parameterType="string" resultMap="transferMap">
-        select * from T_TRANSFER where ACC_OUT =#{accNo} and KIND ='归集'
+    <select id="countsTransfersByQuery" parameterType="query" resultType="int">
+        select count(*) from T_TRANSFER
+        <where>
+            and ACC_OUT =#{qAccNo} and KIND ='归集'
+            <if test="startDate!=null">
+                and deal_date>#{startDate}
+            </if>
+            <if test="endDate!=null">
+                and deal_date<![CDATA[<]]>#{endDate}
+            </if>
+        </where>
+    </select>
+    <select id="queryTransfersByFenYe" parameterType="fenYe" resultMap="transferMap">
+        select * from(
+        select tr.*,rownum r from(
+            select * from T_TRANSFER
+            <where>
+                and ACC_OUT =#{query.qAccNo} and KIND ='归集'
+                <if test="query.startDate!=null">
+                    and deal_date>#{query.startDate}
+                </if>
+                <if test="query.endDate!=null">
+                    and deal_date<![CDATA[<]]>#{query.endDate}
+                </if>
+            </where>
+        ) tr) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
     </select>
 </mapper>

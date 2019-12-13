@@ -1,8 +1,6 @@
 package com.zl.dao;
 
-import com.zl.pojo.Account;
-import com.zl.pojo.Coll;
-import com.zl.pojo.Transfer;
+import com.zl.pojo.*;
 
 import java.util.List;
 
@@ -68,15 +66,24 @@ public interface CashSweepDao {
     List<Coll> queryMainColl(String mainAcc);
 
     /**
-     * 查询归集记录
-     * @param followAcc 传入副卡的信息，以账号和交易类型作为查询条件
-     * @return 返回归集转账交易记录
+     * 查询符合条件的归集记录条数
+     * @param query 传入的查询条件
+     * @return 返回数据条数
      */
-    List<Transfer> queryTransfers(String followAcc);
+    int countsTransfersByQuery(Query query);
+
+    /**
+     * 根据查询条件分页查询归集交易记录
+     * @param fenYe 分页条件
+     * @return 返回符合分页条件的交易记录
+     */
+    List<Transfer> queryTransfersByFenYe(FenYe fenYe);
 
     /**
      * 查询库中所有的归集信息
      * @return 返回所有的归集信息
      */
     List<Coll> queryAllCollInTable();
+
+
 }

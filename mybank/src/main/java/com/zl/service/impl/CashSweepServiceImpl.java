@@ -1,9 +1,7 @@
 package com.zl.service.impl;
 
 import com.zl.dao.CashSweepDao;
-import com.zl.pojo.Account;
-import com.zl.pojo.Coll;
-import com.zl.pojo.Transfer;
+import com.zl.pojo.*;
 import com.zl.service.CashSweepService;
 import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -296,13 +294,30 @@ public class CashSweepServiceImpl implements CashSweepService {
     }
 
     /**
-     * 查询归集记录
-     * @param followAcc 传入副卡的信息，以账号和交易类型作为查询条件
-     * @return 返回归集转账交易记录
+     * 根据查询条件分页查询归集交易记录
+     * @param fenYe 分页条件
+     * @return 返回符合分页条件的交易记录
      */
     @Override
-    public List<Transfer> queryTransfers(String followAcc) {
-        return cashSweepDao.queryTransfers(followAcc);
+    public List<Transfer> queryTransfersByFenYe(FenYe fenYe) {
+        Query query = fenYe.getQuery();
+        int rowCount = cashSweepDao.countsTransfersByQuery(query);
+        fenYe.setRowCount(rowCount);
+        if(rowCount>0){
+            if(fenYe.getPage()!=null&&!"".equals(fenYe.getPage())){
+                if(fenYe.getPage()<=0){
+                    fenYe.setPage(1);
+                }
+                if(fenYe.getPage()>fenYe.getRowCount()){
+                    fenYe.setPage(fenYe.getRowCount());
+                }
+            }else {
+                fenYe.setPage(1);
+            }
+        }else {
+            fenYe.setPage(0);
+        }
+        return cashSweepDao.queryTransfersByFenYe(fenYe);
     }
 
     /**
