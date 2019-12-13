@@ -21,6 +21,14 @@ public interface TransferService {
     public void transferMoney(Transfer transfer);
 
     /**
+     * 跨境转账
+     *
+     * @param transfer 交易对象
+     * @return
+     */
+    public void transferMoneyOver(Transfer transfer);
+
+    /**
      * 写入交易记录
      *
      * @param transfer
