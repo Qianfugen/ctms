@@ -1,7 +1,9 @@
 package com.zl.service.impl;
 
 import com.zl.dao.TransferDao;
+import com.zl.pojo.Account;
 import com.zl.pojo.Transfer;
+import com.zl.pojo.User;
 import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -41,12 +43,8 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public void transferMoney(Transfer transfer) {
         //生成流水号
-        String[] uuids = UUID.randomUUID().toString().split("-");
-        StringBuffer uuid = new StringBuffer();
-        for (String str : uuids) {
-            uuid.append(str);
-        }
-        transfer.setDealNo(uuid.toString());
+        String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
+        transfer.setDealNo(dealNo);
         //设置类型kind
         transfer.setKind("转账");
         //补充交易对象信息
@@ -124,6 +122,28 @@ public class TransferServiceImpl implements TransferService {
         map.put("bankName", bankName);
         map.put("userName", userName);
         return map;
+    }
+
+    /**
+     * 根据卡号和用户名验证用户是否存在
+     *
+     * @param userName 用户名
+     * @param accNo    卡号
+     * @return
+     */
+    @Override
+    public Boolean checkUser(String userName, String accNo) {
+        User user = new User();
+        user.setUserName(userName);
+        Account account=new Account();
+        account.setAccNo(accNo);
+        user.setAccount(account);
+        user = transferDao.checkUser(user);
+        //用户存在
+        if (user != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
