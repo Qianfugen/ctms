@@ -32,13 +32,17 @@ public class Login implements Serializable {
     /**
      * 登入状态
      */
-    private Integer loginCount;
+    private String loginStatus;
     /**
      * 当天登入次数
      */
+    private Integer loginCount;
+    /**
+     * 连续登入失败次数
+     */
     private Integer loginError;
     /**
-     * 登入异常原因
+     *登入异常原因
      */
     private String loginOdd;
 }

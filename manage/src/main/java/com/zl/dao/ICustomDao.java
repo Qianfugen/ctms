@@ -1,8 +1,6 @@
 package com.zl.dao;
 
-import com.zl.pojo.FenYe;
-import com.zl.pojo.Query;
-import com.zl.pojo.User;
+import com.zl.pojo.*;
 
 import java.util.List;
 
@@ -19,17 +17,26 @@ public interface ICustomDao {
     List<User> queryAllCustom(FenYe fenYe);
 
     /**
-     * 查询符合要求的总条数
+     * 查询客户信息符合要求的总条数
      * @param query
      * @return
      */
     int queryByLike(Query query);
+    
     /**
-     * 根据卡号修改用户卡状态（冻结或启用）
+     * 根据用户ID修改用户信息
      * @param user
      * @return
      */
-    int updateCustom(User user);
+    int updateUser(User user);
+
+    /**
+     * 根据用户ID修改用户卡信息
+     * @param user
+     * @return
+     */
+    int updateAccount(User user);
+
     /**
      * 根据卡号修改用户卡状态（冻结或启用）
      * @param user
@@ -50,5 +57,47 @@ public interface ICustomDao {
      * @return
      */
     User queryCustom(String userId);
+
+    /**
+     * 查询所有交易记录
+     * @param fenYe
+     * @return
+     */
+    List<Transfer> queryAllTransfer(FenYe fenYe);
+
+    /**
+     * 查询交易记录符合要求的总条数
+     * @param query
+     * @return
+     */
+    List<Transfer> queryTransByLike(Query query);
+
+    /**
+     * 根据用户卡号查询交易记录
+     * @param accNo
+     * @return
+     */
+    List<Transfer> queryTransferByAccNo(String accNo);
+
+    /**
+     * 根据用户卡号查询登入记录
+     * @param accNo
+     * @return
+     */
+    List<Login> queryLoginByAccNo(String accNo);
+
+    /**
+     * 根据用户卡号查询登入异常记录
+     * @param accNo
+     * @return
+     */
+    List<Login> queryExLoginByAccNo(String accNo);
+
+    /**
+     * 根据用户卡号查询交易异常记录
+     * @param accNo
+     * @return
+     */
+    List<Transfer> queryExTransferByAccNo(String accNo);
 
 }
