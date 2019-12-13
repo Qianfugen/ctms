@@ -81,10 +81,10 @@
 				<b></b>
 				<div align="center">
 					<button> <a href="/cashSweep/loginAccountCollStatus">返回</a></button>&nbsp;&nbsp;&nbsp;
-					<button><a href="/cashSweep/cancelColl?followAcc=${fenYe.query.qAccNo}">解除签约</a></button>
+					<button><a href="/cashSweep/cancelColl?followAcc=${fenYe.query.qFollowAccNo}">解除签约</a></button>
 				</div>
 				<div align="center">
-					<form action="/cashSweep/queryTransfersByFenYe?query.qAccNo=${fenYe.query.qAccNo}" method="post">
+					<form action="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=${fenYe.query.qFollowAccNo}&query.qMainAccNo=${fenYe.query.qMainAccNo}" method="post">
 						转入开始时间：<input type="date" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>" />&nbsp;
 						转入结束时间：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>"/>&nbsp;
 						<input type="submit" value="点击查询" />
@@ -120,30 +120,30 @@
                         <#if fenYe.page=1||fenYe.page=0>
                             首页
                         <#else>
-                            <a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=1">首页</a>
+                            <a href="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!''}</#if>&query.qMainAccNo=${fenYe.query.qMainAccNo}&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=1">首页</a>
                         </#if>
 
                         <#if fenYe.page=1||fenYe.page=0>
                             上一页
                         <#else >
-                            <a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page-1}">上一页</a>
+                            <a href="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!''}</#if>&query.qMainAccNo=${fenYe.query.qMainAccNo}&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page-1}">上一页</a>
                         </#if>
                         <#if (fenYe.pageCount>1)>
                             <#list 1..fenYe.pageCount as i>
-                                <a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${i}">${i}</a>
+                                <a href="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!''}</#if>&query.qMainAccNo=${fenYe.query.qMainAccNo}&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${i}">${i}</a>
                             </#list>
                         </#if>
 
                         <#if fenYe.page=fenYe.pageCount||fenYe.page=0>
                             下一页
                         <#else >
-                            <a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page+1}">下一页</a>
+                            <a href="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!''}</#if>&query.qMainAccNo=${fenYe.query.qMainAccNo}&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page+1}">下一页</a>
                         </#if>
 
                         <#if fenYe.page=fenYe.pageCount||fenYe.page=0>
                             尾页
                         <#else >
-                            <a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.pageCount}">尾页</a>
+                            <a href="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!''}</#if>&query.qMainAccNo=${fenYe.query.qMainAccNo}&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.pageCount}">尾页</a>
                         </#if>
                         当前第${fenYe.page}页，共${fenYe.pageCount}页。<p>
 					</#if>

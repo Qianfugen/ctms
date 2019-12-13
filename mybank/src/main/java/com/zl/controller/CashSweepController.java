@@ -227,9 +227,13 @@ public class CashSweepController {
         //获取当前登录的账号
         Account loginAccount = (Account) session.getAttribute("loginAccount");
 
-        Query query =new Query();
-        query.setqMainAccNo(loginAccount.getAccNo());
-        fenYe.setQuery(query);
+        if(fenYe.getQuery()==null){
+            Query query=new Query();
+            query.setqMainAccNo(loginAccount.getAccNo());
+            fenYe.setQuery(query);
+        }else {
+            fenYe.getQuery().setqMainAccNo(loginAccount.getAccNo());
+        }
         //查询当前账号（主账号）的归集签约信息
         List<Coll> colls = cashSweepService.queryMainCollByFenYe(fenYe);
 

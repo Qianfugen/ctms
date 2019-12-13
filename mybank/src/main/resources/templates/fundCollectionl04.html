@@ -79,9 +79,9 @@
 				<h2 class="mbx">您的签约信息</h2>
 				<b></b>
 				<div align="center">
-					<form action="" method="post">
-						子账号：<input type="text" name="">
-						用户名   ：<input type="text" name="" />
+					<form action="/cashSweep/queryMainCollByFenYe" method="post">
+						子账号：<input type="text" name="query.qFollowAccNo" value="<#if fenYe.query??>${fenYe.query.qFollowAccNo!""}</#if>">
+						用户名   ：<input type="text" name="query.qname" value="<#if fenYe.query??>${fenYe.query.qname!""}</#if>"/>	<p></p>
 						签约开始时间：<input type="date" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>" />&nbsp;
 						签约结束时间：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>"/>&nbsp;
 						<input type="submit" value="查询" />
@@ -90,7 +90,7 @@
 				<div align="center">
 					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
 						<tr>
-							<td> 签约账号</td>
+							<td> 子账号</td>
 							<td> 用户名 </td>
 							<td> 归集金额 </td>
 							<td> 开户行 </td>
@@ -103,11 +103,42 @@
 								<td> ${coll.followUser} </td>
 								<td> ${coll.signFund}</td>
 								<td> ${coll.followBank} </td>
-								<td> <a href="/cashSweep/queryTransfersByFenYe?query.qAccNo=${coll.followAcc}">查询归集记录</a> </td>
+								<td> <a href="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=${coll.followAcc}&query.qMainAccNo=${coll.mainAcc}">查询归集记录</a> </td>
 								<td> <a href="/cashSweep/cancelColl?followAcc=${coll.followAcc}">解约</a> </td>
 							</tr>
 						</#list>
 					</table>
+					<#if (fenYe.pageCount>=2)>
+					<#if fenYe.page=1||fenYe.page=0>
+						首页
+					<#else>
+						<a href="/cashSweep/queryMainCollByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!""}</#if>&query.qname=<#if fenYe.query??>${fenYe.query.qname!""}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=1">首页</a>
+					</#if>
+
+					<#if fenYe.page=1||fenYe.page=0>
+						上一页
+					<#else >
+						<a href="/cashSweep/queryMainCollByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!""}</#if>&query.qname=<#if fenYe.query??>${fenYe.query.qname!""}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page-1}">上一页</a>
+					</#if>
+					<#if (fenYe.pageCount>1)>
+						<#list 1..fenYe.pageCount as i>
+							<a href="/cashSweep/queryMainCollByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!""}</#if>&query.qname=<#if fenYe.query??>${fenYe.query.qname!""}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${i}">${i}</a>
+						</#list>
+					</#if>
+
+					<#if fenYe.page=fenYe.pageCount||fenYe.page=0>
+						下一页
+					<#else >
+						<a href="/cashSweep/queryMainCollByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!""}</#if>&query.qname=<#if fenYe.query??>${fenYe.query.qname!""}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page+1}">下一页</a>
+					</#if>
+
+					<#if fenYe.page=fenYe.pageCount||fenYe.page=0>
+						尾页
+					<#else >
+						<a href="/cashSweep/queryMainCollByFenYe?query.qFollowAccNo=<#if fenYe.query??>${fenYe.query.qFollowAccNo!""}</#if>&query.qname=<#if fenYe.query??>${fenYe.query.qname!""}</#if>&query.startDate=<#if fenYe.query??&&fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query??&&fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.pageCount}">尾页</a>
+					</#if>
+					当前第${fenYe.page}页，共${fenYe.pageCount}页。<p>
+						</#if>
 				</div>
 			</div>
 		</div>

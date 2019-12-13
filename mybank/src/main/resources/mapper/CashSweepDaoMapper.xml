@@ -77,10 +77,10 @@ namespace:必须是对应接口的全路径
                 and FOLLOW_USER like concat('%',concat(#{qname},'%'))
             </if>
             <if test="startDate!=null">
-                and deal_date>#{startDate}
+                and sign_date>#{startDate}
             </if>
             <if test="endDate!=null">
-                and deal_date<![CDATA[<]]>#{endDate}
+                and sign_date<![CDATA[<]]>#{endDate}
             </if>
         </where>
     </select>
@@ -97,10 +97,10 @@ namespace:必须是对应接口的全路径
                 and FOLLOW_USER like concat('%',concat(#{query.qname},'%'))
             </if>
             <if test="query.startDate!=null">
-                and deal_date>#{query.startDate}
+                and sign_date>#{query.startDate}
             </if>
             <if test="query.endDate!=null">
-                and deal_date<![CDATA[<]]>#{query.endDate}
+                and sign_date<![CDATA[<]]>#{query.endDate}
             </if>
         </where>
         ) tc) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
@@ -114,7 +114,7 @@ namespace:必须是对应接口的全路径
     <select id="countsTransfersByQuery" parameterType="query" resultType="int">
         select count(*) from T_TRANSFER
         <where>
-            and ACC_OUT =#{qAccNo} and KIND ='归集'
+            and ACC_OUT =#{qFollowAccNo} and KIND ='归集' and acc_in =#{qMainAccNo}
             <if test="startDate!=null">
                 and deal_date>#{startDate}
             </if>
@@ -128,7 +128,7 @@ namespace:必须是对应接口的全路径
         select tr.*,rownum r from(
             select * from T_TRANSFER
             <where>
-                and ACC_OUT =#{query.qAccNo} and KIND ='归集'
+                and ACC_OUT =#{query.qFollowAccNo} and KIND ='归集' and acc_in =#{query.qMainAccNo}
                 <if test="query.startDate!=null">
                     and deal_date>#{query.startDate}
                 </if>
