@@ -69,37 +69,40 @@
     </script>
 </head>
 <body style="background: url(/images/Images/16sucai_P591F7B181.JPG);background-repeat: no-repeat;background-size:cover ;">
-<div class="mycenter">
-    <div class="mysign">
-        <div class="col-lg-11 text-center text-info">
-            <h2>欢迎登录网银转账系统</h2>
-        </div>
-        <div class="col-lg-10">
-            <input type="text" class="form-control" id="username" name="username" placeholder="请输入银行卡号/手机号" required
-                   autofocus/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="nameSpan"></span>
-        </div>
-        <!--输入手机号显示的发送短信按钮-->
-        <div class="col-lg-10" id="phoneDiv" style="display: none;">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="sendMessage">点击发送短信</button>
-        </div>
-        <div class="col-lg-10">
-            <input id="pwd" type="password" class="form-control" name="password" placeholder="请输入密码" required
-                   autofocus/>
-        </div>
+<form action="/user/login" method="post">
+    <div class="mycenter">
+        <div class="mysign">
+            <div class="col-lg-11 text-center text-info">
+                <h2>欢迎登录网银转账系统</h2>
+            </div>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="username" name="accNo" placeholder="请输入银行卡号/手机号" required="required"
+                       autofocus/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="nameSpan"></span>
+            </div>
+            <!--输入手机号显示的发送短信按钮-->
+            <div class="col-lg-10" id="phoneDiv" style="display: none;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="sendMessage">点击发送短信</button>
+            </div>
+            <div class="col-lg-10">
+                <input id="pwd" type="password" class="form-control" name="password" placeholder="请输入密码" required
+                       autofocus/>
+            </div>
 
-        <div class="col-lg-10"></div>
-        <div class="col-lg-10 mycheckbox checkbox">
-            <input type="checkbox" class="col-lg-1">保密协议</input>
-        </div>
-        <div class="col-lg-10"></div>
-        <div id="sub" class="col-lg-10">
-            &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12">登录</button>
-            <p>
-                &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12"><a href="/user/toRegister">注册</a>
-                </button>
+            <div class="col-lg-10"></div>
+            <div class="col-lg-10 mycheckbox checkbox">
+                <input type="checkbox" class="col-lg-1">保密协议</input>
+            </div>
+            <div class="col-lg-10"></div>
+            <div id="sub" class="col-lg-10">
+                &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12">登录</button>
+                <p>
+                    &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12"><a
+                                href="/user/toRegister">注册</a>
+                    </button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 </body>
 </html>

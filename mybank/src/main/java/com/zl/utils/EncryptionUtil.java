@@ -14,16 +14,16 @@ import java.util.Map;
 public class EncryptionUtil {
 
     /**
-     * 加密
-     * @param pwd
-     * @return 密码盐与加密密码的map
+     * 加密和密码盐
+     * @param accNo 将卡号作为密码盐
+     * @param pwd 未加密密码
+     * @return
      */
-    public Map<String,String> encryption(String pwd){
-        //生成密码盐,32位字符串
-        String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
-        String password = new Md5Hash(pwd,salt,2).toString();
+    public Map<String,String> encryption(String accNo,String pwd){
+        //卡号作为密码盐,32位字符串
+        String password = new Md5Hash(pwd,accNo,2).toString();
         Map<String,String > map = new HashMap<>();
-        map.put("salt",salt);
+        map.put("accNo",accNo);
         map.put("password",password);
         return map;
     }

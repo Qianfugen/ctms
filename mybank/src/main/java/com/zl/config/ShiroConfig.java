@@ -28,10 +28,10 @@ public class ShiroConfig {
         //filterChainDefinitionMap.put("/static/**","anon");
         //anthc:所有url都必须认证通过才可以访问
         //filterChainDefinitionMap.put("/**","authc");
-        //设置登录url
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        //设置登录提交url
+        shiroFilterFactoryBean.setLoginUrl("/user/login");
         //登录成功后跳转的url
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+        shiroFilterFactoryBean.setSuccessUrl("index");
         //未授权界面
         //shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -39,7 +39,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 凭证匹配器
+     * 匹配MD5加密后的密码
      * 密码校验给予shiro的SimpleAuthenticationInfo处理
      * @return
      */
@@ -60,8 +60,12 @@ public class ShiroConfig {
         return myRealm;
     }
 
+    /**
+     * shiro接口
+     */
     @Bean
     public SecurityManager securityManager(){
+        //SecurityManager安全管理器
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myRealm());
         return securityManager;

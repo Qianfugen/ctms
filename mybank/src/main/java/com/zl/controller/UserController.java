@@ -66,6 +66,7 @@ public class UserController {
      */
     @RequestMapping("/login")
     public ModelAndView login(@RequestParam String accNo, @RequestParam String password){
+        System.out.println("登录控制层:" +accNo+"...."+password);
         UsernamePasswordToken token = new UsernamePasswordToken(accNo, password);
         Subject subject = SecurityUtils.getSubject();
         subject.logout();

@@ -14,7 +14,6 @@ public interface UserDao {
      */
     int updateUserPwd(User user);
 
-
     /**
      * 根据卡号查用户
      */

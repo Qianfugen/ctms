@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         System.out.println("进入登录service");
         User user = ud.queryUserByAccNo(accNo);
         EncryptionUtil encryptionUtil = new EncryptionUtil();
-        Map<String, String> encrypt = encryptionUtil.encryption(password);
+        Map<String, String> encrypt = encryptionUtil.encryption(accNo, password);
         user.setUserPwd(encrypt.get("password"));
         ud.updateUserPwd(user);
         System.out.println("加密password: " + user.getUserPwd());
