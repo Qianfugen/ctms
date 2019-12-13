@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService {
     private UserDao ud;
 
 
-
     /**
      * 根据卡号查用户
+     *
      * @param accNo
      */
     @Override
@@ -60,8 +60,9 @@ public class UserServiceImpl implements UserService {
         System.out.println("进入登录service");
         User user = ud.queryUserByAccNo(accNo);
         EncryptionUtil encryptionUtil = new EncryptionUtil();
-        Map<String ,String> encrypt = encryptionUtil.encryption(password);
+        Map<String, String> encrypt = encryptionUtil.encryption(password);
         user.setUserPwd(encrypt.get("password"));
-        System.out.println("加密password"+user.getUserPwd());
+        ud.updateUserPwd(user);
+        System.out.println("加密password: " + user.getUserPwd());
     }
 }

@@ -1,103 +1,105 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+        "http://www.w3.org/TR/html4/strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>网银转账管理系统登录界面</title>
-		<link href="/css/login.css" type="text/css"  rel="stylesheet" />
-		<script type="text/javascript" src="/js/jquery.js"></script>
-		<link rel="stylesheet" href="/css/bootstrap.css" />
-		<script type="text/javascript" src="/js/bootstrap.js" ></script>
-		<script type="text/javascript">
-			$(function(){
-				//验证手机号或者银行卡号
-				$("#username").blur(function(){
-					var username=$("#username").val();
-					var cardNumber = /^[1-9][0-9]{15,19}$/;
-					var phoneNumber = /^[1-9][0-9]{10}$/;
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>网银转账管理系统登录界面</title>
+    <link href="/css/login.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //验证手机号或者银行卡号
+            $("#username").blur(function () {
+                var username = $("#username").val();
+                var cardNumber = /^[1-9][0-9]{15,19}$/;
+                var phoneNumber = /^[1-9][0-9]{10}$/;
 
-					if(phoneNumber.test(username)|| cardNumber.test(username)){
-						if(cardNumber.test(username)){
-							$("#nameSpan").html("格式正确").css({"color": "green", "font-size": "5"});
-							$("#phoneDiv").css("display","none");
-                            $("#pwd").attr("placeholder","请输入密码");
-						}
-						if(phoneNumber.test(username)){
-							$("#nameSpan").html(" ")
-							$("#phoneDiv").css("display","block");
-							$("#pwd").attr("placeholder","请输入短信验证码");
-						}
-						
-					}else{
-						$("#nameSpan").html("请输入15~18位卡号或者11位手机号码").css({"color": "red", "font-size": "5"});
-						$("#phoneDiv").css("display","none");
-					}
-				})
-				
-				//按钮的点击事件
-				$("#sendMessage").click(function(){
-	                //发送ajax请求
-	                $.ajax({
-	                    //该ajax发送请求到那个地址处理
-	                    url: "/students/regName",
-	                    //请求方式
-	                    type: "post",
-	                    //预计服务器返回的数据格式
-	                    dataType: "json",
-	                    //发送的数据(姓名和卡号)
-	                    data: {"name": $("#name").val(),"card": $("#card").val()},
-	                    /*
-	                      	  响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-	                     */
-	                    success: function (data) {
-	                        if (data.flag) {
-	                           $("#sub").attr("disabled",false);
-	                        } else {
-	                            alert("收款人或者卡号有误！！！");;
-	                        }
-	                    },
-	                    //响应失败以后执行的回调函数
-	                    error: function () {
-	                        alert("失败....");
-	                    }
-	                })
-				})
-				//按钮点击事件
-			})
-		</script>
-	</head>
-<body style="background: url(/images/Images/16sucai_P591F7B181.JPG);background-repeat: no-repeat;background-size:cover ;" >
-    <form action="####" method="post">
-        <div class="mycenter">
-            <div class="mysign">
-                <div class="col-lg-11 text-center text-info">
-                  	<h2>欢迎登录网银转账系统</h2>
-                </div>
-                <div class="col-lg-10">
-                  	<input type="text" class="form-control" id="username" name="username"  placeholder="请输入银行卡号/手机号" required autofocus/>
-                  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="nameSpan"></span>
-                </div>
-                <!--输入手机号显示的发送短信按钮-->
-                <div class="col-lg-10" id="phoneDiv" style="display: none;" >
-                	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="sendMessage" >点击发送短信</button>
-                </div>
-                <div class="col-lg-10">
-                  	<input id="pwd" type="password" class="form-control" name="password" placeholder="请输入密码" required autofocus/>
-                </div>
-                
-                <div class="col-lg-10"></div>
-                <div class="col-lg-10 mycheckbox checkbox">
-                  	<input type="checkbox" class="col-lg-1">保密协议</input>
-                </div>
-                <div class="col-lg-10"></div>
-                <div id="sub" class="col-lg-10">
-                  	&nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12">登录</button>
-                    <p>
-                    &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12"><a href="/user/toRegister">注册</a></button>
-                </div>
-            </div>
+                if (phoneNumber.test(username) || cardNumber.test(username)) {
+                    if (cardNumber.test(username)) {
+                        $("#nameSpan").html("格式正确").css({"color": "green", "font-size": "5"});
+                        $("#phoneDiv").css("display", "none");
+                        $("#pwd").attr("placeholder", "请输入密码");
+                    }
+                    if (phoneNumber.test(username)) {
+                        $("#nameSpan").html(" ")
+                        $("#phoneDiv").css("display", "block");
+                        $("#pwd").attr("placeholder", "请输入短信验证码");
+                    }
+
+                } else {
+                    $("#nameSpan").html("请输入15~18位卡号或者11位手机号码").css({"color": "red", "font-size": "5"});
+                    $("#phoneDiv").css("display", "none");
+                }
+            })
+
+            //按钮的点击事件
+            $("#sendMessage").click(function () {
+                //发送ajax请求
+                $.ajax({
+                    //该ajax发送请求到那个地址处理
+                    url: "/students/regName",
+                    //请求方式
+                    type: "post",
+                    //预计服务器返回的数据格式
+                    dataType: "json",
+                    //发送的数据(姓名和卡号)
+                    data: {"name": $("#name").val(), "card": $("#card").val()},
+                    /*
+                            响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                     */
+                    success: function (data) {
+                        if (data.flag) {
+                            $("#sub").attr("disabled", false);
+                        } else {
+                            alert("收款人或者卡号有误！！！");
+                            ;
+                        }
+                    },
+                    //响应失败以后执行的回调函数
+                    error: function () {
+                        alert("失败....");
+                    }
+                })
+            })
+            //按钮点击事件
+        })
+    </script>
+</head>
+<body style="background: url(/images/Images/16sucai_P591F7B181.JPG);background-repeat: no-repeat;background-size:cover ;">
+<div class="mycenter">
+    <div class="mysign">
+        <div class="col-lg-11 text-center text-info">
+            <h2>欢迎登录网银转账系统</h2>
         </div>
-    </form>
+        <div class="col-lg-10">
+            <input type="text" class="form-control" id="username" name="username" placeholder="请输入银行卡号/手机号" required
+                   autofocus/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="nameSpan"></span>
+        </div>
+        <!--输入手机号显示的发送短信按钮-->
+        <div class="col-lg-10" id="phoneDiv" style="display: none;">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="sendMessage">点击发送短信</button>
+        </div>
+        <div class="col-lg-10">
+            <input id="pwd" type="password" class="form-control" name="password" placeholder="请输入密码" required
+                   autofocus/>
+        </div>
+
+        <div class="col-lg-10"></div>
+        <div class="col-lg-10 mycheckbox checkbox">
+            <input type="checkbox" class="col-lg-1">保密协议</input>
+        </div>
+        <div class="col-lg-10"></div>
+        <div id="sub" class="col-lg-10">
+            &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12">登录</button>
+            <p>
+                &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12"><a href="/user/toRegister">注册</a>
+                </button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

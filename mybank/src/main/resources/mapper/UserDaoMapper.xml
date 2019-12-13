@@ -5,6 +5,9 @@
 namespace:必须是对应接口的全路径
 -->
 <mapper namespace="com.zl.dao.UserDao">
+    <update id="updateUserPwd" parameterType="user">
+        update T_USER set USER_PWD=#{userPwd} where USER_ID=#{userId}
+    </update>
     
     <select id="queryUserByAccNo" parameterType="string" resultType="user">
         select USER_ID userId,USER_NAME userName,USER_SEX userSex,USER_BIRTHDATE userBirthdate,USER_CERTNO userCertNo,
