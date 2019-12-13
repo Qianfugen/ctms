@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/payee")
 public class PayeeController {
 
-    @Autowired(required = false)
+    @Autowired
     private PayeeService ps;
     @Autowired
     private UserService us;
@@ -109,8 +109,4 @@ public class PayeeController {
         return mv;
     }
 
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
 }
