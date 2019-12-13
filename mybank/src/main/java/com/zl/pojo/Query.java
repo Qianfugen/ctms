@@ -23,35 +23,9 @@ public class Query implements Serializable {
     private String qType;
     private String qMainAccNo;
     private String qFollowAccNo;
-
-    @Override
-    public String toString() {
-        return "Query{" +
-                "qname='" + qname + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", qAccNo='" + qAccNo + '\'' +
-                ", qType='" + qType + '\'' +
-                ", qMainAccNo='" + qMainAccNo + '\'' +
-                ", qFollowAccNo='" + qFollowAccNo + '\'' +
-                '}';
-    }
-
-    public String getqMainAccNo() {
-        return qMainAccNo;
-    }
-
-    public void setqMainAccNo(String qMainAccNo) {
-        this.qMainAccNo = qMainAccNo;
-    }
-
-    public String getqFollowAccNo() {
-        return qFollowAccNo;
-    }
-
-    public void setqFollowAccNo(String qFollowAccNo) {
-        this.qFollowAccNo = qFollowAccNo;
-    }
+    private String debtor;//贷方账号
+    private String debtorName;//贷方姓名
+    private String creditorAcc;//收款人账号
 
     public String getQname() {
         return qname;
@@ -91,5 +65,61 @@ public class Query implements Serializable {
 
     public void setqType(String qType) {
         this.qType = qType;
+    }
+
+    public String getqMainAccNo() {
+        return qMainAccNo;
+    }
+
+    public void setqMainAccNo(String qMainAccNo) {
+        this.qMainAccNo = qMainAccNo;
+    }
+
+    public String getqFollowAccNo() {
+        return qFollowAccNo;
+    }
+
+    public void setqFollowAccNo(String qFollowAccNo) {
+        this.qFollowAccNo = qFollowAccNo;
+    }
+
+    public String getDebtor() {
+        return debtor;
+    }
+
+    public void setDebtor(String debtor) {
+        this.debtor = debtor;
+    }
+
+    public String getDebtorName() {
+        return debtorName;
+    }
+
+    public void setDebtorName(String debtorName) {
+        this.debtorName = debtorName;
+    }
+
+    public String getCreditorAcc() {
+        return creditorAcc;
+    }
+
+    public void setCreditorAcc(String creditorAcc) {
+        this.creditorAcc = creditorAcc;
+    }
+
+    @Override
+    public String toString() {
+        return "Query{" +
+                "qname='" + qname + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", qAccNo='" + qAccNo + '\'' +
+                ", qType='" + qType + '\'' +
+                ", qMainAccNo='" + qMainAccNo + '\'' +
+                ", qFollowAccNo='" + qFollowAccNo + '\'' +
+                ", debtor='" + debtor + '\'' +
+                ", debtorName='" + debtorName + '\'' +
+                ", creditorAcc='" + creditorAcc + '\'' +
+                '}';
     }
 }

@@ -1,10 +1,8 @@
 package com.zl.service;
 
+
 import com.zl.pojo.Paging;
-import com.zl.pojo.PayInfo;
 import com.zl.pojo.Payee;
-import com.zl.pojo.Transfer;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
