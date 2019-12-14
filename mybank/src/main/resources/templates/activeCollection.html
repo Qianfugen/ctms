@@ -31,7 +31,7 @@
         <div class="page">
             <div id="logo">
                 <a href="../Index.html">
-                    <img src="../static/images/Images/Student/logo2.png" alt="" width="48" height="48"/>
+                    <img src="/images/Images/Student/logo2.png" alt="" width="48" height="48"/>
                 </a>
             </div>
             <div class="topxx">
@@ -39,7 +39,6 @@
                 <a href="../../User/Account/ChangePasswd.html">密码修改</a>
                 <a href="/user/toLogin">安全退出</a>
             </div>
-
         </div>
     </div>
 </div>
@@ -96,25 +95,21 @@
                     <input type="submit" value="查询"/>
                 </form>
             </div>
-            <form action="#" method="get">
+            <form action="/payee/addPayInfos" method="post">
                 <div>
                     <table align="center" style="border-collapse:separate; border-spacing:0px 10px;">
                         <tr>
-                            <td>&nbsp;&nbsp;全选</td>
+                            <td>&nbsp;&nbsp;<input type="checkbox" id="allbox">全选</td>
                             <td>&nbsp;&nbsp;卡号</td>
                             <td>&nbsp;&nbsp;用户名</td>
                             <td>&nbsp;欠款金额</td>
-                            <td>&nbsp;收款金额</td>
                         </tr>
                         <#list payees as p>
                             <tr>
-                                <td>&nbsp;&nbsp;<input type="checkbox" name="debtor" value="${p.debtor}"/></td>
-                                <td>&nbsp;&nbsp;${p.debtor}  </td>
-                                <td>&nbsp;&nbsp;<input type="text" name="debtorName" value="${p.debtorName}"
-                                                       readonly="readonly"/>${p.debtorName} </td>
-                                <td>&nbsp;${p.fund}</td>
-                                <td>&nbsp;<input id="money" name="fund" value="${p.fund}" required="required"/><span
-                                            id="moneySpan"></span></td>
+                                <td>&nbsp;&nbsp;<input type="checkbox" name="id" value="${p.debtor}"/></td>
+                                <td>&nbsp;&nbsp;${p.debtor}</td>
+                                <td>&nbsp;&nbsp;${p.debtorName}</td>
+                                <td>&nbsp;&nbsp;${p.fund}</td>
                             </tr>
                         </#list>
                     </table>

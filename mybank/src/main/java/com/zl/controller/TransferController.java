@@ -26,14 +26,16 @@ public class TransferController {
     /**
      * 同行转账
      *
-     * @param transfer
      * @return
      */
     @ResponseBody
     @RequestMapping("/transferMoney")
-    public Map<String, Integer> subMoney(@RequestBody Transfer transfer) {
+    public Map<String, Integer> subMoney(Transfer transfer) {
+        transfer.setAccOut("6222305891736516103");
+        System.out.println("transfer:"+transfer);
+//        transferService.transferMoney(transfer);
+        transferService.executeJob(transfer);
         Map<String, Integer> map = new HashMap<>();
-        transferService.transferMoney(transfer);
         map.put("status", 200);
         return map;
     }
@@ -118,10 +120,31 @@ public class TransferController {
         Map<String, Boolean> map = new HashMap<>();
         Boolean flag = transferService.checkUser(userName, accNo);
         //存在返回true,不存在返回false
-        System.out.println("执行结果："+flag);
+        System.out.println("执行结果：" + flag);
         map.put("status", flag);
         return map;
     }
 
+    /**
+     * 填充用户名和账户
+     *
+     * @param accInName
+     * @param accIn
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addUser")
+    public ModelAndView addUser(@RequestParam("accInName") String accInName, @RequestParam("accIn") String accIn,
+                                @RequestParam("accInBank") String accInBank) {
+        ModelAndView mv = new ModelAndView();
+        Map<String, String> map = new HashMap<>();
+        map.put("accInName", accInName);
+        map.put("accIn", accIn);
+        map.put("accInBank", accInBank);
+        System.out.println(accInBank);
+        mv.addObject("map", map);
+        mv.setViewName("transferAccounts");
+        return mv;
+    }
 
 }

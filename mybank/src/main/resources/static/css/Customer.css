@@ -17,7 +17,7 @@ body{font-size:12px; line-height:22px;color:#333;}
 #cct2{width:467px;height:266px;position:absolute;left: -3px;top: 130px;}
 .loginbox{width:327px; height:236px; position:absolute; right:60px; top:165px;border:1px #CACACA solid;}
 .loginbox2{width:500px; position:absolute; right:60px; top:100px; border:1px #CACACA solid;}
-.drh{font-size:14px; height:35px; line-height:35px; padding-left:10px; background:url(../img/Images/Student/index/title.jpg) repeat-x;}
+.drh{font-size:14px; height:35px; line-height:35px; padding-left:10px; background:url(/images/Images/Student/index/title.jpg) repeat-x;}
 
 
 #logo{position:absolute;left:0;top:12px;}
@@ -31,14 +31,14 @@ body{font-size:12px; line-height:22px;color:#333;}
 .blog_nav ul{padding-left:10px;}
 .blog_nav ul li{float:left; text-align:center;width:90px; letter-spacing:2px; margin-right:8px; background:url(../Images/Student/sns_top_nav_bg.png) repeat-x;border:1px #6fb0e9 solid; border-bottom:none;}
 .blog_nav ul li a{color:#fff;display:block;}
-.blog_nav ul li a:hover{background:url(../img/Images/Student/nav_hover.png) repeat-x; }
-.blog_nav .hover{ background:url(../img/Images/Student/nav_hover.png) repeat-x; width:90px;}
+.blog_nav ul li a:hover{background:url(/images/Images/Student/nav_hover.png) repeat-x; }
+.blog_nav .hover{ background:url(/images/Images/Student/nav_hover.png) repeat-x; width:90px;}
 
 .box{overflow:hidden; _zoom:1;}
 .mtop{margin-top:10px;}
 .leftbox{width:140px; float:left;}
 .rightbox{ margin-left:155px; min-height:500px; _height:500px;}
-.title1{background:url(../img/Images/Student/title1.jpg) no-repeat; height:30px; line-height:30px; font-size:14px; padding-left:15px; color:#fff;}
+.title1{background:url(/images/Images/Student/title1.jpg) no-repeat; height:30px; line-height:30px; font-size:14px; padding-left:15px; color:#fff;}
 .leftnav{background:url(../img/Images/Student/bgleftli.jpg) repeat-y; padding:10px 10px 5px;}
 .lefbot{background:url(../Images/Student/bgleftbot.jpg) no-repeat; overflow:hidden; height:8px;}
 .leftnav ul li{height:20px; padding:3px 0 6px;}

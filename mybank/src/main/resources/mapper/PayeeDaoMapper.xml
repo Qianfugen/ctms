@@ -34,4 +34,9 @@ namespace:必须是对应接口的全路径
             and creditorAcc=#{creditorAcc}
         </where>
     </select>
+
+    <!--    查询payee-->
+    <select id="queryPayee" parameterType="payee" resultType="payee">
+        select * from T_PAYEE where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
+    </select>
 </mapper>

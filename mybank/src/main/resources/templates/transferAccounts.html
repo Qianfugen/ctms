@@ -40,36 +40,6 @@
             })
         });
 
-        //余额查询
-        $(function () {
-            $("#queryBalance").click(function () {
-                //余额
-                var balance=0;
-                //发送ajax请求
-                $.ajax({
-                    //该ajax发送请求到那个地址处理
-                    url: "/transfer/queryBalance",
-                    //请求方式
-                    type: "post",
-                    //预计服务器返回的数据格式
-                    dataType: "json",
-                    //发送的数据(姓名和卡号)
-                    data: {"accNo": $("#accNo").val()},
-                    /*
-                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-                     */
-                    success: function (data) {
-                        balance=data.balance;
-                        $("#balance").html(":￥"+balance.toString()+" 元").css({"color": "green", "font-size": "5"});
-                    },
-                    //响应失败以后执行的回调函数
-                    error: function () {
-                        alert("失败....");
-                    }
-                });
-
-            })
-        });
         //（境内转账）卡号的正则表达式验证
         $(function () {
             $("#accNo").blur(function () {
@@ -82,6 +52,7 @@
                 }
             })
         });
+
         //（境内转账）的ajax方法
         $(function () {
             $("#accNo").blur(function () {
@@ -108,11 +79,43 @@
                     },
                     //响应失败以后执行的回调函数
                     error: function () {
-                        alert("失败....");
+                        alert("不好意思，失败了....");
                     }
                 })
             })
         });
+
+        //余额查询
+        $(function () {
+            $("#queryBalance").click(function () {
+                //余额
+                var balance = 0;
+                //发送ajax请求
+                $.ajax({
+                    //该ajax发送请求到那个地址处理
+                    url: "/transfer/queryBalance",
+                    //请求方式
+                    type: "post",
+                    //预计服务器返回的数据格式
+                    dataType: "json",
+                    //发送的数据(姓名和卡号)
+                    data: {"accNo": $("#accNo").val()},
+                    /*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                     */
+                    success: function (data) {
+                        balance = data.balance;
+                        $("#balance").html(":￥" + balance.toString() + " 元").css({"color": "green", "font-size": "5"});
+                    },
+                    //响应失败以后执行的回调函数
+                    error: function () {
+                        alert("失败....");
+                    }
+                });
+
+            })
+        });
+
         //(跨境转账)姓名的正则表达式验证
         $(function () {
             $("#name02").blur(function () {
@@ -157,8 +160,8 @@
                         if (data.flag) {
                             $("#sub02").attr("disabled", false);
                         } else {
+                            $("#sub02").attr("disabled", true);
                             alert("收款人或者卡号有误！！！");
-                            ;
                         }
                     },
                     //响应失败以后执行的回调函数
@@ -247,11 +250,12 @@
             </div>
             <!--（境内转账）输入界面-->
             <div id="our" style="margin-top: 20px;" align="center">
-                <form action="#" method="post">
+                <form action="/transfer/transferMoney" method="post">
                     <table style="border-collapse:separate; border-spacing:0px 10px;">
                         <tr>
                             <td>收款人姓名 ：</td>
-                            <td><input id="name" type="text" required="required" value="" placeholder="支持首字母搜索收款人"
+                            <td><input id="name" type="text" required="required" value="${map.accInName!''}"
+                                       placeholder="支持首字母搜索收款人"
                                        style="width: 300px;"/></td>
                             <td>
                                 &nbsp;<!-- 按钮触发模态框 -->
@@ -268,7 +272,8 @@
                         </tr>
                         <tr>
                             <td>收款卡号 ：</td>
-                            <td><input id="accNo" type="text" required="required" value="" placeholder="18位银行卡号"
+                            <td><input id="accNo" name="accIn" type="text" required="required" value="${map.accIn!''}"
+                                       placeholder="18位银行卡号"
                                        style="width: 300px;"/></td>
                         </tr>
                         <!--正则表达式返回框-->
@@ -281,7 +286,7 @@
                             <td>收款银行 ：</td>
                             <td>
                                 <select>
-                                    <option value=""></option>
+                                    <option value="${map.accInBank!'请选择'}"></option>
                                     <option value="">工商银行</option>
                                     <option value="">中国银行</option>
                                     <option value="">农业银行</option>
@@ -294,15 +299,15 @@
                         </tr>
                         <tr>
                             <td>汇款金额 ：</td>
-                            <td><input type="text" required="required" style="width: 300px;"/></td>
-                            <td> <button id="queryBalance">余额<span id="balance"></span></button></td>
+                            <td><input type="text" name="transFund" required="required" style="width: 300px;"/></td>
+                            <td><a id="queryBalance">余额<span id="balance"></span></a></td>
                         </tr>
                         <tr>
                             <td>汇款时间 ：</td>
                             <td>
-                                <select>
-                                    <option value="">普通汇款</option>
-                                    <option value="">实时汇款</option>
+                                <select name="kind">
+                                    <option value="0">立即汇款</option>
+                                    <option value="1">2小时后汇款</option>
                                 </select>
                             </td>
                         </tr>
@@ -333,10 +338,12 @@
                                         <td>操作</td>
                                     </tr>
                                     <tr>
-                                        <td>张三</td>
-                                        <td>&nbsp;&nbsp;&nbsp;123456789012345678</td>
-                                        <td>&nbsp;&nbsp;&nbsp;中国银行</td>
-                                        <td><a href=""> 选择</a></td>
+                                        <td>&nbsp;葛盈彬</td>
+                                        <td>&nbsp;&nbsp;&nbsp;6222308239911999317</td>
+                                        <td>&nbsp;&nbsp;&nbsp;工商银行</td>
+                                        <td>
+                                            <a href="/transfer/addUser?accInName=葛盈彬&accIn=6222308239911999317&accInBank=工商银行">选择</a>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>

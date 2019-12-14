@@ -8,7 +8,7 @@ public interface JobDao {
      * @param
      * @return
      */
-    public Job getJob(String accIn);
+    public Job getJob(int id);
 
     /**
      * 设置定时任务

@@ -1,10 +1,8 @@
 package com.zl.service;
 
+
 import com.zl.pojo.Paging;
-import com.zl.pojo.PayInfo;
 import com.zl.pojo.Payee;
-import com.zl.pojo.Transfer;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,5 +17,10 @@ public interface PayeeService {
      * @return
      */
     List<Payee> queryPayeeByPaging(Paging paging);
+
+    /**
+     * 根据贷方和借方账户查询出payee
+     */
+    Payee queryPayee(Payee payee);
 
 }

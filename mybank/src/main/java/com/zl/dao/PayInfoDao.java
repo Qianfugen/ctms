@@ -2,7 +2,6 @@ package com.zl.dao;
 
 import com.zl.pojo.Paging;
 import com.zl.pojo.PayInfo;
-import com.zl.pojo.Payee;
 import com.zl.pojo.Query;
 
 import java.util.List;
@@ -26,4 +25,6 @@ public interface PayInfoDao {
      * 发送催款消息通知
      */
     int addPayInfo(PayInfo payInfo);
+
+
 }
