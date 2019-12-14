@@ -13,12 +13,23 @@ import java.util.Map;
  */
 public interface TransferService {
     /**
+     * 定时任务
+     */
+    public void executeJob(Transfer transfer);
+
+    /**
      * 同行转账
      *
      * @param transfer 交易对象
      * @return
      */
     public void transferMoney(Transfer transfer);
+
+    /**
+     * 跨境转账
+     * @param transfer
+     */
+    public void transferMoneyOver(Transfer transfer);
 
     /**
      * 写入交易记录

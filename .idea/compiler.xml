@@ -9,6 +9,7 @@
         <module name="overseas" />
         <module name="ctms" />
         <module name="mybank" />
+        <module name="redismq" />
         <module name="domestic" />
         <module name="eurekaserver" />
         <module name="manage" />
@@ -29,6 +30,7 @@
       <module name="overseas" options="-parameters" />
       <module name="ownbank" options="-parameters" />
       <module name="quartzjob" options="-parameters" />
+      <module name="redismq" options="-parameters" />
       <module name="selfbank" options="-parameters" />
     </option>
   </component>

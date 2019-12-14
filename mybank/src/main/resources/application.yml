@@ -33,5 +33,5 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.zl.pojo
   configuration:
-    jdbc-type-for-null: varchar
+    jdbc-type-for-null: null
 
