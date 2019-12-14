@@ -94,18 +94,20 @@ public class TransferServiceImpl implements TransferService {
     /**
      * 跨境转账
      *
+     * 银行自动为客户购外汇汇款
+     *
      * @param transfer 交易对象
      * @return
      */
     @Override
     public void transferMoneyOver(Transfer transfer) {
+        //汇率转换，计算账户需要扣金额
         String host = "https://ali-waihui.showapi.com";
         String path = "/waihui-transform";
         String method = "GET";
         String appcode = "937341d2258345458f648e962bfb0f81";
         String moneyCNY=null;
         Map<String, String> headers = new HashMap<String, String>();
-        //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
         headers.put("Authorization", "APPCODE " + appcode);
         Map<String, String> querys = new HashMap<String, String>();
         querys.put("fromCode", transfer.getCurrency());
@@ -121,72 +123,83 @@ public class TransferServiceImpl implements TransferService {
             e.printStackTrace();
         }
 
-        //设置转账类型为跨境转账
-        transfer.setTransType(2);
+        BigDecimal balance=queryBalance(transfer.getAccOut());
+        BigDecimal transMoney=new BigDecimal(moneyCNY);
 
+        //判断余额是否充足
+        if(balance.compareTo(transMoney)>0){
+            //添加事务管理
+            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+            def.setName("SomeTxName");
+            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+            //设置回滚点
+            TransactionStatus status = transactionManager.getTransaction(def);
+            try {
+                //生成交易流水号,32位随机不重复
+                String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
+                transfer.setDealNo(dealNo);
+                //跨境转账记录状态位处理中
+                transfer.setTransStatus("0");
+                //设置转账类型为跨境转账
+                transfer.setTransType(2);
+                transfer.setKind("跨境转账");
 
-        //收入行信息
-        String accIn = transfer.getAccIn();
-        Map<String, String> mapIn = queryBankAndUserName(accIn);
-        transfer.setAccInName(mapIn.get("userName"));
-        transfer.setAccInBank(mapIn.get("bankName"));
-        //转出行信息
-        String accOut = transfer.getAccOut();
-        Map<String, String> mapOut = queryBankAndUserName(accOut);
-        transfer.setAccOutName(mapOut.get("userName"));
-        transfer.setAccOutBank(mapOut.get("bankName"));
+                //收入行信息
+                String accIn = transfer.getAccIn();
+                Map<String, String> mapIn = queryBankAndUserName(accIn);
+                transfer.setAccInName(mapIn.get("userName"));
+                transfer.setAccInBank(mapIn.get("bankName"));
+                //转出行信息
+                String accOut = transfer.getAccOut();
+                Map<String, String> mapOut = queryBankAndUserName(accOut);
+                transfer.setAccOutName(mapOut.get("userName"));
+                transfer.setAccOutBank(mapOut.get("bankName"));
 
-        //添加事务管理
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setName("SomeTxName");
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        //设置回滚点
-        TransactionStatus status = transactionManager.getTransaction(def);
-        try {
-            String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
-            transfer.setDealNo(dealNo);
-            transfer.setTransStatus("处理中");
+                /**
+                 * 把交易记录放到Map中准备发送到消息队列
+                 */
+                Map map=new HashMap();
+                map.put("dealNo",transfer.getDealNo());
+                map.put("transType",transfer.getTransType());
+                map.put("transStatus",transfer.getTransStatus());
+                map.put("accOut",transfer.getAccOut());
+                map.put("accOutName",transfer.getAccOutName());
+                map.put("accOutBank",transfer.getAccOutBank());
+                map.put("accIn",transfer.getAccIn());
+                map.put("accInName",transfer.getAccInName());
+                map.put("accInBank",transfer.getAccInBank());
+                map.put("currency",transfer.getCurrency());
+                map.put("transFund",transfer.getTransFund());
+                map.put("kind",transfer.getKind());
 
-            /**
-             * 把交易记录放到Map中准备发送到消息队列
-             */
-            Map map=new HashMap();
-            map.put("dealNo",transfer.getDealNo());
-            map.put("transType",transfer.getTransType());
-            map.put("transStatus",transfer.getTransStatus());
-            map.put("accOut",transfer.getAccOut());
-            map.put("accOutName",transfer.getAccOutName());
-            map.put("accOutBank",transfer.getAccOutBank());
-            map.put("accIn",transfer.getAccIn());
-            map.put("accInName",transfer.getAccInName());
-            map.put("accInBank",transfer.getAccInBank());
-            map.put("currency",transfer.getCurrency());
-            map.put("transFund",transfer.getTransFund());
-            map.put("kind",transfer.getKind());
+                transfer.setCurrency("CNY");
+                transfer.setTransFund(transMoney);
+                /**
+                 * 减钱
+                 */
+                transferDao.subMoney(transfer);
 
-            transfer.setCurrency("CNY");
-            transfer.setTransFund(new BigDecimal(moneyCNY));
-            /**
-             * 减钱
-             */
-            transferDao.subMoney(transfer);
-
-            transfer.setCurrency(map.get("currency").toString());
-            transfer.setTransFund(new BigDecimal(map.get("transFund").toString()));
-            /**
-             * 写入交易记录
-             */
-            writeDeal(transfer);
-            /**
-             * 发送消息到队列
-             */
-            rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B,map);
-            System.out.println("跨境转账处理中，发送消息到境外银行。。。。");
-        } catch (Exception e) {
-            //事务回滚
-            transactionManager.rollback(status);
-            e.printStackTrace();
+                transfer.setCurrency(map.get("currency").toString());
+                transfer.setTransFund(new BigDecimal(map.get("transFund").toString()));
+                /**
+                 * 写入交易记录
+                 */
+                writeDeal(transfer);
+                /**
+                 * 发送消息到队列
+                 */
+                rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B,map);
+                System.out.println("跨境转账处理中，发送消息到境外银行。。。。");
+            } catch (Exception e) {
+                //事务回滚
+                transactionManager.rollback(status);
+                e.printStackTrace();
+            }
+        }else {
+            //余额不足。。。。
         }
+
+
     }
 
     /**
