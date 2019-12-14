@@ -14,11 +14,10 @@ public class JobServiceImpl implements JobService {
     /**
      * 获取定时任务
      *
-     * @param accIn@return
      */
     @Override
-    public Job getJob(String accIn) {
-        return jobDao.getJob(accIn);
+    public Job getJob(int id) {
+        return jobDao.getJob(id);
     }
 
     /**
@@ -29,6 +28,8 @@ public class JobServiceImpl implements JobService {
      */
     @Override
     public int setJob(Job job) {
+        System.out.println("job:"+job);
+        System.out.println("这里是jobservice");
         return jobDao.setJob(job);
     }
 }

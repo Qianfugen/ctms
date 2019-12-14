@@ -7,6 +7,8 @@
     <file type="web" url="file://$PROJECT_DIR$/mybank" />
     <file type="web" url="file://$PROJECT_DIR$/overseas" />
     <file type="web" url="file://$PROJECT_DIR$/ownbank" />
+    <file type="web" url="file://$PROJECT_DIR$/quartzjob" />
+    <file type="web" url="file://$PROJECT_DIR$/redismq" />
     <file type="web" url="file://$PROJECT_DIR$/selfbank" />
   </component>
   <component name="MavenProjectsManager">
@@ -18,6 +20,7 @@
         <option value="$PROJECT_DIR$/overseas/pom.xml" />
         <option value="$PROJECT_DIR$/manage/pom.xml" />
         <option value="$PROJECT_DIR$/mybank/pom.xml" />
+        <option value="$PROJECT_DIR$/redismq/pom.xml" />
       </list>
     </option>
   </component>

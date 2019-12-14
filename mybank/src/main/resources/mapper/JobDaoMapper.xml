@@ -3,10 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.zl.dao.JobDao">
-    <select id="getJob" parameterType="string" resultType="job">
-        select acc_in accIn, acc_out accOut, trans_fund transFund, cron cron, currency currency from T_JOB where ACC_IN=#{accIn}
+    <select id="getJob" parameterType="int" resultType="job">
+        select acc_in accIn, acc_out accOut, trans_fund transFund, cron cron, currency currency from T_JOB where ID=#{id}
     </select>
-    <insert id="setJob" parameterType="job">
-        insert into T_JOB (acc_in, acc_out, trans_fund, cron, currency) VALUES (#{accIn},#{accOut},#{transFund},#{cron},#{currency})
-    </insert>
+    <update id="setJob" parameterType="job">
+        update T_JOB set acc_in=#{accIn}, acc_out=#{accOut}, trans_fund=#{transFund}, cron=#{cron}, currency=#{currency} where ID=1
+    </update>
 </mapper>

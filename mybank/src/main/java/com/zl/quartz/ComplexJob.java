@@ -36,20 +36,28 @@ public class ComplexJob implements SchedulingConfigurer {
             @Override
             public void run() {
                 //转账
-                transfer.setAccIn(job.getAccIn());
-                transfer.setAccOut(job.getAccOut());
-                transfer.setTransFund(job.getTransFund());
-                transfer.setCurrency(job.getCurrency());
-                transferService.transferMoney(transfer);
+                if (job != null) {
+                    transfer.setAccIn(job.getAccIn());
+                    transfer.setAccOut(job.getAccOut());
+                    transfer.setTransFund(job.getTransFund());
+                    transfer.setCurrency(job.getCurrency());
+                    transferService.transferMoney(transfer);
+                }
             }
         }, new Trigger() {
             @Override
             public Date nextExecutionTime(TriggerContext triggerContext) {
+                System.out.println("定时任务触发。。。");
                 //获取定时任务
-                job = jobService.getJob("6222305657300433102");
-                String cron = job.getCron();
-                return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                job = jobService.getJob(1);
+                if (job != null) {
+                    String cron = job.getCron();
+                    System.out.println("cron表达式："+cron);
+                    return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                }
+                return null;
             }
         });
     }
+
 }
