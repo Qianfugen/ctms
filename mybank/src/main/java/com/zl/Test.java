@@ -6,6 +6,8 @@ import com.zl.service.impl.TransferServiceImpl;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 public class Test {
     public static void main(String[] args) {
@@ -29,8 +31,75 @@ public class Test {
 //        int flag=ts.addMoney(transfer);
 //        System.out.println(flag);
 
-        TransferServiceImpl ts=new TransferServiceImpl();
-        Transfer transfer=ts.queryTransferByDealNo("4D5DECCEE3DD46C396BBC2728BB53987");
-        System.out.println(transfer);
+//        TransferServiceImpl ts=new TransferServiceImpl();
+//        Transfer transfer=ts.queryTransferByDealNo("4D5DECCEE3DD46C396BBC2728BB53987");
+//        System.out.println(transfer);
+
+//        String[] uuids = null;
+//        StringBuffer uuid = new StringBuffer();
+//        long date1 = System.currentTimeMillis();
+//        for (int i = 0; i < 1000000; i++) {
+//            uuid.setLength(0);
+//            uuids = UUID.randomUUID().toString().split("-");
+//            for (String str : uuids) {
+//                uuid.append(str);
+//            }
+//        }
+//        long date2 = System.currentTimeMillis();
+//        System.out.println("使用时间" + (date2 - date1) + "ms");
+//
+//        System.out.println("******************************************");
+//
+//        char[] dest = new char[32];
+//        long date3 = System.currentTimeMillis();
+//        for (int i = 0; i < 1000000; i++) {
+//
+//            char[] src = UUID.randomUUID().toString().toCharArray();
+//            System.arraycopy(src, 0, dest, 0, 8);
+//            System.arraycopy(src, 9, dest, 8, 4);
+//            System.arraycopy(src, 14, dest, 12, 4);
+//            System.arraycopy(src, 19, dest, 16, 4);
+//            System.arraycopy(src, 24, dest, 20, 12);
+//        }
+//        long date4 = System.currentTimeMillis();
+//        System.out.println("使用时间" + (date4 - date3) + "ms");
+//
+//        System.out.println("******************************************");
+//
+//
+//        String name = null;
+//        long date5 = System.currentTimeMillis();
+//        for (int i = 0; i < 1000000; i++) {
+//            name = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
+//        }
+//        long date6 = System.currentTimeMillis();
+//        System.out.println("使用时间" + (date6 - date5) + "ms");
+
+        long currentTime = System.currentTimeMillis() ;
+        System.out.print("      当前时间:");
+        System.out.println(new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime));
+        currentTime +=120*60*1000;
+        Date date=new Date(currentTime);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyyMMddHHmmss");
+        System.out.print("2小时后时间:");
+        System.out.println(dateFormat.format(date));
+        String time=dateFormat.format(date);
+        System.out.println(time.length());
+        String year=time.substring(0,4);
+        System.out.println(year);
+        String month=time.substring(4,6);
+        System.out.println(month);
+        String day=time.substring(6,8);
+        System.out.println(day);
+        String hour=time.substring(8,10);
+        System.out.println(hour);
+        String minute=time.substring(10,12);
+        System.out.println(minute);
+        String second=time.substring(12,14);
+        System.out.println(second);
+        String cron=second+" "+minute+" "+hour+" "+day+" "+month+" ? "+year;
+        System.out.println(cron);
+
     }
 }

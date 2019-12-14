@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -25,21 +26,33 @@ public class TransferController {
     /**
      * 同行转账
      *
-     * @param transfer
      * @return
      */
     @ResponseBody
     @RequestMapping("/transferMoney")
-    public Map<String, Integer> subMoney(@RequestBody Transfer transfer) {
+    public Map<String, Integer> subMoney(Transfer transfer) {
+        transfer.setAccOut("6222305891736516103");
+        System.out.println("transfer:"+transfer);
+//        transferService.transferMoney(transfer);
+        transferService.executeJob(transfer);
         Map<String, Integer> map = new HashMap<>();
-        transferService.transferMoney(transfer);
-        map.put("status",200);
+        map.put("status", 200);
+        return map;
+    }
+
+    @RequestMapping("/transferMoneyOver")
+    @ResponseBody
+    public Map<String, Integer> transferMoneyOver(Transfer transfer) {
+        Map<String, Integer> map = new HashMap<>();
+        System.out.println("正在进行跨界转账。。。");
+        transferService.transferMoneyOver(transfer);
+        map.put("status", 200);
         return map;
     }
 
     /**
      * 查询余额
-     * 做测试用
+     *
      * @param accNo 卡号
      * @return
      */
@@ -47,26 +60,29 @@ public class TransferController {
     @RequestMapping("/queryBalance")
     public Map<String, BigDecimal> queryBalance(@RequestParam("accNo") String accNo) {
         Map<String, BigDecimal> map = new HashMap<>();
-        BigDecimal balance=transferService.queryBalance(accNo);
-        map.put("balance",balance);
+        BigDecimal balance = transferService.queryBalance(accNo);
+        map.put("balance", balance);
+        System.out.println(balance);
         return map;
     }
 
     /**
      * 根据卡号查询用户名和银行
      * 做测试用
+     *
      * @param accNo 卡号
      * @return
      */
     @ResponseBody
     @RequestMapping("/queryBankAndUserName")
-    public Map<String, String> queryBankAndUserName(@RequestParam("accNo") String accNo){
-        Map<String,String> map=transferService.queryBankAndUserName(accNo);
+    public Map<String, String> queryBankAndUserName(@RequestParam("accNo") String accNo) {
+        Map<String, String> map = transferService.queryBankAndUserName(accNo);
         return map;
     }
 
     /**
      * 根据流水号查账单信息
+     *
      * @param dealNo 流水号
      * @return
      */
@@ -79,5 +95,56 @@ public class TransferController {
         return transfer;
     }
 
+    /**
+     * 跳转到转账页面，做测试
+     *
+     * @return
+     */
+    @RequestMapping("/toTransfer")
+    public ModelAndView toTransfer() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("transferAccounts");
+        return mv;
+    }
+
+    /**
+     * 根据卡号和用户名验证用户是否存在
+     *
+     * @param userName
+     * @param accNo
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/checkUser")
+    public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
+        Map<String, Boolean> map = new HashMap<>();
+        Boolean flag = transferService.checkUser(userName, accNo);
+        //存在返回true,不存在返回false
+        System.out.println("执行结果：" + flag);
+        map.put("status", flag);
+        return map;
+    }
+
+    /**
+     * 填充用户名和账户
+     *
+     * @param accInName
+     * @param accIn
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addUser")
+    public ModelAndView addUser(@RequestParam("accInName") String accInName, @RequestParam("accIn") String accIn,
+                                @RequestParam("accInBank") String accInBank) {
+        ModelAndView mv = new ModelAndView();
+        Map<String, String> map = new HashMap<>();
+        map.put("accInName", accInName);
+        map.put("accIn", accIn);
+        map.put("accInBank", accInBank);
+        System.out.println(accInBank);
+        mv.addObject("map", map);
+        mv.setViewName("transferAccounts");
+        return mv;
+    }
 
 }

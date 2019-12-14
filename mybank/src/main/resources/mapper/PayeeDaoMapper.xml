@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:必须是对应接口的全路径
+-->
+<mapper namespace="com.zl.dao.PayeeDao">
+
+    <!--查看全部贷方记录-->
+    <select id="queryPayeeByPaging" parameterType="paging" resultType="payee">
+        select * from (select t.*,rownum r from (select * from T_PAYEE
+        <where>
+            <if test="debtor!=null and debtor!=''">
+                and debtor=#{debtor}
+            </if>
+            <if test="debtorName!=null and debtorName!=''">
+                and debtorName like concat('%',concat(#{debtorName},'%'))
+            </if>
+            and creditorAcc=#{query.creditorAcc}
+        </where>
+        ) t ) where r>#{rowStart} and r<![CDATA[<=]]>#{rowEnd}
+    </select>
+
+    <!--查询符合要求记录数-->
+    <select id="queryPayeeCount" parameterType="query" resultType="int">
+        select count(1) from T_PAYEE
+        <where>
+            <if test="debtor!=null and debtor!=''">
+                and debtor=#{debtor}
+            </if>
+            <if test="debtorName!=null and debtorName!=''">
+                and debtorName like concat('%',concat(#{debtorName},'%'))
+            </if>
+            and creditorAcc=#{creditorAcc}
+        </where>
+    </select>
+
+    <!--    查询payee-->
+    <select id="queryPayee" parameterType="payee" resultType="payee">
+        select * from T_PAYEE where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
+    </select>
+</mapper>

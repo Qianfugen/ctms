@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:必须是对应接口的全路径
+-->
+<mapper namespace="com.zl.dao.CashSweepDao">
+    <resultMap id="accountMap" type="account">
+        <result property="accNo" column="acc_no"/>
+        <result property="currType" column="curr_type"/>
+        <result property="accBankId" column="acc_bankId"/>
+        <result property="userId" column="user_id"/>
+        <result property="accStatus" column="acc_Status"/>
+        <result property="accLimit" column="acc_Limit"/>
+        <result property="accFund" column="acc_fund"/>
+        <result property="accType" column="acc_type"/>
+        <result property="accDate" column="acc_date"/>
+        <result property="accPwd" column="acc_pwd"/>
+        <result property="collStatus" column="coll_status"/>
+    </resultMap>
+    <resultMap id="collMap" type="coll">
+        <result property="collId" column="coll_id"/>
+        <result property="mainAcc" column="main_acc"/>
+        <result property="mainUser" column="main_user"/>
+        <result property="mainBank" column="main_bank"/>
+        <result property="followAcc" column="follow_acc"/>
+        <result property="followUser" column="follow_user"/>
+        <result property="followBank" column="follow_bank"/>
+        <result property="signDate" column="sign_date"/>
+        <result property="signFund" column="sign_fund"/>
+    </resultMap>
+    <resultMap id="transferMap" type="transfer">
+        <result property="dealNo" column="deal_no"/>
+        <result property="dealDate" column="deal_date"/>
+        <result property="transType" column="trans_type"/>
+        <result property="transStatus" column="transStatus"/>
+        <result property="accOut" column="acc_out"/>
+        <result property="accOutName" column="acc_outName"/>
+        <result property="accOutBank" column="acc_outBank"/>
+        <result property="accIn" column="acc_in"/>
+        <result property="accInName" column="acc_inName"/>
+        <result property="accInBank" column="acc_inBank"/>
+        <result property="currency" column="currency"/>
+        <result property="transFund" column="trans_fund"/>
+        <result property="kind" column="kind"/>
+    </resultMap>
+
+    <select id="queryAccount" parameterType="string" resultMap="accountMap">
+        select * from T_ACCOUNT where ACC_NO=#{mainAcc}
+    </select>
+    <select id="queryCollStatus" parameterType="string" resultType="string">
+        select COLL_STATUS from T_ACCOUNT where ACC_NO=#{mainAcc}
+    </select>
+    <update id="updateCollStatus" parameterType="account">
+        update T_ACCOUNT set COLL_STATUS = #{collStatus} where ACC_NO=#{accNo}
+    </update>
+    <insert id="addColl" parameterType="coll">
+        insert into T_COLL (coll_id, main_acc,MAIN_USER,MAIN_BANK, follow_acc,FOLLOW_USER,FOLLOW_BANK, sign_date, sign_fund) values (#{collId},#{mainAcc},#{mainUser},#{mainBank},#{followAcc},#{followUser},#{followBank},#{signDate},#{signFund})
+    </insert>
+    <select id="queryColl" parameterType="string" resultMap="collMap">
+        select * from T_COLL where FOLLOW_ACC=#{accNo}
+    </select>
+    <update id="updateColl" parameterType="coll">
+        update T_COLL set MAIN_ACC = #{mainAcc},SIGN_DATE =#{signDate},SIGN_FUND = #{signFund} where FOLLOW_ACC=#{followAcc}
+    </update>
+    <delete id="deleteColl" parameterType="string">
+        delete from T_COLL where FOLLOW_ACC=#{accNo}
+    </delete>
+    <select id="countsMainColl" parameterType="query" resultType="int">
+        select count(*) from T_COLL
+        <where>
+            and MAIN_ACC =#{qMainAccNo}
+            <if test="qFollowAccNo!=null">
+                and FOLLOW_ACC like concat('%',concat(#{qFollowAccNo},'%'))
+            </if>
+            <if test="qname!=null">
+                and FOLLOW_USER like concat('%',concat(#{qname},'%'))
+            </if>
+            <if test="startDate!=null">
+                and sign_date>#{startDate}
+            </if>
+            <if test="endDate!=null">
+                and sign_date<![CDATA[<]]>#{endDate}
+            </if>
+        </where>
+    </select>
+    <select id="queryMainCollByFenYe" parameterType="fenYe" resultMap="collMap">
+        select * from(
+        select tc.*,rownum r from(
+        select * from T_COLL
+        <where>
+            and MAIN_ACC =#{query.qMainAccNo}
+            <if test="query.qFollowAccNo!=null">
+                and FOLLOW_ACC like concat('%',concat(#{query.qFollowAccNo},'%'))
+            </if>
+            <if test="query.qname!=null">
+                and FOLLOW_USER like concat('%',concat(#{query.qname},'%'))
+            </if>
+            <if test="query.startDate!=null">
+                and sign_date>#{query.startDate}
+            </if>
+            <if test="query.endDate!=null">
+                and sign_date<![CDATA[<]]>#{query.endDate}
+            </if>
+        </where>
+        ) tc) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
+    </select>
+    <select id="queryMainColl" parameterType="string" resultMap="collMap">
+        select * from T_COLL where MAIN_ACC=#{mainAcc}
+    </select>
+    <select id="queryAllCollInTable" resultMap="collMap">
+        select * from T_COLL
+    </select>
+    <select id="countsTransfersByQuery" parameterType="query" resultType="int">
+        select count(*) from T_TRANSFER
+        <where>
+            and ACC_OUT =#{qFollowAccNo} and KIND ='归集' and acc_in =#{qMainAccNo}
+            <if test="startDate!=null">
+                and deal_date>#{startDate}
+            </if>
+            <if test="endDate!=null">
+                and deal_date<![CDATA[<]]>#{endDate}
+            </if>
+        </where>
+    </select>
+    <select id="queryTransfersByFenYe" parameterType="fenYe" resultMap="transferMap">
+        select * from(
+        select tr.*,rownum r from(
+            select * from T_TRANSFER
+            <where>
+                and ACC_OUT =#{query.qFollowAccNo} and KIND ='归集' and acc_in =#{query.qMainAccNo}
+                <if test="query.startDate!=null">
+                    and deal_date>#{query.startDate}
+                </if>
+                <if test="query.endDate!=null">
+                    and deal_date<![CDATA[<]]>#{query.endDate}
+                </if>
+            </where>
+        ) tr) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
+    </select>
+</mapper>
