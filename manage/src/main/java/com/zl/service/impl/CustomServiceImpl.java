@@ -1,10 +1,7 @@
 package com.zl.service.impl;
 
 import com.zl.dao.ICustomDao;
-import com.zl.pojo.FenYe;
-import com.zl.pojo.Login;
-import com.zl.pojo.Transfer;
-import com.zl.pojo.User;
+import com.zl.pojo.*;
 import com.zl.service.ICustomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +62,9 @@ public class CustomServiceImpl implements ICustomService {
     @Override
     public List<Transfer> queryAllTransfer(FenYe fenYe) {
         fenYe.setRowCount(cd.queryTransByLike(fenYe.getQuery()).size());
+        if (fenYe.getRowCount()==0){
+            return null;
+        }
         if (fenYe.getPage()!=null){
             if (fenYe.getPage()<1){
                 fenYe.setPage(1);
@@ -83,8 +83,26 @@ public class CustomServiceImpl implements ICustomService {
     }
 
     @Override
-    public List<Login> queryLoginByAccNo(String accNo) {
-        return cd.queryLoginByAccNo(accNo);
+    public List<Login> queryLoginByAccNo(FenYe fenYe) {
+        fenYe.setRowCount(cd.queryLoginByLike(fenYe.getQuery()).size());
+        if (fenYe.getRowCount()==0){
+            return null;
+        }
+        if (fenYe.getPage()!=null){
+            if (fenYe.getPage()<1){
+                fenYe.setPage(1);
+            }else if (fenYe.getPage()>fenYe.getPageCount()){
+                fenYe.setPage(fenYe.getPageCount());
+            }
+        }else {
+            fenYe.setPage(1);
+        }
+        return cd.queryLoginByAccNo(fenYe);
+    }
+
+    @Override
+    public List<Login> queryLoginByLike(Query query) {
+        return cd.queryLoginByLike(query);
     }
 
     @Override

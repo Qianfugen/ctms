@@ -60,40 +60,85 @@
 				<h2 class="mbx">用户交易记录</h2>
 				<b></b>
 				<div align="center">
-					<button><h5><a href="">账户信息</a></h5></button>
-					<button disabled="disabled"><h5><a href="/custom/toCustomRecord?accNo=${accNo!""}">交易记录</a></h5></button>
-					<button><h5><a href="/custom/toCustomLogin?accNo=${accNo!""}">登录记录</a></h5></button>
-					<button><h5><a href="/custom/toCustomLogException?accNo=${accNo!""}">异常记录</a></h5></button>
+					<button><h5><a href="/custom/toInformation?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>">账户信息</a></h5></button>
+					<button disabled="disabled"><h5><a href="/custom/toCustomRecord?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>">交易记录</a></h5></button>
+					<button><h5><a href="/custom/toCustomLogin?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>">登录记录</a></h5></button>
+					<button><h5><a href="/custom/toCustomLogException?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>">异常记录</a></h5></button>
 				</div>
 				<p> </p>
 				<div align="center">
-					<form action="" method="get">
-						开始日期 ： <input type="text" name="" />
-						交易日期： <input type="text" name="" />
-						状态： <input type="text" name="" />
-						<input type="submit"   value="查询"/>
+					<form action="/custom/toCustomRecord" method="post">
+						<p>
+							起始日期：<input type="date" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>"/>
+							结束日期：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>"/>
+						</p>
+						<p>
+							卡号：<input type="text" name="query.qAccNo" value="<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>" readonly="readonly"/>
+							状态：
+							<select name="query.qType">
+								<option value="">请选择</option>
+								<option value="成功" <#if fenYe.query??&&fenYe.query.qType='成功'>selected="selected"</#if>>已成功订单</option>
+								<option value="失败" <#if fenYe.query??&&fenYe.query.qType='失败'>selected="selected"</#if>>失败订单</option>
+								<option value="待处理" <#if fenYe.query??&&fenYe.query.qType='待处理'>selected="selected"</#if>>待处理订单</option>
+							</select>
+							<input type="submit"   value="查询"/>
+						</p>
 					</form>
 				</div>
 				<p> </p>
 				<div align="center">
-					<form action="" method="get">
-						<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
-						<tr>
-							<td> 序号</td>
-							<td> 转入账号</td>
-							<td> 转入用户名 </td>
-							<td> 转出账号</td>
-							<td> 转出用户名 </td>
-							<td> 交易金额 </td>
-							<td> 交易时间</td>
-							<td> 交易类型 </td>
-							<td> 交易状态 </td>
-							<td> 币种 </td>
-							<td> 流水号 </td>
-						</tr>
-						
-					</table>
+					<form action="" method="post">
+						<table class="table table-hover" style="border-collapse: separate; border: solid 1px;">
+							<tr class="active">
+								<td width="44">序号</td>
+								<td>转入账号</td>
+								<td width="75">银行归属</td>
+								<td width="75">转入用户</td>
+								<td>转出账号</td>
+								<td width="75">银行归属</td>
+								<td width="75">转出用户</td>
+								<td width="75">交易金额</td>
+								<td width="101">交易时间</td>
+								<td width="44">交易类型</td>
+								<td>交易状态</td>
+								<td width="58">币种</td>
+								<td width="44">业务类型</td>
+								<td>流水号</td>
+							</tr>
+							<#list transfers as n>
+								<tr>
+									<td>${n_index!""}</td>
+									<td>${n.accIn!""}</td>
+									<td>${n.accInBank!""}</td>
+									<td>${n.accInName!""}</td>
+									<td>${n.accOut!""}</td>
+									<td>${n.accOutBank!""}</td>
+									<td>${n.accOutName!""}</td>
+									<td>${n.transFund!""}</td>
+									<td><#if n.dealDate??>${n.dealDate?string('yyyy-MM-dd HH-MM-ss')}</#if></td>
+									<td><#if n.transType=='1'>跨行</#if><#if n.transType=='2'>跨境</#if><#if n.transType=='0'>同行</#if></td>
+									<td>${n.transStatus!""}</td>
+									<td>${n.currency!""}</td>
+									<td>${n.kind!""}</td>
+									<td>${n.dealNo!""}</td>
+								</tr>
+							</#list>
+
+						</table>
 					</form>
+					<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=1">首页</a>
+					<#if fenYe.page<=1>
+						上一页
+					<#else>
+						<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page-1}">上一页</a>
+					</#if>
+					<#if fenYe.page=fenYe.pageCount || fenYe.pageCount=0>
+						下一页
+					<#else>
+						<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page+1}">下一页</a>
+					</#if>
+					<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.pageCount}">尾页</a>
+					&nbsp;	当前第${fenYe.page}页&nbsp;共${fenYe.pageCount}页
 					<p> </p>
 				</div>
 				

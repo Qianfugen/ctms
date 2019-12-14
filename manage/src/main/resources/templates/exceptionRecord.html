@@ -11,25 +11,29 @@
 <script src="/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(function(){
-		var mess=$("message").val();
-		if("登入异常".equals(mess)){
+		var mess=$("#mess").html();
+		if("登入异常"==mess){
 			$("#loginException").attr("disabled",true)
 			$("#transferException").attr("disabled",false)
 			$("#loginException01").css("display","block")
 			$("#transferException01").css("display","none")
-		}
+		};
 
-		if("交易异常".equals(mess)){
+		if("交易异常"==mess){
 			$("#transferException").attr("disabled",true)
 			$("#loginException").attr("disabled",false)
 			$("#loginException01").css("display","none"),
 					$("#transferException01").css("display","block")
-		}
-	});
+		};
+		if ($("#message").html()!=null&&$("#message").html()!=""){
+			alert($("#message").html());
+		};
+	})
 </script>
 </head>
 <body>
-
+<div id="mess" style="display: none">${mess!""}</div>
+<div id="message" style="display: none">${message!""}</div>
 	<div class="banner">
 		<div class="bgh">
 			<div class="page">
@@ -75,7 +79,7 @@
 				<h2 class="mbx">异常记录</h2>
 				<b></b>
 				<div align="center">
-					<button><h5><a href="">账户信息</a></h5></button>
+					<button><h5><a href="/custom/toInformation?accNo=${accNo!""}">账户信息</a></h5></button>
 					<button><h5><a href="/custom/toCustomRecord?accNo=${accNo!""}">交易记录</a></h5></button>
 					<button><h5><a href="/custom/toCustomLogin?accNo=${accNo!""}">登录记录</a></h5></button>
 					<button disabled="disabled"><h5><a href="/custom/toCustomLogException?accNo=${accNo!""}">异常记录</a></h5></button>
@@ -89,13 +93,29 @@
 				<!--登录异常div-->
 				<div id="loginException01" style="display: none;" align="center">
 					
-					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
-						<tr>
-							<td> 登录ip </td>
-							<td> 登录地点 </td>
-							<td> 登录时间 </td>
+					<table class="table table-hover" style=" width: 800px; border-collapse: separate; border: solid 2px;">
+						<tr class="active">
+							<td> 序号</td>
+							<td> 主机名</td>
+							<td> 登入ip </td>
+							<td> 登入时间 </td>
+							<td> 登入状态</td>
+							<td> 当天登次</td>
+							<td> 连续登入错误数</td>
 							<td> 原因 </td>
 						</tr>
+						<#list loginList as n>
+							<tr>
+								<td>${n_index!""}</td>
+								<td>${n.hostName!""}</td>
+								<td>${n.loginIp!""}</td>
+								<td><#if n.loginTime??>${n.loginTime?string('yyyy-MM-dd HH-mm-ss')}</#if></td>
+								<td>${n.loginStatus!""}</td>
+								<td>${n.loginCount!""}</td>
+								<td>${n.loginError!""}</td>
+								<td>${n.loginOdd!""}</td>
+							</tr>
+						</#list>
 						
 					</table>
 				</div>
@@ -104,21 +124,41 @@
 				<!--转账异常div-->
 				<div id="transferException01" style="display: none;" align="center">
 					
-					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
-						<tr>
-							<td> 序号</td>
-							<td> 转入账号</td>
-							<td> 转入用户名 </td>
-							<td> 转出账号</td>
-							<td> 转出用户名 </td>
-							<td> 交易金额 </td>
-							<td> 交易时间</td>
-							<td> 交易类型 </td>
-							<td> 交易状态 </td>
-							<td> 币种 </td>
-							<td> 流水号 </td>
-							<td> 原因 </td>
+					<table class="table table-hover" style="border-collapse: separate; border: solid 1px;">
+						<tr class="active">
+							<td width="44">序号</td>
+							<td>转入账号</td>
+							<td width="75">银行归属</td>
+							<td width="75">转入用户</td>
+							<td>转出账号</td>
+							<td width="75">银行归属</td>
+							<td width="75">转出用户</td>
+							<td width="75">交易金额</td>
+							<td width="101">交易时间</td>
+							<td width="44">交易类型</td>
+							<td>交易状态</td>
+							<td width="58">币种</td>
+							<td width="44">业务类型</td>
+							<td>流水号</td>
 						</tr>
+						<#list transList as n>
+							<tr>
+								<td>${n_index!""}</td>
+								<td>${n.accIn!""}</td>
+								<td>${n.accInBank!""}</td>
+								<td>${n.accInName!""}</td>ACC_OUT
+								<td>${n.accOut!""}</td>
+								<td>${n.accOutBank!""}</td>
+								<td>${n.accOutName!""}</td>
+								<td>${n.transFund!""}</td>
+								<td><#if n.dealDate??>${n.dealDate?string('yyyy-MM-dd HH-mm-ss')}</#if></td>
+								<td><#if n.transType=='1'>跨行</#if><#if n.transType=='2'>跨境</#if><#if n.transType=='0'>同行</#if></td>
+								<td>${n.transStatus!""}</td>
+								<td>${n.currency!""}</td>
+								<td>${n.kind!""}</td>
+								<td>${n.dealNo!""}</td>
+							</tr>
+						</#list>
 						
 					</table>
 				</div>

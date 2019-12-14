@@ -45,4 +45,96 @@ public class Login implements Serializable {
      *登入异常原因
      */
     private String loginOdd;
+
+    /**
+     * 登入主机名
+     */
+    private String hostName;
+
+    @Override
+    public String toString() {
+        return "Login{" +
+                "accNO='" + accNO + '\'' +
+                ", loginTime=" + loginTime +
+                ", loginAdd='" + loginAdd + '\'' +
+                ", loginIp='" + loginIp + '\'' +
+                ", loginStatus='" + loginStatus + '\'' +
+                ", loginCount=" + loginCount +
+                ", loginError=" + loginError +
+                ", loginOdd='" + loginOdd + '\'' +
+                ", hostName='" + hostName + '\'' +
+                '}';
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
+
+    public String getAccNO() {
+        return accNO;
+    }
+
+    public void setAccNO(String accNO) {
+        this.accNO = accNO;
+    }
+
+    public Date getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public String getLoginAdd() {
+        return loginAdd;
+    }
+
+    public void setLoginAdd(String loginAdd) {
+        this.loginAdd = loginAdd;
+    }
+
+    public String getLoginIp() {
+        return loginIp;
+    }
+
+    public void setLoginIp(String loginIp) {
+        this.loginIp = loginIp;
+    }
+
+    public String getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(String loginStatus) {
+        this.loginStatus = loginStatus;
+    }
+
+    public Integer getLoginCount() {
+        return loginCount;
+    }
+
+    public void setLoginCount(Integer loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    public Integer getLoginError() {
+        return loginError;
+    }
+
+    public void setLoginError(Integer loginError) {
+        this.loginError = loginError;
+    }
+
+    public String getLoginOdd() {
+        return loginOdd;
+    }
+
+    public void setLoginOdd(String loginOdd) {
+        this.loginOdd = loginOdd;
+    }
 }

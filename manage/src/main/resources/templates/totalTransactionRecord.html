@@ -66,7 +66,7 @@
 							结束日期：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>"/>
 						</p>
 						<p>
-							卡号：<input type="text" name="query.accNo" value="<#if fenYe.query??>${fenYe.query.accNo!''}</#if>"/>
+							卡号：<input type="text" name="query.qAccNo" value="<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>"/>
 							状态：
 							<select name="query.qType">
 								<option value="">请选择</option>
@@ -81,22 +81,22 @@
 				<p> </p>
 				<div align="center">
 					<form action="" method="post">
-						<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
-						<tr>
-							<td> 序号</td>
-							<td> 转入账号</td>
-							<td> 银行归属 </td>
-							<td> 转入用户名 </td>
-							<td> 转出账号</td>
-							<td> 银行归属 </td>
-							<td> 转出用户名 </td>
-							<td> 交易金额 </td>
-							<td> 交易时间</td>
-							<td> 交易类型 </td>
-							<td> 交易状态 </td>
-							<td> 币种 </td>
-							<td> 业务类型 </td>
-							<td> 流水号 </td>
+					<table class="table table-hover" style="border-collapse: separate; border: solid 1px;">
+						<tr class="active">
+							<td width="44">序号</td>
+							<td>转入账号</td>
+							<td width="75">银行归属</td>
+							<td width="75">转入用户</td>
+							<td>转出账号</td>
+							<td width="75">银行归属</td>
+							<td width="75">转出用户</td>
+							<td width="75">交易金额</td>
+							<td width="101">交易时间</td>
+							<td width="44">交易类型</td>
+							<td>交易状态</td>
+							<td width="58">币种</td>
+							<td width="44">业务类型</td>
+							<td>流水号</td>
 						</tr>
 						<#list transfers as n>
 							<tr>
@@ -108,7 +108,7 @@
 								<td>${n.accOutBank}</td>
 								<td>${n.accOutName}</td>
 								<td>${n.transFund}</td>
-								<td>${n.dealDate?string('yyyy-MM-dd')}</td>
+								<td><#if n.dealDate??>${n.dealDate?string('yyyy-MM-dd HH-mm-ss')}</#if></td>
 								<td><#if n.transType=='1'>跨行</#if><#if n.transType=='2'>跨境</#if><#if n.transType=='0'>同行</#if></td>
 								<td>${n.transStatus}</td>
 								<td>${n.currency}</td>

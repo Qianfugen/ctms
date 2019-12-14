@@ -60,34 +60,73 @@
 				<h2 class="mbx">登录记录</h2>
 				<b></b>
 				<div align="center">
-					<button><h5><a href="">账户信息</a></h5></button>
-					<button><h5><a href="/custom/toCustomRecord?accNo=${accNo!""}">交易记录</a></h5></button>
-					<button disabled="disabled"><h5><a href="/custom/toCustomLogin?accNo=${accNo!""}">登录记录</a></h5></button>
-					<button><h5><a href="/custom/toCustomLogException?accNo=${accNo!""}">异常记录</a></h5></button>
+					<button><h5><a href="/custom/toInformation?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>">账户信息</a></h5></button>
+					<button><h5><a href="/custom/toCustomRecord?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>">交易记录</a></h5></button>
+					<button disabled="disabled"><h5><a href="/custom/toCustomLogin?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>}">登录记录</a></h5></button>
+					<button><h5><a href="/custom/toCustomLogException?accNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>">异常记录</a></h5></button>
 				</div>
 				<p> </p>
 				<div align="center">
-					<form action="" method="get">
-						开始日期 ： <input type="text" name="" />
-						结束日期： <input type="text" name="" />
-						登录状态： <input type="text" name="" />
-						<input type="submit"   value="查询"/>
+					<form action="/custom/toCustomLogin" method="post">
+						<p>
+							起始日期：<input type="date" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>"/>
+							结束日期：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>"/>
+						</p>
+						<p>
+							卡号：<input type="text" name="query.qAccNo" value="<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>" readonly="readonly"/>
+							状态：
+							<select name="query.qType">
+								<option value="">请选择</option>
+								<option value="成功" <#if fenYe.query??&&fenYe.query.qType='成功'>selected="selected"</#if>>登入成功</option>
+								<option value="失败" <#if fenYe.query??&&fenYe.query.qType='失败'>selected="selected"</#if>>登入失败</option>
+							</select>
+							<input type="submit"   value="查询"/>
+						</p>
 					</form>
 				</div>
 				<p> </p>
 				<div align="center">
-						<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
-						<tr>
-							<td> 主机名</td>
-							<td> 登录ip</td>
-							<td> 登录时间 </td>
-							<td> 登录状态</td>
-						</tr>
+					<form action="" method="post">
+						<table class="table table-hover" style=" width: 700px; border-collapse: separate; border: solid 2px;">
+							<tr class="active">
+								<td> 序号</td>
+								<td> 主机名</td>
+								<td> 登入ip </td>
+								<td> 登入时间 </td>
+								<td> 登入状态</td>
+								<td> 当天登入次数</td>
+								<td> 连续登入错误次数</td>
 
-					</table>
+							</tr>
+							<#list loginList as n>
+								<tr>
+									<td>${n_index!""}</td>
+									<td>${n.hostName!""}</td>
+									<td>${n.loginIp!""}</td>
+									<td><#if n.loginTime??>${n.loginTime?string('yyyy-MM-dd HH-mm-ss')}</#if></td>
+									<td>${n.loginStatus!""}</td>
+									<td>${n.loginCount!""}</td>
+									<td>${n.loginError!""}</td>
+								</tr>
+							</#list>
+
+						</table>
+					</form>
+					<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=1">首页</a>
+					<#if fenYe.page<=1>
+						上一页
+					<#else>
+						<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page-1}">上一页</a>
+					</#if>
+					<#if fenYe.page=fenYe.pageCount || fenYe.pageCount=0>
+						下一页
+					<#else>
+						<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page+1}">下一页</a>
+					</#if>
+					<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.pageCount}">尾页</a>
+					&nbsp;	当前第${fenYe.page}页&nbsp;共${fenYe.pageCount}页
 					<p> </p>
 				</div>
-				
 				
 			</div>
 		</div>

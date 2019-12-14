@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zl.dao.ICustomDao">
+<!--    登入记录表字段映射文件-->
+    <resultMap id="allLogin" type="com.zl.pojo.Login">
+        <result property="accNO" column="ACC_NO"></result>
+        <result property="loginTime" column="LOGIN_TIME"></result>
+        <result property="loginAdd" column="LOGIN_ADD"></result>
+        <result property="loginIp" column="LOGIN_IP"></result>
+        <result property="loginStatus" column="LOGIN_STATUS"></result>
+        <result property="loginCount" column="LOGIN_COUNT"></result>
+        <result property="loginError" column="LOGIN_ERROR"></result>
+        <result property="loginOdd" column="LOGIN_ODD"></result>
+        <result property="hostName" column="HOSTNAME"></result>
+    </resultMap>
 <!--    交易记录表字段映射文件-->
     <resultMap id="allTransFor" type="com.zl.pojo.Transfer">
         <id column="DEAL_NO" property="dealNo"></id>
@@ -100,7 +112,7 @@
 </delete>
 <!--    根据用户ID查询用户详细信息-->
     <select id="queryCustom" parameterType="string" resultMap="userCustom">
-        select * from CUSTOM where USER_ID=#{userId}
+        select * from CUSTOM where ACC_NO=#{userId}
 </select>
 <!--    分页条件查询所有交易信息-->
     <select id="queryAllTransfer" parameterType="com.zl.pojo.FenYe" resultMap="allTransFor">
@@ -120,7 +132,16 @@
                     and DEAL_DATE<![CDATA[<]]>#{query.endDate}
                 </if>
                 <if test="query.qAccNo!=null and query.qAccNo!=''">
-                    and ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
+                    and ACC_IN=#{query.qAccNo,jdbcType=VARCHAR} or ACC_OUT=#{query.qAccNo,jdbcType=VARCHAR}
+                    <if test="query.qType!=null and query.qType!=''">
+                    and TRANS_STATUS=#{query.qType}
+                    </if>
+                    <if test="query.startDate!=null">
+                        and DEAL_DATE>#{query.startDate}
+                    </if>
+                    <if test="query.endDate!=null">
+                        and DEAL_DATE<![CDATA[<]]>#{query.endDate}
+                    </if>
                 </if>
             </if>
         </where>
@@ -141,25 +162,77 @@
                 and DEAL_DATE<![CDATA[<]]>#{endDate}
             </if>
             <if test="qAccNo!=null and qAccNo!=''">
-                and ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
+                and ACC_IN=#{qAccNo,jdbcType=VARCHAR} or ACC_OUT=#{qAccNo,jdbcType=VARCHAR}
+                <if test="qType!=null and qType!=''">
+                    and TRANS_STATUS=#{qType}
+                </if>
+                <if test="startDate!=null">
+                    and DEAL_DATE>#{startDate}
+                </if>
+                <if test="endDate!=null">
+                    and DEAL_DATE<![CDATA[<]]>#{endDate}
+                </if>
             </if>
         </where>
         ) where rownum between 1 and 100
     </select>
 <!--    根据银行卡查询用户交易信息-->
-    <select id="queryTransferByAccNo" resultType="com.zl.pojo.Transfer" parameterType="string">
+    <select id="queryTransferByAccNo" resultMap="allTransFor" parameterType="string">
         select * from T_TRANSFER where ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
     </select>
-<!--    根据银行卡查询登入信息-->
-    <select id="queryLoginByAccNo" resultType="com.zl.pojo.Login" parameterType="string">
-        select * from T_LOGIN where ACC_NO=#{accNo,jdbcType=VARCHAR}
+<!--    根据银行卡分页查询登入信息-->
+    <select id="queryLoginByAccNo" resultMap="allLogin" parameterType="com.zl.pojo.FenYe">
+        select * from(
+        select e.*,ROWNUM r from(
+        select * from(
+        select * from T_LOGIN
+        <where>
+            <if test="query!=null">
+                <if test="query.qAccNo!=null and query.qAccNo!=''">
+                    and ACC_NO=#{query.qAccNo,jdbcType=VARCHAR}
+                </if>
+                <if test="query.qType!=null and query.qType!=''">
+                    and LOGIN_STATUS=#{query.qType}
+                </if>
+                <if test="query.startDate!=null">
+                    and LOGIN_TIME>#{query.startDate}
+                </if>
+                <if test="query.endDate!=null">
+                    and LOGIN_TIME<![CDATA[<]]>#{query.endDate}
+                </if>
+
+            </if>
+        </where>
+        ) where ROWNUM between 1 and 100) e) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
     </select>
 <!--    根据银行卡查询用户登入异常信息-->
-    <select id="queryExLoginByAccNo" resultType="com.zl.pojo.Login" parameterType="string">
+    <select id="queryExLoginByAccNo" resultMap="allLogin" parameterType="string">
         select * from T_LOGIN where ACC_NO=#{accNo,jdbcType=VARCHAR} and LOGIN_STATUS='失败'
     </select>
 <!--    根据银行卡号查询用户交易异常信息-->
-    <select id="queryExTransferByAccNo" resultType="com.zl.pojo.Transfer" parameterType="string">
-        select * from T_TRANSFER where TRANS_STATUS='失败' and ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
+    <select id="queryExTransferByAccNo" resultMap="allTransFor" parameterType="string">
+    select * from(
+        select * from T_TRANSFER where ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
+        )where TRANS_STATUS='失败'
+    </select>
+<!--    根据用户条件查询登入总条数-->
+    <select id="queryLoginByLike" resultMap="allLogin" parameterType="com.zl.pojo.Query">
+        select * from(
+        select * from T_LOGIN
+        <where>
+            <if test="qAccNo!=null and qAccNo!=''">
+                and ACC_NO=#{qAccNo,jdbcType=VARCHAR}
+            </if>
+            <if test="qType!=null and qType!=''">
+                and LOGIN_STATUS=#{qType}
+            </if>
+            <if test="startDate!=null">
+                and LOGIN_TIME>#{startDate}
+            </if>
+            <if test="endDate!=null">
+                and LOGIN_TIME<![CDATA[<]]>#{endDate}
+            </if>
+        </where>
+        ) where rownum between 1 and 100
     </select>
 </mapper>

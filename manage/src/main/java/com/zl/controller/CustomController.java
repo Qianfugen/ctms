@@ -56,9 +56,9 @@ public class CustomController {
     }
 
     @RequestMapping("/toInformation")
-    public ModelAndView toInformation(String userId){
+    public ModelAndView toInformation(String accNo){
         ModelAndView mv=new ModelAndView();
-        User user=cs.queryCustom(userId);
+        User user=cs.queryCustom(accNo);
         System.out.println(user+"******************进入用户详情信息界面***************");
         mv.addObject("user",user);
         mv.setViewName("userDetails");
@@ -81,25 +81,39 @@ public class CustomController {
         return mv;
     }
     @RequestMapping("/toCustomRecord")
-    public ModelAndView toCustomRecord(@RequestParam("accNo") String accNo){
+    public ModelAndView toCustomRecord(FenYe fenYe,String accNo){
         ModelAndView mv=new ModelAndView();
-        User user=cs.queryCustom(accNo);
-        System.out.println(user+"******************进入用户交易信息界面***************");
-        mv.addObject("user",user);
+        if (accNo!=null&&!"".equals(accNo)){
+            Query query=new Query();
+            query.setqAccNo(accNo);
+            fenYe.setQuery(query);
+        }
+        System.out.println(fenYe+"******************进入用户交易信息界面***************");
+        List<Transfer> transfers=cs.queryAllTransfer(fenYe);
+        if (transfers!=null){
+            mv.addObject("transfers",transfers);
+        }else {
+            mv.addObject("message","该用户暂无交易记录");
+        }
+
         mv.setViewName("transactionRecord");
         return mv;
     }
     @RequestMapping("/toCustomLogin")
-    public ModelAndView toCustomLogin(String accNo){
+    public ModelAndView toCustomLogin(FenYe fenYe,String accNo){
         ModelAndView mv=new ModelAndView();
-        List<Login> loginList = cs.queryLoginByAccNo(accNo);
+        if (accNo!=null&&!"".equals(accNo)){
+            Query query=new Query();
+            query.setqAccNo(accNo);
+            fenYe.setQuery(query);
+        }
+        List<Login> loginList = cs.queryLoginByAccNo(fenYe);
         System.out.println(loginList+"******************进入用户登入记录信息界面***************");
         if (loginList!=null){
             mv.addObject("loginList",loginList);
         }else {
-            mv.addObject("message","该用户暂无登入异常记录");
+            mv.addObject("message","该用户暂无登入记录");
         }
-        mv.addObject("accNo",accNo);
         mv.setViewName("loginRecord");
         return mv;
     }
@@ -114,20 +128,22 @@ public class CustomController {
             mv.addObject("message","该用户暂无登入异常信息");
         }
         mv.addObject("accNo",accNo);
+        mv.addObject("mess","登入异常");
         mv.setViewName("exceptionRecord");
         return mv;
     }
     @RequestMapping("/toCustomTranException")
     public ModelAndView toCustomTranException(String accNo){
         ModelAndView mv=new ModelAndView();
-        List<Transfer> TransList = cs.queryExTransferByAccNo(accNo);
-        System.out.println(TransList+"******************进入用户交易异常信息信息界面***************");
-        if(TransList!=null){
-            mv.addObject("TransList",TransList);
+        List<Transfer> transList = cs.queryExTransferByAccNo(accNo);
+        System.out.println(transList+"******************进入用户交易异常信息信息界面***************");
+        if(transList!=null){
+            mv.addObject("transList",transList);
         }else {
             mv.addObject("message","该用户暂无交易异常信息");
         }
         mv.addObject("accNo",accNo);
+        mv.addObject("mess","交易异常");
         mv.setViewName("exceptionRecord");
         return mv;
     }

@@ -103,7 +103,7 @@
 								<td>${(n.account.accStatus=='0') ?string('冻结','启用')}</td>
 								<td> <a href="/custom/updateStatus?userId=${n.userId}&accStatus=${(n.account.accStatus=='0') ?string('1','0')}&query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&page=${fenYe.page}">${(n.account.accStatus=='1') ?string('冻结','启用')}</a> </td>
 								<td> <a href="/custom/deleteCustom?userId=${n.userId}&query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&page=${fenYe.page}">删除</a> </td>
-								<td> <a href="/custom/toInformation?userId=${n.userId}">详情</a> </td>
+								<td> <a href="/custom/toInformation?accNo=${n.account.accNo}">详情</a> </td>
 							</tr>
 					     </#list>
 						
