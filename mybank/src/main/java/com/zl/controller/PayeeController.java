@@ -30,22 +30,9 @@ public class PayeeController {
     private UserService us;
     @Autowired
     private PayInfoService pis;
-    @Autowired
-    private TransferService ts;
 
-    /**
-     * 处理催款
-     *
-     * @param payInfo
-     * @return
-     */
-    @RequestMapping("/doPayee")
-    public ModelAndView doPayee(PayInfo payInfo) {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("payInfo");
-        mv.setViewName(""); //待定;通知内容的value设为payinfo.xx
-        return mv;
-    }
+
+
 
     /**
      * 去主动收款界面前查询出当前账户的借款人集合

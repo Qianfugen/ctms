@@ -2,7 +2,6 @@ package com.zl.dao;
 
 import com.zl.pojo.Paging;
 import com.zl.pojo.PayInfo;
-import com.zl.pojo.Payee;
 import com.zl.pojo.Query;
 
 import java.util.List;

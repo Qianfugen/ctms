@@ -59,14 +59,6 @@ public class PayInfoServiceImpl implements PayInfoService {
         return pid.addPayInfo(payInfo);
     }
 
-    /**
-     * 根据借方账户和贷方账户查询payInfo
-     * @param Debtor
-     * @param CreditorAcc
-     * @return
-     */
-    public PayInfo queryPayInfo(String Debtor,String CreditorAcc){
 
-    }
 
 }
