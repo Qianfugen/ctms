@@ -7,7 +7,6 @@ import com.zl.service.TransferService;
 import com.zl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -77,28 +76,32 @@ public class PayeeController {
 
     /**
      * 批量发送消息通知
-     * 全选提交实现：
-     * 一：提交对象 二：value=对象
      *
      * @return
      */
     @RequestMapping("/addPayInfos")
-    public ModelAndView addPayInfos(HttpSession session, @RequestBody List<Payee> payees) {
+    public ModelAndView addPayInfos(HttpSession session, String[] ids) {
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         //查询出当前登录卡的用户
         User loginUser = us.queryUserByAccNo(loginAccNo);
         int index = 0;//成功的条数
-        for (Payee p : payees) {
+
+        for (int i = 0; i < ids.length; i++) {
             PayInfo payInfo = new PayInfo();
+            Payee payee = new Payee();
+            payee.setCreditorAcc(loginAccNo);
+            payee.setDebtor(ids[i]);
+
             payInfo.setCreditorAcc(loginAccNo);
-            payInfo.setDebtor(p.getDebtor());
-            payInfo.setFund(p.getFund());
+            payInfo.setDebtor(ids[i]);
+            payInfo.setFund(ps.queryPayee(payee).getFund());
             payInfo.setInfoTime(new Date());
             payInfo.setCreditorName(loginUser.getUserName());
-            payInfo.setDebtorName(p.getDebtorName());
+            payInfo.setDebtorName(us.queryUserByAccNo(ids[i]).getUserName());
             index = pis.addPayInfo(payInfo);
         }
+
         if (index != 0) {
             /**
              * 后续可以设置为前端提示发送消息成功

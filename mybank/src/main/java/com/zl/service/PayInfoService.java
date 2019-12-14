@@ -21,4 +21,12 @@ public interface PayInfoService {
      * 发送消息通知
      */
     int addPayInfo(PayInfo payInfo);
+
+    /**
+     * 根据借方账户和贷方账户查询payInfo
+     * @param Debtor
+     * @param CreditorAcc
+     * @return
+     */
+     PayInfo queryPayInfo(String Debtor,String CreditorAcc);
 }

@@ -26,4 +26,6 @@ public interface PayInfoDao {
      * 发送催款消息通知
      */
     int addPayInfo(PayInfo payInfo);
+
+
 }

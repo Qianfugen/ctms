@@ -18,4 +18,9 @@ public interface PayeeService {
      */
     List<Payee> queryPayeeByPaging(Paging paging);
 
+    /**
+     * 根据贷方和借方账户查询出payee
+     */
+    Payee queryPayee(Payee payee);
+
 }
