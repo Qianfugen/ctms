@@ -77,10 +77,19 @@ public class UserController {
             subject.login(token);
         } catch (IncorrectCredentialsException ice) {
             System.out.println("ice异常......");
+            mv.addObject("error", "用户名或密码错误");
+            mv.setViewName("login");
+            return mv;
         } catch (UnknownAccountException uae) {
             System.out.println("uae异常......");
+            mv.addObject("error", "用户名或密码错误");
+            mv.setViewName("login");
+            return mv;
         } catch (Exception e) {
             System.out.println("e异常......");
+            mv.addObject("error", "登录出错啦....");
+            mv.setViewName("login");
+            return mv;
         }
         System.out.println("验证通过");
         mv.setViewName("index");
