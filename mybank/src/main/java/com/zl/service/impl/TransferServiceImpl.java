@@ -1,11 +1,15 @@
 package com.zl.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zl.config.RabbitMqConfig;
 import com.zl.dao.TransferDao;
 import com.zl.pojo.Account;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 import com.zl.service.TransferService;
+import com.zl.utils.HttpUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -108,15 +112,14 @@ public class TransferServiceImpl implements TransferService {
         querys.put("money", transfer.getTransFund().toString());
         querys.put("toCode", "CNY");
 
-//        try {
-//            HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
-//            JSONObject jb=JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
-//
-//            //moneyCNY= (String) JSONObject.parseObject(jb.get("showapi_res_body").toString()).get("money");
-//            moneyCNY= (String) ((JSONObject)jb.get("showapi_res_body")).get("money");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
+            JSONObject jb=JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
+
+            moneyCNY= (String) ((JSONObject)jb.get("showapi_res_body")).get("money");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //设置转账类型为跨境转账
         transfer.setTransType(2);
@@ -142,25 +145,11 @@ public class TransferServiceImpl implements TransferService {
         try {
             String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
             transfer.setDealNo(dealNo);
-
-            /**
-             * 写入交易记录
-             */
-
-            //writeDeal(transfer);
-
-            transfer.setCurrency("CNY");
-            //transfer.setTransFund(new BigDecimal(moneyCNY));
-
-            /**
-             * 减钱
-             */
-            //transferDao.subMoney(transfer);
-
-            //transferDao.addMoney(transfer); //加钱在境外银行加，不能自己调用
-            //转账成功，设置交易状态为“成功”
             transfer.setTransStatus("处理中");
 
+            /**
+             * 把交易记录放到Map中准备发送到消息队列
+             */
             Map map=new HashMap();
             map.put("dealNo",transfer.getDealNo());
             map.put("transType",transfer.getTransType());
@@ -175,17 +164,29 @@ public class TransferServiceImpl implements TransferService {
             map.put("transFund",transfer.getTransFund());
             map.put("kind",transfer.getKind());
 
+            transfer.setCurrency("CNY");
+            transfer.setTransFund(new BigDecimal(moneyCNY));
+            /**
+             * 减钱
+             */
+            transferDao.subMoney(transfer);
+
+            transfer.setCurrency(map.get("currency").toString());
+            transfer.setTransFund(new BigDecimal(map.get("transFund").toString()));
+            /**
+             * 写入交易记录
+             */
+            writeDeal(transfer);
             /**
              * 发送消息到队列
              */
             rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B,map);
-            System.out.println("跨境转账成功，发送消息。。。。");
+            System.out.println("跨境转账处理中，发送消息到境外银行。。。。");
         } catch (Exception e) {
             //事务回滚
             transactionManager.rollback(status);
             e.printStackTrace();
         }
-
     }
 
     /**
