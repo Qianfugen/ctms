@@ -49,7 +49,15 @@ public class PayeeServiceImpl implements PayeeService {
         return payees;
     }
 
-
+    /**
+     * 根据贷方和借方账户查询出payee
+     *
+     * @param payee
+     */
+    @Override
+    public Payee queryPayee(Payee payee) {
+        return pd.queryPayee(payee);
+    }
 
 
 }

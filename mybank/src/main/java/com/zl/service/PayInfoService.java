@@ -21,4 +21,5 @@ public interface PayInfoService {
      * 发送消息通知
      */
     int addPayInfo(PayInfo payInfo);
+
 }

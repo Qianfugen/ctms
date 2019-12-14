@@ -31,4 +31,5 @@ namespace:必须是对应接口的全路径
     <insert id="addPayInfo" parameterType="payInfo">
         insert into T_PAYINFO values (#{creditorAcc},#{creditorName},#{fund},#{infoTime},#{debtor},#{debtorName})
     </insert>
+
 </mapper>

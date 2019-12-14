@@ -59,4 +59,6 @@ public class PayInfoServiceImpl implements PayInfoService {
         return pid.addPayInfo(payInfo);
     }
 
+
+
 }
