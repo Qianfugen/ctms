@@ -40,6 +40,16 @@ public class TransferController {
         return map;
     }
 
+    @RequestMapping("/transferMoneyOver")
+    @ResponseBody
+    public Map<String, Integer> transferMoneyOver(Transfer transfer) {
+        Map<String, Integer> map = new HashMap<>();
+        System.out.println("正在进行跨界转账。。。");
+        transferService.transferMoneyOver(transfer);
+        map.put("status", 200);
+        return map;
+    }
+
     /**
      * 查询余额
      *

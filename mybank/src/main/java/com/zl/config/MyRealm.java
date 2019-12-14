@@ -2,15 +2,15 @@ package com.zl.config;
 
 import com.zl.pojo.User;
 import com.zl.service.UserService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 登录认证类
@@ -36,18 +36,20 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         //获取用户输入的账号
-        String accNo = (String) token.getPrincipal();
+        String loginAccNo = (String) token.getPrincipal();
         System.out.println("token:"+token);
-        User user = us.queryNameByAccNo(accNo);
+        User user = us.queryUserByAccNo(loginAccNo);
         if(user == null){
-            return null;
+            throw new UnknownAccountException();
         }
-//        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-//                user,
-//                user.getUserPwd(),
-//                ByteSource.Util.bytes(user.)
-//        );
-
-        return null;
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute("loginAccNO", loginAccNo);
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                loginAccNo,
+                user.getUserPwd(),
+                ByteSource.Util.bytes(loginAccNo),//盐值
+                getName()//realm的name
+        );
+        return authenticationInfo;
     }
 }
