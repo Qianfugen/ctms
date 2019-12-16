@@ -68,20 +68,20 @@
 				<p> </p>
 				<div align="center">
 					<form action="/custom/updateCustom" method="post">
-						<div style="width: 509px;height: 507px; border: 1px solid black;">
+						<div style="width: 520px;height: 510px;">
 							<div style="float: left;">
-								<table class="table table-striped" style="border-collapse: separate;">
+								<table class="table table-hover" style="border-collapse: separate;">
 									<tr>
 										<td>用户ID：</td>
 										<td><input type="text" name="userId" value="${user.userId}" readonly="readonly" /></td>
                                         <td>银行卡号：</td>
-                                        <td><input type="text" name="account.accNo" value="${user.account.accNo}" /></td>
+                                        <td><input type="text" name="account.accNo" value="${user.account.accNo}" readonly="readonly" /></td>
 									</tr>
 									<tr>
 										<td>用户名：</td>
 										<td><input type="text" name="userName" value="${user.userName!""}" /></td>
                                         <td>银行代码：</td>
-                                        <td><input type="text" name="account.accBankId" value="${user.account.accBankId!""}" /></td>
+                                        <td><input type="text" name="account.accBankId" value="${user.account.accBankId!""}" readonly="readonly" /></td>
 									</tr>
 									<tr>
 										<td>用户性别：</td>
