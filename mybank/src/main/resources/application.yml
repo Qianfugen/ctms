@@ -33,6 +33,16 @@ spring:
     host: 10.1.13.74
     username: admin
     password: 123456
+    listener:
+      simple:
+        #设置消费端手动 ack
+        acknowledge-mode: manual
+        #消费者最小数量
+        concurrency: 1
+        #消费之最大数量
+        max-concurrency: 20
+        #在单个请求中处理的消息个数，他应该大于等于事务数量(unack的最大数量)
+        prefetch: 1
 
 #集成mybatis
 mybatis:

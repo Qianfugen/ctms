@@ -61,7 +61,7 @@ public class TransferController {
     @ResponseBody
     public Map<String, Integer> transferMoneyOver(Transfer transfer) {
         Map<String, Integer> map = new HashMap<>();
-        System.out.println("正在进行跨界转账。。。");
+        System.out.println("正在进行跨境转账。。。");
         transferService.transferMoneyOver(transfer);
         map.put("status", 200);
         return map;
