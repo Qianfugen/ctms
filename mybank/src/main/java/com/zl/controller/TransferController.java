@@ -1,5 +1,6 @@
 package com.zl.controller;
 
+import com.zl.api.CheckUserAPI;
 import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
 import com.zl.service.TransferService;
@@ -26,6 +27,8 @@ public class TransferController {
     private TransferService transferService;
     @Autowired
     private JobAPI jobAPI;
+    @Autowired
+    private CheckUserAPI checkUserAPI;
 
     /**
      * 分类转账
@@ -155,6 +158,25 @@ public class TransferController {
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
         Map<String, Boolean> map = new HashMap<>();
         Boolean flag = transferService.checkUser(userName, accNo);
+        //存在返回true,不存在返回false
+        System.out.println("执行结果：" + flag);
+        map.put("status", flag);
+        return map;
+    }
+
+    /**
+     * 根据卡号和用户名验证用户是否存在
+     *
+     * @param userName
+     * @param accNo
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/checkUser2")
+    public Map<String, Boolean> checkUser2(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
+        Map<String, Boolean> map = new HashMap<>();
+        System.out.println("checkUser2");
+        Boolean flag = checkUserAPI.checkUser(userName,accNo).get("status");
         //存在返回true,不存在返回false
         System.out.println("执行结果：" + flag);
         map.put("status", flag);
