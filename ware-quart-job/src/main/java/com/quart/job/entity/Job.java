@@ -1,4 +1,4 @@
-package com.zl.pojo;
+package com.quart.job.entity;
 
 import org.springframework.stereotype.Component;
 

@@ -1,13 +1,12 @@
 package com.zl.service.impl;
 
+import com.zl.api.JobAPI;
 import com.zl.config.RabbitMqConfig;
 import com.zl.dao.TransferDao;
 import com.zl.pojo.Account;
 import com.zl.pojo.Job;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
-import com.zl.quartz.ComplexJob;
-import com.zl.service.JobService;
 import com.zl.service.TransferService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +39,10 @@ public class TransferServiceImpl implements TransferService {
     @Autowired
     RabbitTemplate rabbitTemplate;
     @Autowired
-    private ComplexJob complexJob;
-    @Autowired
-    private JobService jobService;
+    private JobAPI jobAPI;
 
     /**
-     * 定时任务
+     * 任务分类，定时转账or立即转账
      */
     @Override
     public void executeJob(Transfer transfer) {
@@ -54,8 +51,8 @@ public class TransferServiceImpl implements TransferService {
             System.out.println("立即转账。。。");
             transferMoney(transfer);
         } else {
-            //2小时后转账
-            System.out.println("2小时后转账");
+            //1分钟后转账
+            System.out.println("1分钟后转账");
             long currentTime = System.currentTimeMillis();
             System.out.print("      当前时间:");
             System.out.println(new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime));
@@ -66,28 +63,30 @@ public class TransferServiceImpl implements TransferService {
             Date date = new Date(currentTime);
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "yyyyMMddHHmmss");
-            System.out.print("2小时后时间:");
+            System.out.print("1分钟后时间:");
             System.out.println(dateFormat.format(date));
             String time = dateFormat.format(date);
-            String year = time.substring(0, 4);
             String month = time.substring(4, 6);
             String day = time.substring(6, 8);
             String hour = time.substring(8, 10);
             String minute = time.substring(10, 12);
             String second = time.substring(12, 14);
             //编写cron表达式
-            String cron = second + " " + minute + " " + hour + " " + day + " " + month + " ? " + year;
+            String cron = second + " " + minute + " " + hour + " " + day + " " + month + " ?";
             System.out.println(cron);
             //设置任务
             Job job = new Job();
+            //暂且把转出账户作为任务ID,这样一个用户有且只有一个在等待的定时任务，任务执行后删除
+            job.setId(Long.parseLong(transfer.getAccOut()));
             job.setAccIn(transfer.getAccIn());
             job.setAccOut(transfer.getAccOut());
+            //设置为CNY交易，境外转账从页面获取，这里仅做测试
             job.setCurrency("CNY");
             job.setTransFund(transfer.getTransFund());
             job.setCron(cron);
-            //设置任务的标识符
-            int flag=jobService.setJob(job);
-            System.out.println("执行结果："+flag);
+
+            //调用定时任务模块
+            jobAPI.insertJob(job);
         }
     }
 
@@ -125,6 +124,7 @@ public class TransferServiceImpl implements TransferService {
         //设置回滚点
         TransactionStatus status = transactionManager.getTransaction(def);
         try {
+            System.out.println(transfer);
             transferDao.subMoney(transfer);
             transferDao.addMoney(transfer);
             //转账成功，设置交易状态为“成功”

@@ -1,10 +1,10 @@
-package com.zl.zuul;
+package com.zl.warequartjob;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ZuulApplicationTests {
+class WareQuartJobApplicationTests {
 
     @Test
     void contextLoads() {

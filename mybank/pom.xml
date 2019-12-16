@@ -21,6 +21,16 @@
     </properties>
 
     <dependencies>
+        <!--rpc远程调用-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--rabbitmq-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         <!-- shiro -->
         <dependency>
             　　<groupId>org.apache.shiro</groupId>

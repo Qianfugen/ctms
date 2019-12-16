@@ -1,5 +1,6 @@
 package com.zl.controller;
 
+import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
 import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,24 @@ import java.util.Map;
 public class TransferController {
     @Autowired
     private TransferService transferService;
+    @Autowired
+    private JobAPI jobAPI;
+
+    /**
+     * 分类转账
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/sortTransfer")
+    public Map<String, Integer> sortTransfer(Transfer transfer) {
+        //预先设置一个转出账户，本应从页面获取，这里仅做测试
+        transfer.setAccOut("6222303626811324642");
+        transferService.executeJob(transfer);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("status", 200);
+        return map;
+    }
 
     /**
      * 同行转账
@@ -30,11 +49,9 @@ public class TransferController {
      */
     @ResponseBody
     @RequestMapping("/transferMoney")
-    public Map<String, Integer> subMoney(Transfer transfer) {
-        transfer.setAccOut("6222305891736516103");
+    public Map<String, Integer> transferMoney(@RequestBody Transfer transfer) {
         System.out.println("transfer:"+transfer);
-//        transferService.transferMoney(transfer);
-        transferService.executeJob(transfer);
+        transferService.transferMoney(transfer);
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
         return map;
