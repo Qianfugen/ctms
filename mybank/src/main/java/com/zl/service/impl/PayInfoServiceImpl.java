@@ -51,6 +51,7 @@ public class PayInfoServiceImpl implements PayInfoService {
 
     /**
      * 发送消息通知
+     *
      * @param payInfo
      * @return
      */
@@ -58,7 +59,6 @@ public class PayInfoServiceImpl implements PayInfoService {
     public int addPayInfo(PayInfo payInfo) {
         return pid.addPayInfo(payInfo);
     }
-
 
 
 }

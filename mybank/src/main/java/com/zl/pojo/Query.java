@@ -23,8 +23,8 @@ public class Query implements Serializable {
     private String qType;
     private String qMainAccNo;
     private String qFollowAccNo;
-    private String debtor;//贷方账号
-    private String debtorName;//贷方姓名
+    private String debtor;//借方账号
+    private String debtorName;//借方姓名
     private String creditorAcc;//收款人账号
 
     public String getQname() {

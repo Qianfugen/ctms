@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>催款通知</title>
+<title>催款通知>转账</title>
 <link href="/css/ks.css" rel="stylesheet" type="text/css" />
 <link href="/js/bootstrap.css" type="text/css"  rel="stylesheet"  />
 <link href="/css/Customer.css" type="text/css"  rel="stylesheet" />
@@ -18,7 +18,7 @@
 			<div class="page">
 				<div id="logo">
 					<a href="../Index.html"> 
-						<img src="../../img/Images/Student/logo2.png" alt="" width="48" height="48" />
+						<img src="/images/Images/Student/logo2.png" alt="" width="48" height="48" />
 					</a>
 				</div>
 				<div class="topxx">
@@ -75,28 +75,56 @@
 			</div>
 			<div class="rightbox">
 			
-				<h2 class="mbx">消息通知 &gt;催款通知</h2>
-				<div id="message01">
-					<table align="center">
-<#--						<tr>-->
-<#--							<td>序号</td>-->
-<#--							<td>收款人账号</td>-->
-<#--							<td>收款人姓名</td>-->
-<#--							<td>收款金额</td>-->
-<#--							<td>立即支付</td>-->
-<#--							<td>忽略</td>-->
-<#--							<td>备注</td>-->
-<#--						</tr>-->
-						<#list payInfos as pi>
-					    <tr>
-					    <td><a href="##">尊敬的用户你好，你收到一条来自${pi.creditorName}用户的催款通知，点击消息进行处理</a></td>
-			            <td><a href="###?ids=${n.id}">删 除</a></td>
+				<h2 class="mbx">消息通知 &gt;催款通知&gt;转账</h2>
+				<br />
+				<!输入界面-->
+					<div id="our" style="margin-top: 20px;" align="center">
+					<form action="#" method="post">
+						<table style="border-collapse:separate; border-spacing:0px 10px;">
+						<tr>
+							<td>收款人姓名 ：</td>
+							<td><input id="name" type="text" required="required"  readonly="readonly" value="" placeholder="支持首字母搜索收款人" style="width: 300px;"  /></td>
+							
 						</tr>
-					    </#list>
 					
-				</table>
-				</div>
-				
+						<tr>
+							<td>收款卡号 ：</td>
+							<td><input id="card" type="text" required="required"  readonly="readonly" value="" placeholder="18位银行卡号" style="width: 300px;" /></td>
+						</tr>
+						
+						<tr>
+							<td>收款银行 ：</td>
+							<td>
+								<select>
+									<option value=""> </option>
+									<option value="">工商银行</option>
+									<option value="">中国银行</option>
+								</select> 
+							</td>
+						</tr>
+						<tr>
+							<td>汇款金额 ：</td>
+							<td><input type="text" required="required" style="width: 300px;" /></td>
+						</tr>
+						<tr>
+							<td>汇款时间 ：</td>
+							<td>
+								<select>
+								<option value="">普通汇款</option>
+								<option value="">实时汇款</option>
+							</select>
+							</td>
+						</tr>
+						
+						<tr align="center">
+							<td> </td>
+							<td><input id="sub" type="submit" value="确认转账" /> </td>
+						</tr>
+					</table>
+					</form>
+					
+					</div>
+					<!--（行内转账）输入界面(末尾)-->
 			</div>
 				
 		</div>
