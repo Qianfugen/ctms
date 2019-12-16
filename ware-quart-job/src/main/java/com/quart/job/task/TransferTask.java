@@ -2,6 +2,7 @@ package com.quart.job.task;
 
 import com.quart.job.api.MybankAPI;
 import com.quart.job.entity.Transfer;
+import com.quart.job.service.ScheduleJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,8 @@ import java.math.BigDecimal;
 public class TransferTask implements TransferService {
     @Autowired
     private MybankAPI mybankAPI;
+    @Autowired
+    private ScheduleJobService scheduleJobService;
 
     @Override
     public void run(String params) {
@@ -30,5 +33,7 @@ public class TransferTask implements TransferService {
         transfer.setCurrency(currency);
         //时间一到，执行任务
         mybankAPI.transferMoney(transfer);
+        //执行完毕，删除任务
+        scheduleJobService.delete(Long.parseLong(accOut));
     }
 }
