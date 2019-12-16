@@ -24,7 +24,7 @@
         select BANK_NAME from T_BANK where BANKID=(select ACC_BANKID from T_ACCOUNT where ACC_NO=#{accNo})
     </select>
     <select id="queryUserName" parameterType="string" resultType="string">
-        select USER_NAME from T_USER where USER_ID=(select USER_ID from T_ACCOUNT where ACC_NO=#{accNo})
+        select USER_NAME from O_USER where USER_ID=(select USER_ID from T_ACCOUNT where ACC_NO=#{accNo})
     </select>
     <select id="checkUser" parameterType="user" resultType="user">
         select USER_ID userId,USER_NAME userName,USER_SEX userSex,USER_BIRTHDATE userBirthdate,USER_CERTNO userCertNo,
