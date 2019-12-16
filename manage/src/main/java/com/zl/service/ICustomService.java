@@ -1,8 +1,6 @@
 package com.zl.service;
 
-import com.zl.pojo.FenYe;
-import com.zl.pojo.Query;
-import com.zl.pojo.User;
+import com.zl.pojo.*;
 
 import java.util.List;
 
@@ -45,4 +43,46 @@ public interface ICustomService {
      * @return
      */
     int updateStatus(User user);
+
+    /**
+     * 查询所有交易记录
+     * @param fenYe
+     * @return
+     */
+    List<Transfer> queryAllTransfer(FenYe fenYe);
+
+    /**
+     * 根据用户卡号查询交易记录
+     * @param accNo
+     * @return
+     */
+    List<Transfer> queryTransferByAccNo(String accNo);
+
+    /**
+     * 根据用户卡号查询登入记录
+     * @param fenYe
+     * @return
+     */
+    List<Login> queryLoginByAccNo(FenYe fenYe);
+
+    /**
+     * 根据用户卡号查询登入记录总条数
+     * @param query
+     * @return
+     */
+    List<Login> queryLoginByLike(Query query);
+
+    /**
+     * 根据用户卡号查询登入异常记录
+     * @param accNo
+     * @return
+     */
+    List<Login> queryExLoginByAccNo(String accNo);
+
+    /**
+     * 根据用户卡号查询交易异常记录
+     * @param accNo
+     * @return
+     */
+    List<Transfer> queryExTransferByAccNo(String accNo);
 }
