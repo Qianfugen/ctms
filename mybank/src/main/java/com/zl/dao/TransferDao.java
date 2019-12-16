@@ -63,7 +63,7 @@ public interface TransferDao {
 
     /**
      * 根据流水号查询交易记录
-     *
+     * @param dealNo
      * @return 流水号
      */
     public Transfer queryTransferByDealNo(String dealNo);

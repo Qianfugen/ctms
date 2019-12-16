@@ -32,7 +32,7 @@ public class AdminController {
         if (admin!=null){
             session.setAttribute("loginUser",admin);
             mv.addObject("message","欢迎您再次登入");
-            mv.setViewName("redirect:/custom/allCustom");
+            mv.setViewName("managerMain");
         }else {
             mv.addObject("message","用户名或密码错误，请重新登入");
             mv.setViewName("redirect:toLogin");
