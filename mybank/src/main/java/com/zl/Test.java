@@ -75,31 +75,7 @@ public class Test {
 //        long date6 = System.currentTimeMillis();
 //        System.out.println("使用时间" + (date6 - date5) + "ms");
 
-        long currentTime = System.currentTimeMillis() ;
-        System.out.print("      当前时间:");
-        System.out.println(new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime));
-        currentTime +=120*60*1000;
-        Date date=new Date(currentTime);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyyMMddHHmmss");
-        System.out.print("2小时后时间:");
-        System.out.println(dateFormat.format(date));
-        String time=dateFormat.format(date);
-        System.out.println(time.length());
-        String year=time.substring(0,4);
-        System.out.println(year);
-        String month=time.substring(4,6);
-        System.out.println(month);
-        String day=time.substring(6,8);
-        System.out.println(day);
-        String hour=time.substring(8,10);
-        System.out.println(hour);
-        String minute=time.substring(10,12);
-        System.out.println(minute);
-        String second=time.substring(12,14);
-        System.out.println(second);
-        String cron=second+" "+minute+" "+hour+" "+day+" "+month+" ? "+year;
-        System.out.println(cron);
-
+        String s="0123456789";
+        System.out.println(s.substring(0,5));
     }
 }

@@ -116,61 +116,61 @@
             })
         });
 
-        //(跨境转账)姓名的正则表达式验证
-        $(function () {
-            $("#name02").blur(function () {
-                var name = $("#name02").val();
-                var textName = /^[a-zA-Z]{2,20}$/;
-                if (textName.test(name)) {
-                    $("#nameSpan02").html("格式正确").css({"color": "green", "font-size": "5"});
-                } else {
-                    $("#nameSpan02").html("请输入正确的姓名").css({"color": "red", "font-size": "5"});
-                }
-            })
-        });
-        //（跨境转账）卡号的正则表达式验证
-        $(function () {
-            $("#accNo02").blur(function () {
-                var accNo = $("#accNo02").val();
-                var textCard = /^[1-9][0-9]{17}$/;
-                if (textCard.test(accNo)) {
-                    $("#accNoSpan02").html("卡号正确").css({"color": "green", "font-size": "5"});
-                } else {
-                    $("#accNoSpan02").html("请输入正确的18位卡号").css({"color": "red", "font-size": "5"});
-                }
-            })
-        });
-        //（跨境转账）的ajax方法
-        $(function () {
-            $("#accNo02").blur(function () {
-                //发送ajax请求
-                $.ajax({
-                    //该ajax发送请求到那个地址处理
-                    url: "/students/regName",
-                    //请求方式
-                    type: "post",
-                    //预计服务器返回的数据格式
-                    dataType: "json",
-                    //发送的数据(姓名和卡号)
-                    data: {"name": $("#name02").val(), "accNo": $("#accNo02").val()},
-                    /*
-                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-                     */
-                    success: function (data) {
-                        if (data.flag) {
-                            $("#sub02").attr("disabled", false);
-                        } else {
-                            $("#sub02").attr("disabled", true);
-                            alert("收款人或者卡号有误！！！");
-                        }
-                    },
-                    //响应失败以后执行的回调函数
-                    error: function () {
-                        alert("失败....");
-                    }
-                })
-            })
-        });
+        // //(跨境转账)姓名的正则表达式验证
+        // $(function () {
+        //     $("#name02").blur(function () {
+        //         var name = $("#name02").val();
+        //         var textName = /^[a-zA-Z]{2,20}$/;
+        //         if (textName.test(name)) {
+        //             $("#nameSpan02").html("格式正确").css({"color": "green", "font-size": "5"});
+        //         } else {
+        //             $("#nameSpan02").html("请输入正确的姓名").css({"color": "red", "font-size": "5"});
+        //         }
+        //     })
+        // });
+        // //（跨境转账）卡号的正则表达式验证
+        // $(function () {
+        //     $("#accNo02").blur(function () {
+        //         var accNo = $("#accNo02").val();
+        //         var textCard = /^[1-9][0-9]{17}$/;
+        //         if (textCard.test(accNo)) {
+        //             $("#accNoSpan02").html("卡号正确").css({"color": "green", "font-size": "5"});
+        //         } else {
+        //             $("#accNoSpan02").html("请输入正确的18位卡号").css({"color": "red", "font-size": "5"});
+        //         }
+        //     })
+        // });
+        // //（跨境转账）的ajax方法
+        // $(function () {
+        //     $("#accNo02").blur(function () {
+        //         //发送ajax请求
+        //         $.ajax({
+        //             //该ajax发送请求到那个地址处理
+        //             url: "/students/regName",
+        //             //请求方式
+        //             type: "post",
+        //             //预计服务器返回的数据格式
+        //             dataType: "json",
+        //             //发送的数据(姓名和卡号)
+        //             data: {"name": $("#name02").val(), "accNo": $("#accNo02").val()},
+        //             /*
+        //                 响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+        //              */
+        //             success: function (data) {
+        //                 if (data.flag) {
+        //                     $("#sub02").attr("disabled", false);
+        //                 } else {
+        //                     $("#sub02").attr("disabled", true);
+        //                     alert("收款人或者卡号有误！！！");
+        //                 }
+        //             },
+        //             //响应失败以后执行的回调函数
+        //             error: function () {
+        //                 alert("失败....");
+        //             }
+        //         })
+        //     })
+        // });
 
 
     </script>
@@ -242,15 +242,15 @@
             <h2 class="mbx">转账&nbsp;&nbsp;&nbsp;</h2>
 
             <p style="text-align: center;">
-                <input type="radio" id="bank01" name="bank"/> 境内转账&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" id="bank02" name="bank"/> 跨境转账
+                <input type="radio" id="bank01" name="bank" value="0"/> 境内转账&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" id="bank02" name="bank" value="1"/> 跨境转账
             </p>
             <div>
                 <hr>
             </div>
             <!--（境内转账）输入界面-->
             <div id="our" style="margin-top: 20px;" align="center">
-                <form action="/transfer/transferMoney" method="post">
+                <form action="/transfer/sortTransfer?bank=0" method="post">
                     <table style="border-collapse:separate; border-spacing:0px 10px;">
                         <tr>
                             <td>收款人姓名 ：</td>
@@ -360,11 +360,12 @@
 
             <!--（跨境转账）输入界面-->
             <div id="other" style="margin-top: 20px;display: none;" align="center" ;>
-                <form action="#" method="post">
+                <form action="/transfer/sortTransfer?bank=1" method="post">
                     <table style="border-collapse:separate; border-spacing:0px 10px;">
+                        <tr>收入银行：<input name="accInBank" ></tr>
                         <tr>
                             <td>收款人姓名 ：</td>
-                            <td><input id="name02" type="text" required="required" value="" placeholder="请填写拼音或英文"
+                            <td><input id="name0200" name="accInName" type="text" required="required" value="" placeholder="请填写拼音或英文"
                                        style="width: 300px;"/></td>
                             <td>
                                 &nbsp;<!-- 按钮触发模态框 -->
@@ -394,19 +395,18 @@
                         <tr>
                             <td>收款币种 :</td>
                             <td>
-                                <select>
-                                    <option value=""></option>
-                                    <option value="">人民币</option>
-                                    <option value="">美元</option>
-                                    <option value="">欧元</option>
-                                    <option value="">英镑</option>
+                                <select name="currency">
+                                    <option value="CNY">人民币</option>
+                                    <option value="USD">美元</option>
+                                    <option value="EUR">欧元</option>
+                                    <option value="GBP">英镑</option>
                                 </select>
                             </td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>收款人账号 ：</td>
-                            <td><input id="accNo02" type="text" required="required" value="" placeholder="18位银行卡号"
+                            <td><input id="accNo0200" name="accIn" type="text" required="required" value="" placeholder="18位银行卡号"
                                        style="width: 300px;"/></td>
                             <td> 欧盟国家请输入IBAN号</td>
                         </tr>
@@ -430,7 +430,7 @@
                         </tr>
                         <tr>
                             <td>汇款金额 ：</td>
-                            <td><input type="text" required="required" style="width: 300px;" placeholder="请选择币种单位"/>
+                            <td><input type="text" name="transFund" required="required" style="width: 300px;" placeholder="请选择币种单位"/>
                             </td>
                             <td> 余额 ：<a href="#">待查询</a></td>
                         </tr>
@@ -446,7 +446,7 @@
 
                         <tr align="center">
                             <td></td>
-                            <td><input id="sub02" type="submit" disabled="disabled" value="确认转账"/></td>
+                            <td><input id="sub0200" type="submit" value="确认转账"/></td>
                         </tr>
                     </table>
                 </form>
