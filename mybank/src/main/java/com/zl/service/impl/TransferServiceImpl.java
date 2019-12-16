@@ -21,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 转账service层实现类
@@ -39,6 +36,16 @@ public class TransferServiceImpl implements TransferService {
     private DataSourceTransactionManager transactionManager;
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    /**
+     * 定时任务
+     *
+     * @param transfer
+     */
+    @Override
+    public void executeJob(Transfer transfer) {
+
+    }
 
     /**
      * 同行转账
@@ -274,5 +281,57 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public Transfer queryTransferByDealNo(String dealNo) {
         return transferDao.queryTransferByDealNo(dealNo);
+    }
+
+    /**
+     * 根据流水号查询未完成的记录
+     *
+     * @param dealNo
+     * @return
+     */
+    @Override
+    public Transfer queryTransferDealing(String dealNo) {
+        return transferDao.queryTransferDealing(dealNo);
+    }
+
+    /**
+     * 流水记录处理成功
+     *
+     * @param dealNo
+     * @return
+     */
+    @Override
+    public int transferConfirm(String dealNo) {
+        return transferDao.transferConfirm(dealNo);
+    }
+
+    /**
+     * 自动把未完成的记录发送到消息队列
+     */
+    @Override
+    public void autoSend() {
+        List<Transfer> transfers=transferDao.queryAllDealing();
+        if(transfers!=null&&transfers.size()>0){
+            for(Transfer transfer:transfers){
+                /**
+                 * 把交易记录放到Map中准备发送到消息队列
+                 */
+                Map map=new HashMap();
+                map.put("dealNo",transfer.getDealNo());
+                map.put("transType",transfer.getTransType());
+                map.put("transStatus",transfer.getTransStatus());
+                map.put("accOut",transfer.getAccOut());
+                map.put("accOutName",transfer.getAccOutName());
+                map.put("accOutBank",transfer.getAccOutBank());
+                map.put("accIn",transfer.getAccIn());
+                map.put("accInName",transfer.getAccInName());
+                map.put("accInBank",transfer.getAccInBank());
+                map.put("currency",transfer.getCurrency());
+                map.put("transFund",transfer.getTransFund());
+                map.put("kind",transfer.getKind());
+                //发送消息到消息队列
+                rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B,map);
+            }
+        }
     }
 }

@@ -63,6 +63,8 @@ public class Consumer {
                     System.out.println("---->消息处理成功，返回通知！！");
                     Map returnMessage=new HashMap();
                     map.put("dealNo",transfer.getDealNo());
+                    map.put("transStatus",1);
+                    rabbitTemplate.convertAndSend("directExchange2",RabbitMqConfig.ROUTINGKEY_C,map);
                 }
             } catch (Exception e) {
                 //事务回滚
