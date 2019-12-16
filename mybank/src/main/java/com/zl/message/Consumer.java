@@ -19,11 +19,14 @@ public class Consumer {
     private TransferService ts;
     @RabbitHandler
     public void process(Message message, Channel channel, Map map){
+        System.out.println("消息："+map);
+
         String dealNo= (String) map.get("dealNo");
         //查询该流水号记录是否已处理完成
         if(ts.queryTransferDealing(dealNo)!=null){
             //设置流水记录为完成
             if(ts.transferConfirm(dealNo)>0){
+                System.out.println("修改记录状态已成功");
                 try {
                     channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
                 } catch (IOException e) {

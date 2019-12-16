@@ -5,12 +5,14 @@ import com.zl.pojo.Transfer;
 import java.math.BigDecimal;
 import java.util.Map;
 
+
 /**
  * 转账service层接口
  *
  * @author root
  */
 public interface TransferService {
+    public int transferMoney(Transfer transfer);
     /**
      * 写入交易记录
      *

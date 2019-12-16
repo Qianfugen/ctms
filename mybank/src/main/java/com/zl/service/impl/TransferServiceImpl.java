@@ -1,5 +1,6 @@
 package com.zl.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zl.api.JobAPI;
 import com.zl.config.RabbitMqConfig;
 import com.zl.dao.TransferDao;
@@ -9,6 +10,8 @@ import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 import com.zl.service.TransferService;
 import com.zl.utils.HttpUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -148,8 +151,14 @@ public class TransferServiceImpl implements TransferService {
      * @param transfer 交易对象
      * @return
      */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @Override
     public void transferMoneyOver(Transfer transfer) {
+        transfer.setAccInBank("瑞士银行");
+        transfer.setAccInName("张三");
+
+        System.out.println("境外转账service开始");
+        System.out.println("transfer"+transfer);
         //汇率转换，计算账户需要扣金额
         String host = "https://ali-waihui.showapi.com";
         String path = "/waihui-transform";
@@ -171,7 +180,7 @@ public class TransferServiceImpl implements TransferService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        System.out.println("moneyCNY:"+moneyCNY);
         BigDecimal balance = queryBalance(transfer.getAccOut());
         BigDecimal transMoney = new BigDecimal(moneyCNY);
 
@@ -194,10 +203,10 @@ public class TransferServiceImpl implements TransferService {
                 transfer.setKind("跨境转账");
 
                 //收入行信息
-                String accIn = transfer.getAccIn();
-                Map<String, String> mapIn = queryBankAndUserName(accIn);
-                transfer.setAccInName(mapIn.get("userName"));
-                transfer.setAccInBank(mapIn.get("bankName"));
+//                String accIn = transfer.getAccIn();
+//                Map<String, String> mapIn = queryBankAndUserName(accIn);
+//                transfer.setAccInName(mapIn.get("userName"));
+//                transfer.setAccInBank(mapIn.get("bankName"));
                 //转出行信息
                 String accOut = transfer.getAccOut();
                 Map<String, String> mapOut = queryBankAndUserName(accOut);
@@ -233,12 +242,16 @@ public class TransferServiceImpl implements TransferService {
                 /**
                  * 写入交易记录
                  */
-                writeDeal(transfer);
+                System.out.println("开始插入transfer"+transfer);
+                int flag=writeDeal(transfer);
+                System.out.println("插入完毕。。。"+flag);
                 /**
                  * 发送消息到队列
                  */
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B, map);
                 System.out.println("跨境转账处理中，发送消息到境外银行。。。。");
+//                TransactionStatus status2 = transactionManager.getTransaction(def);
+//                transactionManager.commit(status2);
             } catch (Exception e) {
                 //事务回滚
                 transactionManager.rollback(status);
