@@ -20,7 +20,16 @@ spring:
   profiles:
     active: dev
   mvc:
-    throw-exception-if-no-handler-found: true
+    throw-exception-if-no-handler-found:
+  redis:
+    host: 10.1.13.74
+    port: 6379
+    ## 连接池中的最大连接数
+    poolMaxTotal: 10
+    ## 连接池中的最大空闲连接
+    poolMaxIdle: 10
+    ## 连接池最大阻塞等待时间（使用负值表示没有限制）
+    database: 0
 
 # mybatis
 mybatis-plus:

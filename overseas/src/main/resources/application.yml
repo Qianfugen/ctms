@@ -19,6 +19,15 @@ spring:
     url: jdbc:oracle:thin:@10.1.13.44:1521:orcl
 #    url: jdbc:oracle:thin:@47.100.61.199:1521:orcl
     driver-class-name: oracle.jdbc.driver.OracleDriver
+  redis:
+    host: 10.1.13.74
+    port: 6379
+    ## 连接池中的最大连接数
+    poolMaxTotal: 10
+    ## 连接池中的最大空闲连接
+    poolMaxIdle: 10
+    ## 连接池最大阻塞等待时间（使用负值表示没有限制）
+    database: 0
   #关于freemarker配置
   freemarker:
     #关闭缓存
