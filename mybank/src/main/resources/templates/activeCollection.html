@@ -10,9 +10,11 @@
     <script type="text/javascript" src="/js/bootstrap.js"></script>
     <script type="text/javascript">
         $(function () {
-            //全选按钮的点击事件
-            $("#allbox").click(function () {
-                $("[name='id']").css("checked",true);
+            $("#allBox").click(function () {
+                $("input").prop("checked", true);
+            }),
+            $("#notAllBox").click(function () {
+                $("input").prop("checked", false);
             })
         })
     </script>
@@ -98,7 +100,9 @@
                         <table align="center" class="table table-striped"
                                style="border-collapse:separate; border-spacing:10px 10px;">
                             <tr>
-                                <td>&nbsp;&nbsp;<input type="checkbox" id="allbox">全选</td>
+                                <td>&nbsp;&nbsp;<input type="button" id="allBox" value="全选" />
+                                    <input type="button" id="notAllBox" value="取消全选" />
+                                </td>
                                 <td>&nbsp;&nbsp;卡号</td>
                                 <td>&nbsp;&nbsp;用户名</td>
                                 <td>&nbsp;欠款金额</td>
