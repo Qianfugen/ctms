@@ -82,9 +82,11 @@ public class ScheduleJobWeb {
     /**
      * 删除定时器
      */
+    @ResponseBody
     @RequestMapping("/deleteJob")
-    public String deleteJob() {
-        Long jobId = 1L;
+    public String deleteJob(@RequestParam("accNo") String accNo) {
+        System.out.println("jobId:"+accNo);
+        Long jobId = Long.parseLong(accNo);
         scheduleJobService.delete(jobId);
         return "success";
     }

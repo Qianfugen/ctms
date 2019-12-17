@@ -14,6 +14,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
@@ -41,6 +42,8 @@ public class TransferServiceImpl implements TransferService {
     RabbitTemplate rabbitTemplate;
     @Autowired
     private JobAPI jobAPI;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 任务分类，定时转账or立即转账
@@ -104,8 +107,16 @@ public class TransferServiceImpl implements TransferService {
         //生成流水号
         String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
         transfer.setDealNo(dealNo);
-        //设置类型kind
-        transfer.setKind("转账");
+        String banktype=transfer.getAccIn().substring(0,6);
+        if("622230".equals(banktype)){
+            //同行转账
+            transfer.setKind("同行转账");
+            transfer.setTransType(0);
+        }else{
+            //跨行转账
+            transfer.setKind("跨行转账");
+            transfer.setTransType(1);
+        }
         //补充交易对象信息
         transfer.setCurrency("CNY");
         //收入行信息
@@ -119,28 +130,26 @@ public class TransferServiceImpl implements TransferService {
         transfer.setAccOutName(mapOut.get("userName"));
         transfer.setAccOutBank(mapOut.get("bankName"));
         //添加事务管理
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setName("SomeTxName");
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        //设置回滚点
-        TransactionStatus status = transactionManager.getTransaction(def);
-        try {
+//        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+//        def.setName("SomeTxName");
+//        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+//        //设置回滚点
+//        TransactionStatus status = transactionManager.getTransaction(def);
+//        try {
             System.out.println(transfer);
             transferDao.subMoney(transfer);
             transferDao.addMoney(transfer);
             //转账成功，设置交易状态为“成功”
             transfer.setTransStatus("成功");
-            //如果转账类型为空，则设为同行转账，代号0
-            if (transfer.getTransType() == null) {
-                transfer.setTransType(0);
-            }
             //写入交易记录
-            writeDeal(transfer);
-        } catch (Exception e) {
-            //事务回滚
-            transactionManager.rollback(status);
-            e.printStackTrace();
-        }
+            int flag=writeDeal(transfer);
+            System.out.println("执行结果："+flag);
+            System.out.println("转账成功");
+//        } catch (Exception e) {
+//            //事务回滚
+//            transactionManager.rollback(status);
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -198,8 +207,8 @@ public class TransferServiceImpl implements TransferService {
                 transfer.setDealNo(dealNo);
                 //跨境转账记录状态位处理中
                 transfer.setTransStatus("0");
-                //设置转账类型为跨境转账
-                transfer.setTransType(2);
+                //设置转账类型为跨境转账，controller已设置
+//                transfer.setTransType(2);
                 transfer.setKind("跨境转账");
 
                 //收入行信息
@@ -243,6 +252,9 @@ public class TransferServiceImpl implements TransferService {
                  * 写入交易记录
                  */
                 System.out.println("开始插入transfer"+transfer);
+                List<Transfer> overDealing= (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+                overDealing.add(transfer);
+                redisTemplate.opsForList().leftPush("overDealing",overDealing);
                 int flag=writeDeal(transfer);
                 System.out.println("插入完毕。。。"+flag);
                 /**
@@ -365,9 +377,13 @@ public class TransferServiceImpl implements TransferService {
      */
     @Override
     public void autoSend() {
-        List<Transfer> transfers = transferDao.queryAllDealing();
-        if (transfers != null && transfers.size() > 0) {
-            for (Transfer transfer : transfers) {
+        List<Transfer> overDealing= (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+        if(overDealing==null){
+            overDealing = transferDao.queryAllDealing();
+            redisTemplate.opsForList().leftPush("overDealing",overDealing);
+        }
+        if (overDealing != null && overDealing.size() > 0) {
+            for (Transfer transfer : overDealing) {
                 /**
                  * 把交易记录放到Map中准备发送到消息队列
                  */

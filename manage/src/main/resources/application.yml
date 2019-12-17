@@ -16,7 +16,7 @@ spring:
   datasource:
     username: java38
     password: 123456
-    url: jdbc:oracle:thin:@47.100.61.199:1521:orcl
+    url: jdbc:oracle:thin:@10.1.13.44:1521:orcl
     driver-class-name: oracle.jdbc.driver.OracleDriver
   #关于freemarker配置
   freemarker:
@@ -28,7 +28,7 @@ spring:
       classic_compatible: true
     suffix: .html
   redis:
-    host: 10.1.13.44
+    host: localhost
     port: 6379
     database: 0
 
