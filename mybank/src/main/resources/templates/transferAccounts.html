@@ -98,8 +98,10 @@
                     type: "post",
                     //预计服务器返回的数据格式
                     dataType: "json",
-                    //发送的数据(姓名和卡号)
-                    data: {"accNo": $("#accNo").val()},
+                    //发送的数据(姓名和卡号),转账人的卡号
+                    // data: {"accNo": $("#accNo").val()},
+                    data: {"accNo": "6222303626811324642"},
+
                     /*
                         响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
                      */
@@ -116,31 +118,31 @@
             })
         });
 
-        // //(跨境转账)姓名的正则表达式验证
-        // $(function () {
-        //     $("#name02").blur(function () {
-        //         var name = $("#name02").val();
-        //         var textName = /^[a-zA-Z]{2,20}$/;
-        //         if (textName.test(name)) {
-        //             $("#nameSpan02").html("格式正确").css({"color": "green", "font-size": "5"});
-        //         } else {
-        //             $("#nameSpan02").html("请输入正确的姓名").css({"color": "red", "font-size": "5"});
-        //         }
-        //     })
-        // });
-        // //（跨境转账）卡号的正则表达式验证
-        // $(function () {
-        //     $("#accNo02").blur(function () {
-        //         var accNo = $("#accNo02").val();
-        //         var textCard = /^[1-9][0-9]{17}$/;
-        //         if (textCard.test(accNo)) {
-        //             $("#accNoSpan02").html("卡号正确").css({"color": "green", "font-size": "5"});
-        //         } else {
-        //             $("#accNoSpan02").html("请输入正确的18位卡号").css({"color": "red", "font-size": "5"});
-        //         }
-        //     })
-        // });
-        // //（跨境转账）的ajax方法
+        //(跨境转账)姓名的正则表达式验证
+        $(function () {
+            $("#name02").blur(function () {
+                var name = $("#name02").val();
+                var textName = /^[a-zA-Z]{2,20}$/;
+                if (textName.test(name)) {
+                    $("#nameSpan02").html("格式正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#nameSpan02").html("请输入正确的英文姓名").css({"color": "red", "font-size": "5"});
+                }
+            })
+        });
+        //（跨境转账）卡号的正则表达式验证
+        $(function () {
+            $("#accNo02").blur(function () {
+                var accNo = $("#accNo02").val();
+                var textCard = /^[A-Z]{2}[0-9]{14,17}$/;
+                if (textCard.test(accNo)) {
+                    $("#accNoSpan02").html("卡号正确").css({"color": "green", "font-size": "5"});
+                } else {
+                    $("#accNoSpan02").html("请输入正确的16-19位卡号").css({"color": "red", "font-size": "5"});
+                }
+            })
+        });
+        //（跨境转账）的ajax方法
         // $(function () {
         //     $("#accNo02").blur(function () {
         //         //发送ajax请求
@@ -172,6 +174,69 @@
         //     })
         // });
 
+        $(function () {
+            $("#accNo02").blur(function () {
+                //发送ajax请求
+                $.ajax({
+                    //该ajax发送请求到那个地址处理
+                    url: "/transfer/checkUser2",
+                    //请求方式
+                    type: "post",
+                    //预计服务器返回的数据格式
+                    dataType: "json",
+                    //发送的数据(姓名和卡号)
+                    data: {"userName": $("#name02").val(), "accNo": $("#accNo02").val()},
+                    /*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                     */
+                    success: function (data) {
+                        if (data.status) {
+                            $("#sub02").attr("disabled", false);
+                        } else {
+                            alert("收款人或者卡号有误！！！");
+                            ;
+                        }
+                    },
+                    //响应失败以后执行的回调函数
+                    error: function () {
+                        alert("不好意思，失败了....");
+                    }
+                })
+            })
+        });
+
+        //余额查询
+        $(function () {
+            $("#queryBalance02").click(function () {
+                //余额
+                var balance = 0;
+                //发送ajax请求
+                $.ajax({
+                    //该ajax发送请求到那个地址处理
+                    url: "/transfer/queryBalance",
+                    //请求方式
+                    type: "post",
+                    //预计服务器返回的数据格式
+                    dataType: "json",
+                    //发送的数据(姓名和卡号),转账人的卡号
+                    // data: {"accNo": $("#accNo").val()},
+                    data: {"accNo": "6222303626811324642"},
+
+                    /*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                     */
+                    success: function (data) {
+                        balance = data.balance;
+                        $("#balance").html(":￥" + balance.toString() + " 元").css({"color": "green", "font-size": "5"});
+                    },
+                    //响应失败以后执行的回调函数
+                    error: function () {
+                        alert("失败....");
+                    }
+                });
+
+            })
+        });
 
     </script>
 
@@ -254,7 +319,7 @@
                     <table style="border-collapse:separate; border-spacing:0px 10px;">
                         <tr>
                             <td>收款人姓名 ：</td>
-                            <td><input id="name" type="text" required="required" value="${map.accInName!''}"
+                            <td><input id="name" name="accInName" type="text" required="required" value="${map.accInName!''}"
                                        placeholder="支持首字母搜索收款人"
                                        style="width: 300px;"/></td>
                             <td>
@@ -362,10 +427,9 @@
             <div id="other" style="margin-top: 20px;display: none;" align="center" ;>
                 <form action="/transfer/sortTransfer?bank=1" method="post">
                     <table style="border-collapse:separate; border-spacing:0px 10px;">
-                        <tr>收入银行：<input name="accInBank" ></tr>
                         <tr>
                             <td>收款人姓名 ：</td>
-                            <td><input id="name0200" name="accInName" type="text" required="required" value="" placeholder="请填写拼音或英文"
+                            <td><input id="name02"  type="text" required="required" value="" placeholder="请填写拼音或英文"
                                        style="width: 300px;"/></td>
                             <td>
                                 &nbsp;<!-- 按钮触发模态框 -->
@@ -384,7 +448,6 @@
                             <td>收款行所在国家（地区） :</td>
                             <td>
                                 <select>
-                                    <option value=""></option>
                                     <option value="">美国</option>
                                     <option value="">英国</option>
                                     <option value="">法国</option>
@@ -406,7 +469,7 @@
                         </tr>
                         <tr>
                             <td>收款人账号 ：</td>
-                            <td><input id="accNo0200" name="accIn" type="text" required="required" value="" placeholder="18位银行卡号"
+                            <td><input id="accNo02" name="accIn" type="text" required="required" value="" placeholder="18位银行卡号"
                                        style="width: 300px;"/></td>
                             <td> 欧盟国家请输入IBAN号</td>
                         </tr>
@@ -420,7 +483,6 @@
                             <td>收款人常驻国家（地区） :</td>
                             <td>
                                 <select>
-                                    <option value=""></option>
                                     <option value="">美国</option>
                                     <option value="">英国</option>
                                     <option value="">法国</option>
@@ -432,7 +494,7 @@
                             <td>汇款金额 ：</td>
                             <td><input type="text" name="transFund" required="required" style="width: 300px;" placeholder="请选择币种单位"/>
                             </td>
-                            <td> 余额 ：<a href="#">待查询</a></td>
+                            <td><a id="queryBalance02">余额<span id="balance"></span></a></td>
                         </tr>
                         <tr>
                             <td>汇款时间 ：</td>
