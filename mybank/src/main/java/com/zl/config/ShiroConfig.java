@@ -23,14 +23,19 @@ public class ShiroConfig {
         System.out.println("进入shiroConfig");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        //设置未登录提交url
-        shiroFilterFactoryBean.setLoginUrl("/user/notLogin");
+        //设置登录时提交url
+        shiroFilterFactoryBean.setLoginUrl("/user/login");
         //登录成功后跳转的url
         shiroFilterFactoryBean.setSuccessUrl("/user/toIndex");
         //拦截器
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //anon:所有url可以匿名访问
-        filterChainDefinitionMap.put("/user/**","anon");
+        filterChainDefinitionMap.put("/css/**","anon");
+        filterChainDefinitionMap.put("/js/**","anon");
+        filterChainDefinitionMap.put("/fonts/**","anon");
+        filterChainDefinitionMap.put("/images/**","anon");
+        filterChainDefinitionMap.put("/user/toLogin","anon");
+        filterChainDefinitionMap.put("/user/toRegister","anon");
         //anthc:所有url都必须认证通过才可以访问
         filterChainDefinitionMap.put("/**","authc");
 

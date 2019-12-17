@@ -1,8 +1,6 @@
 package com.zl.controller;
 
-import com.zl.pojo.Account;
 import com.zl.pojo.User;
-import com.zl.service.AccountService;
 import com.zl.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -31,8 +29,6 @@ public class UserController {
     @Autowired
     private UserService us;
 
-    @Autowired
-    private AccountService as;
 
     /**
      * 注册(卡号)
@@ -121,9 +117,10 @@ public class UserController {
     public ModelAndView toIndex(HttpSession session, String accNo) {
         ModelAndView mv = new ModelAndView();
         System.out.println("进入index");
-        Account account = as.queryAccountByAccNo(accNo);
+
         User loginUser = us.queryUserByAccNo(accNo);
-        loginUser.setAccount(account);
+        System.out.println(loginUser+"当前对象");
+
         session.setAttribute("loginUser",loginUser);
         session.setAttribute("loginAccNo", accNo);
         mv.setViewName("index");
