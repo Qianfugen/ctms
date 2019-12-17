@@ -70,6 +70,7 @@ public class Consumer {
                     map.put("transStatus", 1);
                     rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_C, map);
                 } else {
+                    channel.basicNack(message.getMessageProperties().getDeliveryTag(),true,true);
                     System.out.println("处理失败。。。");
                 }
             } catch (Exception e) {
@@ -82,6 +83,10 @@ public class Consumer {
             System.out.println("--->消息已处理过，直接返回通知");
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
+                Map returnMessage = new HashMap();
+                map.put("dealNo", dealNo);
+                map.put("transStatus", 1);
+                rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_C, map);
             } catch (IOException e) {
                 e.printStackTrace();
             }

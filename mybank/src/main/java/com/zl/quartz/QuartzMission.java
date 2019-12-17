@@ -26,9 +26,9 @@ public class QuartzMission {
      * 定时任务,每月一日早上九点触发
      */
     @Scheduled(cron = "0 0 9 1 * ? ")
-    public void sweepCash(){
+    public void sweepCash() {
         List<Coll> colls = cashSweepService.queryAllCollInTable();
-        if(colls!=null&&colls.size()!=0){
+        if (colls != null && colls.size() != 0) {
             cashSweepService.sweepCash(colls);
         }
     }
@@ -36,8 +36,8 @@ public class QuartzMission {
     /**
      * 每天中午12点重新发送消息队列
      */
-    @Scheduled(cron = "0 0 3,6,9,12 * * ?")
-    public void autoSend(){
+    @Scheduled(cron = "0 0/30 * * * ?")
+    public void autoSend() {
         transferService.autoSend();
     }
 }

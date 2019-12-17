@@ -253,6 +253,12 @@ public class TransferServiceImpl implements TransferService {
                  */
                 System.out.println("开始插入transfer"+transfer);
                 List<Transfer> overDealing= (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+                if(overDealing==null){
+                    overDealing=transferDao.queryAllDealing();
+                    if(overDealing==null){
+                        overDealing=new ArrayList<Transfer>();
+                    }
+                }
                 overDealing.add(transfer);
                 redisTemplate.opsForList().leftPush("overDealing",overDealing);
                 int flag=writeDeal(transfer);
@@ -384,6 +390,7 @@ public class TransferServiceImpl implements TransferService {
         }
         if (overDealing != null && overDealing.size() > 0) {
             for (Transfer transfer : overDealing) {
+                System.out.println(transfer);
                 /**
                  * 把交易记录放到Map中准备发送到消息队列
                  */
