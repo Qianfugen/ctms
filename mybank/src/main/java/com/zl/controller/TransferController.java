@@ -4,6 +4,7 @@ import com.zl.api.CheckUserAPI;
 import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
 import com.zl.service.TransferService;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ public class TransferController {
 
     /**
      * 分类转账
+     * status: 0 冻结，1 定时任务取消成功， 100 超出上限，200 转账成，400 余额不足
      *
      * @return
      */
@@ -43,62 +45,11 @@ public class TransferController {
         mv.setViewName("transferAccountResult");
         //预先设置一个转出账户，本应从页面获取，这里仅做测试
 //        session.getAttribute("loginUser");
+        //启动账户
         transfer.setAccOut("6222303626811324642");
-        Map<String, Integer> map = new HashMap<>();
-        if ("0".equals(bank)) {
-            //境内转账
-            String banktype = transfer.getAccIn().substring(0, 6);
-            System.out.println("银行前六位：" + banktype);
-            if ("622230".equals(banktype)) {
-                //同行转账
-                //判断上限
-                BigDecimal limit=transferService.queryAccLimit(transfer.getAccOut());
-                //判断余额
-                BigDecimal balance = transferService.queryBalance(transfer.getAccOut());
-                if(limit.compareTo(transfer.getTransFund())<0){
-                    //超过上限
-                    map.put("status",100);
-                } else if (balance.compareTo(transfer.getTransFund()) >= 0) {
-                    System.out.println("同行转账。。。");
-                    transferService.executeJob(transfer);
-                    map.put("status", 200);
-                } else {
-                    //余额不足
-                    map.put("status", 400);
-                }
-            } else {
-                //跨行转账
-                //判断上限
-                BigDecimal limit=transferService.queryAccLimit(transfer.getAccOut());
-                //查询余额
-                BigDecimal balance = transferService.queryBalance(transfer.getAccOut());
-
-                if(limit.compareTo(transfer.getTransFund())<0){
-                    //超过上限
-                    map.put("status",100);
-                } else if (balance.compareTo(transfer.getTransFund()) >= 0) {
-                    System.out.println("跨行转账。。。");
-                    transferService.executeJob(transfer);
-                    map.put("status", 200);
-                } else {
-                    //余额不足
-                    map.put("status", 400);
-                }
-            }
-        } else {
-            //跨境转账
-            //查询余额
-            BigDecimal balance = transferService.queryBalance(transfer.getAccOut());
-            if (balance.compareTo(transfer.getTransFund()) >= 0) {
-                System.out.println("跨境转账。。。");
-                transfer.setTransType(2);
-                transferService.transferMoneyOver(transfer);
-                map.put("status", 200);
-            } else {
-                //余额不足
-                map.put("status", 400);
-            }
-        }
+        //冻结账户
+//        transfer.setAccOut("6222304497903198673");
+        Map<String, Integer> map = transferService.verifyTransfer(transfer, bank);
         mv.addObject("map", map);
         return mv;
 
@@ -119,6 +70,12 @@ public class TransferController {
         return map;
     }
 
+    /**
+     * 跨境转账
+     *
+     * @param transfer
+     * @return
+     */
     @RequestMapping("/transferMoneyOver")
     @ResponseBody
     public Map<String, Integer> transferMoneyOver(Transfer transfer) {
@@ -127,6 +84,27 @@ public class TransferController {
         transferService.transferMoneyOver(transfer);
         map.put("status", 200);
         return map;
+    }
+
+    /**
+     * 删除定时转账，从session获取用户卡号
+     * status: 0 冻结，1 定时任务取消成功， 100 超出上限，200 转账成，400 余额不足
+     *
+     * @param accNo
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("deleteJob")
+    public ModelAndView deleteJob(@RequestParam("accNo") String accNo) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("transferAccountResult");
+        String result = jobAPI.deleteJob(accNo);
+        Map<String, Integer> map = new HashMap<>();
+        if (result.equals("success")) {
+            map.put("status", 1);
+        }
+        mv.addObject("map", map);
+        return mv;
     }
 
     /**

@@ -5,7 +5,6 @@ import com.zl.config.RabbitMqConfig;
 import com.zl.pojo.Transfer;
 import com.zl.service.TransferService;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

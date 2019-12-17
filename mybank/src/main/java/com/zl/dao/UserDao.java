@@ -19,4 +19,11 @@ public interface UserDao {
      */
     User queryUserByAccNo(String accNo);
 
+    /**
+     * 根据卡号查询用户详细信息
+     * @param accNo
+     * @return
+     */
+    User queryCustom(String accNo);
+
 }
