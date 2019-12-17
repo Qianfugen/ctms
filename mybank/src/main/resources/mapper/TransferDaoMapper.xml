@@ -53,4 +53,7 @@
     <select id="queryAccLimit" parameterType="string" resultType="java.math.BigDecimal">
         select ACC_LIMIT from T_ACCOUNT where ACC_NO=#{accNo}
     </select>
+    <select id="queryAccStatus" parameterType="string" resultType="int">
+        select ACC_STATUS from T_ACCOUNT where ACC_NO=#{accNo}
+    </select>
 </mapper>

@@ -96,4 +96,11 @@ public interface TransferDao {
      */
     public BigDecimal queryAccLimit(String accNo);
 
+    /**
+     * 查询启用状态
+     * @param accNo
+     * @return
+     */
+    public int queryAccStatus(String accNo);
+
 }
