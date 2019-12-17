@@ -14,6 +14,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
@@ -41,6 +42,8 @@ public class TransferServiceImpl implements TransferService {
     RabbitTemplate rabbitTemplate;
     @Autowired
     private JobAPI jobAPI;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 任务分类，定时转账or立即转账
@@ -249,6 +252,9 @@ public class TransferServiceImpl implements TransferService {
                  * 写入交易记录
                  */
                 System.out.println("开始插入transfer"+transfer);
+                List<Transfer> overDealing= (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+                overDealing.add(transfer);
+                redisTemplate.opsForList().leftPush("overDealing",overDealing);
                 int flag=writeDeal(transfer);
                 System.out.println("插入完毕。。。"+flag);
                 /**
@@ -371,9 +377,13 @@ public class TransferServiceImpl implements TransferService {
      */
     @Override
     public void autoSend() {
-        List<Transfer> transfers = transferDao.queryAllDealing();
-        if (transfers != null && transfers.size() > 0) {
-            for (Transfer transfer : transfers) {
+        List<Transfer> overDealing= (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+        if(overDealing==null){
+            overDealing = transferDao.queryAllDealing();
+            redisTemplate.opsForList().leftPush("overDealing",overDealing);
+        }
+        if (overDealing != null && overDealing.size() > 0) {
+            for (Transfer transfer : overDealing) {
                 /**
                  * 把交易记录放到Map中准备发送到消息队列
                  */
