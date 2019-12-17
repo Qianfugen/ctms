@@ -142,38 +142,8 @@
                 }
             })
         });
-        //（跨境转账）的ajax方法
-        // $(function () {
-        //     $("#accNo02").blur(function () {
-        //         //发送ajax请求
-        //         $.ajax({
-        //             //该ajax发送请求到那个地址处理
-        //             url: "/students/regName",
-        //             //请求方式
-        //             type: "post",
-        //             //预计服务器返回的数据格式
-        //             dataType: "json",
-        //             //发送的数据(姓名和卡号)
-        //             data: {"name": $("#name02").val(), "accNo": $("#accNo02").val()},
-        //             /*
-        //                 响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
-        //              */
-        //             success: function (data) {
-        //                 if (data.flag) {
-        //                     $("#sub02").attr("disabled", false);
-        //                 } else {
-        //                     $("#sub02").attr("disabled", true);
-        //                     alert("收款人或者卡号有误！！！");
-        //                 }
-        //             },
-        //             //响应失败以后执行的回调函数
-        //             error: function () {
-        //                 alert("失败....");
-        //             }
-        //         })
-        //     })
-        // });
 
+        //（跨境转账）的ajax方法
         $(function () {
             $("#accNo02").blur(function () {
                 //发送ajax请求

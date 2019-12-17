@@ -151,6 +151,7 @@ public class TransferController {
     @RequestMapping("/checkUser")
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
         Map<String, Boolean> map = new HashMap<>();
+        System.out.println("userName:"+userName+" accNo:"+accNo);
         Boolean flag = transferService.checkUser(userName, accNo);
         //存在返回true,不存在返回false
         System.out.println("执行结果：" + flag);

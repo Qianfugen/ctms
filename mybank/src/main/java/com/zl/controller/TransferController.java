@@ -48,15 +48,18 @@ public class TransferController {
             System.out.println("银行前六位："+banktype);
             if("622230".equals(banktype)){
                 //同行转账
+                System.out.println("同行转账。。。");
                 transferService.executeJob(transfer);
                 map.put("status", 200);
             }else{
                 //跨行转账
+                System.out.println("跨行转账。。。");
                 transferService.executeJob(transfer);
                 map.put("status", 200);
             }
         } else {
             System.out.println("跨境转账。。。");
+            transfer.setTransType(2);
             transferService.transferMoneyOver(transfer);
             map.put("status", 200);
         }
