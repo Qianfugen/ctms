@@ -8,7 +8,14 @@
     <script type="text/javascript" src="/js/jquery.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <script type="text/javascript" src="/js/bootstrap.js"></script>
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            //全选按钮的点击事件
+            $("#allbox").click(function () {
+                $("[name='id']").css("checked",true);
+            })
+        })
+    </script>
 </head>
 <body>
 

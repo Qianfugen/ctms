@@ -46,9 +46,7 @@ public class PayInfoController {
         transfer.setDealDate(new Date());
         transfer.setTransType(0);
         transfer.setAccOut(payInfo.getDebtor());
-        transfer.setAccOutBank("本行");
         transfer.setAccIn(payInfo.getCreditorAcc());
-        transfer.setAccInBank("本行");
         transfer.setTransFund(payInfo.getFund());
         transfer.setKind("收款转账");
         ts.transferMoney(transfer);
