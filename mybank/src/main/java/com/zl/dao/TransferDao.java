@@ -89,4 +89,11 @@ public interface TransferDao {
      */
     public List<Transfer> queryAllDealing();
 
+    /**
+     * 查询最大上限
+     * @param accNo
+     * @return
+     */
+    public BigDecimal queryAccLimit(String accNo);
+
 }

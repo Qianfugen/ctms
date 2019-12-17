@@ -395,4 +395,15 @@ public class TransferServiceImpl implements TransferService {
             }
         }
     }
+
+    /**
+     * 查询最大上限
+     *
+     * @param accNo
+     * @return
+     */
+    @Override
+    public BigDecimal queryAccLimit(String accNo) {
+        return transferDao.queryAccLimit(accNo);
+    }
 }

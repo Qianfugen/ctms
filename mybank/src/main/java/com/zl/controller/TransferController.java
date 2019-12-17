@@ -37,33 +37,70 @@ public class TransferController {
      */
     @ResponseBody
     @RequestMapping("/sortTransfer")
-    public Map<String, Integer> sortTransfer(Transfer transfer, HttpSession session, @RequestParam("bank") String bank) {
+    public ModelAndView sortTransfer(Transfer transfer, HttpSession session, @RequestParam("bank") String bank) {
+        ModelAndView mv = new ModelAndView();
+        //结果页面
+        mv.setViewName("transferAccountResult");
         //预先设置一个转出账户，本应从页面获取，这里仅做测试
 //        session.getAttribute("loginUser");
         transfer.setAccOut("6222303626811324642");
         Map<String, Integer> map = new HashMap<>();
         if ("0".equals(bank)) {
             //境内转账
-            String banktype=transfer.getAccIn().substring(0,6);
-            System.out.println("银行前六位："+banktype);
-            if("622230".equals(banktype)){
+            String banktype = transfer.getAccIn().substring(0, 6);
+            System.out.println("银行前六位：" + banktype);
+            if ("622230".equals(banktype)) {
                 //同行转账
-                System.out.println("同行转账。。。");
-                transferService.executeJob(transfer);
-                map.put("status", 200);
-            }else{
+                //判断上限
+                BigDecimal limit=transferService.queryAccLimit(transfer.getAccOut());
+                //判断余额
+                BigDecimal balance = transferService.queryBalance(transfer.getAccOut());
+                if(limit.compareTo(transfer.getTransFund())<0){
+                    //超过上限
+                    map.put("status",100);
+                } else if (balance.compareTo(transfer.getTransFund()) >= 0) {
+                    System.out.println("同行转账。。。");
+                    transferService.executeJob(transfer);
+                    map.put("status", 200);
+                } else {
+                    //余额不足
+                    map.put("status", 400);
+                }
+            } else {
                 //跨行转账
-                System.out.println("跨行转账。。。");
-                transferService.executeJob(transfer);
-                map.put("status", 200);
+                //判断上限
+                BigDecimal limit=transferService.queryAccLimit(transfer.getAccOut());
+                //查询余额
+                BigDecimal balance = transferService.queryBalance(transfer.getAccOut());
+
+                if(limit.compareTo(transfer.getTransFund())<0){
+                    //超过上限
+                    map.put("status",100);
+                } else if (balance.compareTo(transfer.getTransFund()) >= 0) {
+                    System.out.println("跨行转账。。。");
+                    transferService.executeJob(transfer);
+                    map.put("status", 200);
+                } else {
+                    //余额不足
+                    map.put("status", 400);
+                }
             }
         } else {
-            System.out.println("跨境转账。。。");
-            transfer.setTransType(2);
-            transferService.transferMoneyOver(transfer);
-            map.put("status", 200);
+            //跨境转账
+            //查询余额
+            BigDecimal balance = transferService.queryBalance(transfer.getAccOut());
+            if (balance.compareTo(transfer.getTransFund()) >= 0) {
+                System.out.println("跨境转账。。。");
+                transfer.setTransType(2);
+                transferService.transferMoneyOver(transfer);
+                map.put("status", 200);
+            } else {
+                //余额不足
+                map.put("status", 400);
+            }
         }
-        return map;
+        mv.addObject("map", map);
+        return mv;
 
     }
 
@@ -179,7 +216,7 @@ public class TransferController {
     public Map<String, Boolean> checkUser2(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
         Map<String, Boolean> map = new HashMap<>();
         System.out.println("checkUser2");
-        Boolean flag = checkUserAPI.checkUser(userName,accNo).get("status");
+        Boolean flag = checkUserAPI.checkUser(userName, accNo).get("status");
         //存在返回true,不存在返回false
         System.out.println("执行结果：" + flag);
         map.put("status", flag);

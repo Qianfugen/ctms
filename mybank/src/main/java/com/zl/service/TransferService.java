@@ -90,4 +90,11 @@ public interface TransferService {
      * 自动把未完成的记录发送到消息队列
      */
     public void autoSend();
+
+    /**
+     * 查询最大上限
+     * @param accNo
+     * @return
+     */
+    public BigDecimal queryAccLimit(String accNo);
 }
