@@ -3,16 +3,41 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>所有账户</title>
+	<script src="https://cdn.bootcss.com/jquery-ui-timepicker-addon/1.6.3/i18n/jquery-ui-timepicker-addon-i18n.js"></script>
 	<link href="/css/ks.css" rel="stylesheet" type="text/css" />
 	<link href="/css/bootstrap.css" type="text/css"  rel="stylesheet"  />
 	<link href="/css/manager.css" type="text/css"  rel="stylesheet" />
 	<link rel="stylesheet" href="/css/bootstrap.css" />
+
+	<link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+	<link href="/css/jquery-ui-timepicker-addon.css" type="text/css" />
+
 	<script type="text/javascript" src="/js/jquery.js" ></script>
 	<script src="/js/bootstrap.js" type="text/javascript"></script>
-	<script type="text/javascript"></script>
+
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.min.js"></script>
+	<script src="/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
+	<script src="/js/jquery.ui.datepicker-zh-CN.js.js" type="text/javascript" charset="gb2312"></script>
+	<script src="/js/jquery-ui-timepicker-zh-CN.js" type="text/javascript"></script>
 	<script type="text/javascript">
 
 	</script>
+	<script type="text/javascript">
+		jQuery(function () {
+			// 时间设置
+			jQuery('#userTime').datetimepicker({
+				timeFormat: "HH:mm:ss",
+				dateFormat: "yy-mm-dd"
+			});
+			jQuery('#accTime').datetimepicker({
+				timeFormat: "HH:mm:ss",
+				dateFormat: "yy-mm-dd"
+			});
+
+		});
+	</script>
+
 </head>
 <body>
 
@@ -73,7 +98,7 @@
 				</div>
 				<div align="center">
 					<form action="" method="post">
-						<table class="table table-striped" style="border-collapse: separate; border: solid 2px;">
+						<table class="table table-hover" style="border-collapse: separate; border: solid 2px;">
 						<tr>
 							<td>序号</td>
 							<td>用户名</td>

@@ -59,10 +59,11 @@
     <select id="queryAllCustom" parameterType="com.zl.pojo.FenYe" resultMap="userCustom">
         select * from(
             select e.*,rownum r from(
-                select USER_ID, USER_NAME, USER_SEX, USER_BIRTHDATE, USER_CERTNO, USER_ADDR, USER_ZIPCODE, USER_TELNO,
+                select u.USER_ID, USER_NAME, USER_SEX, USER_BIRTHDATE, USER_CERTNO, USER_ADDR, USER_ZIPCODE, USER_TELNO,
                 USER_PHONENO, USER_EMAIL, USER_PWD, ACC_NO, CURR_TYPE, ACC_BANKID, ACC_STATUS, ACC_LIMIT, ACC_FUND, ACC_TYPE,
-                ACC_DATE, ACC_PWD from CUSTOM
+                ACC_DATE, ACC_PWD from T_USER u,T_ACCOUNT a
                     <where>
+                        and u.USER_ID=a.USER_ID
                         <if test="query!=null">
                             <if test="query.qname!=null and query.qname!=''">
                                 and USER_CERTNO=#{query.qname,jdbcType=VARCHAR}
@@ -74,16 +75,16 @@
                                 and acc_status=#{query.qType}
                             </if>
                         </if>
-                        and rownum between 1 and 100
+                        and rownum<![CDATA[<]]>#{rowEnd}
                     </where>
-            ) e) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
+            ) e) where r>#{rowStart}
     </select>
-<!--    条件查询用户信息-->
+<!--    条件查询用户信息总条数-->
     <select id="queryByLike" resultType="int" parameterType="com.zl.pojo.Query">
-        select count(1) from CUSTOM
+        select count(1) from T_ACCOUNT
         <where>
             <if test="qname!=null and qname!=''">
-                and user_name like concat('%',concat(#{qname},'%'))
+                and Acc_no='jjj'
             </if>
             <if test="qAccNo!=null and qAccNo!=''">
                 and Acc_no=#{qAccNo}
@@ -91,7 +92,6 @@
             <if test="qType!=null and qType!=''">
                 and acc_status=#{qType}
             </if>
-            and rownum between 1 and 100
         </where>
     </select>
 <!--    修改用户信息-->
@@ -118,7 +118,6 @@
     <select id="queryAllTransfer" parameterType="com.zl.pojo.FenYe" resultMap="allTransFor">
         select * from(
         select e.*,ROWNUM r from(
-        select * from(
         select * from T_TRANSFER
         <where>
             <if test="query!=null">
@@ -132,7 +131,7 @@
                     and DEAL_DATE<![CDATA[<]]>#{query.endDate}
                 </if>
                 <if test="query.qAccNo!=null and query.qAccNo!=''">
-                    and ACC_IN=#{query.qAccNo,jdbcType=VARCHAR} or ACC_OUT=#{query.qAccNo,jdbcType=VARCHAR}
+                    and ACC_IN=#{query.qAccNo,jdbcType=VARCHAR} and rownum<![CDATA[<]]>#{rowEnd} or ACC_OUT=#{query.qAccNo,jdbcType=VARCHAR}
                     <if test="query.qType!=null and query.qType!=''">
                     and TRANS_STATUS=#{query.qType}
                     </if>
@@ -144,13 +143,13 @@
                     </if>
                 </if>
             </if>
+            and rownum<![CDATA[<]]>#{rowEnd}
         </where>
-        ) where ROWNUM between 1 and 100) e) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
+        ) e) where r>#{rowStart}
     </select>
-<!--    条件查询用户交易信息-->
-    <select id="queryTransByLike" parameterType="com.zl.pojo.Query" resultMap="allTransFor">
-        select * from(
-        select * from T_TRANSFER
+<!--    条件查询用户交易信息总条数-->
+    <select id="queryTransByLike" parameterType="com.zl.pojo.Query" resultType="int">
+        select count(1) from T_TRANSFER
         <where>
             <if test="qType!=null and qType!=''">
                 and TRANS_STATUS=#{qType}
@@ -174,7 +173,6 @@
                 </if>
             </if>
         </where>
-        ) where rownum between 1 and 100
     </select>
 <!--    根据银行卡查询用户交易信息-->
     <select id="queryTransferByAccNo" resultMap="allTransFor" parameterType="string">
@@ -184,7 +182,6 @@
     <select id="queryLoginByAccNo" resultMap="allLogin" parameterType="com.zl.pojo.FenYe">
         select * from(
         select e.*,ROWNUM r from(
-        select * from(
         select * from T_LOGIN
         <where>
             <if test="query!=null">
@@ -200,10 +197,10 @@
                 <if test="query.endDate!=null">
                     and LOGIN_TIME<![CDATA[<]]>#{query.endDate}
                 </if>
-
             </if>
+            and rownum<![CDATA[<]]>#{rowEnd}
         </where>
-        ) where ROWNUM between 1 and 100) e) where r>#{rowStart} and r<![CDATA[<]]>#{rowEnd}
+        ) e) where r>#{rowStart}
     </select>
 <!--    根据银行卡查询用户登入异常信息-->
     <select id="queryExLoginByAccNo" resultMap="allLogin" parameterType="string">
@@ -216,9 +213,8 @@
         )where TRANS_STATUS='失败'
     </select>
 <!--    根据用户条件查询登入总条数-->
-    <select id="queryLoginByLike" resultMap="allLogin" parameterType="com.zl.pojo.Query">
-        select * from(
-        select * from T_LOGIN
+    <select id="queryLoginByLike" resultType="int" parameterType="com.zl.pojo.Query">
+        select count(1) from T_LOGIN
         <where>
             <if test="qAccNo!=null and qAccNo!=''">
                 and ACC_NO=#{qAccNo,jdbcType=VARCHAR}
@@ -233,6 +229,5 @@
                 and LOGIN_TIME<![CDATA[<]]>#{endDate}
             </if>
         </where>
-        ) where rownum between 1 and 100
     </select>
 </mapper>

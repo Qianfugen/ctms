@@ -70,7 +70,7 @@ public interface ICustomDao {
      * @param query
      * @return
      */
-    List<Transfer> queryTransByLike(Query query);
+    int queryTransByLike(Query query);
 
     /**
      * 根据用户卡号查询交易记录
@@ -91,7 +91,7 @@ public interface ICustomDao {
      * @param query
      * @return
      */
-    List<Login> queryLoginByLike(Query query);
+    int queryLoginByLike(Query query);
 
     /**
      * 根据用户卡号查询登入异常记录

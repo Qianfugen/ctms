@@ -10,7 +10,7 @@ public class Job implements Serializable {
     /**
      * 任务序号
      */
-    private Integer id;
+    private Long id;
     /**
      * 任务表达式
      */
@@ -33,11 +33,11 @@ public class Job implements Serializable {
      */
     private String currency;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

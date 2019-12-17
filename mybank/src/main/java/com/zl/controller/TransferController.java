@@ -1,5 +1,7 @@
 package com.zl.controller;
 
+import com.zl.api.CheckUserAPI;
+import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
 import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +25,44 @@ import java.util.Map;
 public class TransferController {
     @Autowired
     private TransferService transferService;
+    @Autowired
+    private JobAPI jobAPI;
+    @Autowired
+    private CheckUserAPI checkUserAPI;
+
+    /**
+     * 分类转账
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/sortTransfer")
+    public Map<String, Integer> sortTransfer(Transfer transfer, HttpSession session, @RequestParam("bank") String bank) {
+        //预先设置一个转出账户，本应从页面获取，这里仅做测试
+//        session.getAttribute("loginUser");
+        transfer.setAccOut("6222303626811324642");
+        Map<String, Integer> map = new HashMap<>();
+        if ("0".equals(bank)) {
+            //境内转账
+            String banktype=transfer.getAccIn().substring(0,6);
+            System.out.println("银行前六位："+banktype);
+            if("622230".equals(banktype)){
+                //同行转账
+                transferService.executeJob(transfer);
+                map.put("status", 200);
+            }else{
+                //跨行转账
+                transferService.executeJob(transfer);
+                map.put("status", 200);
+            }
+        } else {
+            System.out.println("跨境转账。。。");
+            transferService.transferMoneyOver(transfer);
+            map.put("status", 200);
+        }
+        return map;
+
+    }
 
     /**
      * 同行转账
@@ -30,11 +71,9 @@ public class TransferController {
      */
     @ResponseBody
     @RequestMapping("/transferMoney")
-    public Map<String, Integer> subMoney(Transfer transfer) {
-        transfer.setAccOut("6222305891736516103");
-        System.out.println("transfer:"+transfer);
-//      transferService.transferMoney(transfer);
-        transferService.executeJob(transfer);
+    public Map<String, Integer> transferMoney(@RequestBody Transfer transfer) {
+        System.out.println("transfer:" + transfer);
+        transferService.transferMoney(transfer);
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
         return map;
@@ -44,7 +83,7 @@ public class TransferController {
     @ResponseBody
     public Map<String, Integer> transferMoneyOver(Transfer transfer) {
         Map<String, Integer> map = new HashMap<>();
-        System.out.println("正在进行跨界转账。。。");
+        System.out.println("正在进行跨境转账。。。");
         transferService.transferMoneyOver(transfer);
         map.put("status", 200);
         return map;
@@ -119,6 +158,25 @@ public class TransferController {
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
         Map<String, Boolean> map = new HashMap<>();
         Boolean flag = transferService.checkUser(userName, accNo);
+        //存在返回true,不存在返回false
+        System.out.println("执行结果：" + flag);
+        map.put("status", flag);
+        return map;
+    }
+
+    /**
+     * 根据卡号和用户名验证用户是否存在
+     *
+     * @param userName
+     * @param accNo
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/checkUser2")
+    public Map<String, Boolean> checkUser2(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
+        Map<String, Boolean> map = new HashMap<>();
+        System.out.println("checkUser2");
+        Boolean flag = checkUserAPI.checkUser(userName,accNo).get("status");
         //存在返回true,不存在返回false
         System.out.println("执行结果：" + flag);
         map.put("status", flag);

@@ -4,6 +4,8 @@ import com.zl.dao.ICustomDao;
 import com.zl.pojo.*;
 import com.zl.service.ICustomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,17 @@ public class CustomServiceImpl implements ICustomService {
 
     @Autowired
     private ICustomDao cd;
+    @Autowired
+    @Qualifier("redisTemplate")
+    private RedisTemplate rt;
 
     @Override
     public List<User> queryAllCustom(FenYe fenYe) {
-        fenYe.setRowCount(cd.queryByLike(fenYe.getQuery()));
-
+        int flag=cd.queryByLike(fenYe.getQuery());
+        if (flag<2){
+            flag=1;
+        }
+        fenYe.setRowCount(flag);
         if (fenYe.getPage()!=null){
             if (fenYe.getPage()<1){
                 fenYe.setPage(1);
@@ -61,7 +69,7 @@ public class CustomServiceImpl implements ICustomService {
 
     @Override
     public List<Transfer> queryAllTransfer(FenYe fenYe) {
-        fenYe.setRowCount(cd.queryTransByLike(fenYe.getQuery()).size());
+        fenYe.setRowCount(cd.queryTransByLike(fenYe.getQuery()));
         if (fenYe.getRowCount()==0){
             return null;
         }
@@ -74,7 +82,9 @@ public class CustomServiceImpl implements ICustomService {
         }else {
             fenYe.setPage(1);
         }
-        return cd.queryAllTransfer(fenYe);
+
+        List<Transfer> transfers = cd.queryAllTransfer(fenYe);
+        return transfers;
     }
 
     @Override
@@ -84,7 +94,7 @@ public class CustomServiceImpl implements ICustomService {
 
     @Override
     public List<Login> queryLoginByAccNo(FenYe fenYe) {
-        fenYe.setRowCount(cd.queryLoginByLike(fenYe.getQuery()).size());
+        fenYe.setRowCount(cd.queryLoginByLike(fenYe.getQuery()));
         if (fenYe.getRowCount()==0){
             return null;
         }
@@ -98,11 +108,6 @@ public class CustomServiceImpl implements ICustomService {
             fenYe.setPage(1);
         }
         return cd.queryLoginByAccNo(fenYe);
-    }
-
-    @Override
-    public List<Login> queryLoginByLike(Query query) {
-        return cd.queryLoginByLike(query);
     }
 
     @Override

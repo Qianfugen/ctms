@@ -18,8 +18,8 @@ public class Login implements Serializable {
     /**
      * 登入时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd hh-mm-ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh-mm-ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date loginTime;
     /**
      * 登入地址

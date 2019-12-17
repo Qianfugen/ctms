@@ -21,6 +21,16 @@
     </properties>
 
     <dependencies>
+        <!--        radis依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--基于redis的session共享-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
         <!--数据库驱动包-->
         <dependency>
             <groupId>com.oracle</groupId>

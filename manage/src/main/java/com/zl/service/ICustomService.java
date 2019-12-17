@@ -66,13 +66,6 @@ public interface ICustomService {
     List<Login> queryLoginByAccNo(FenYe fenYe);
 
     /**
-     * 根据用户卡号查询登入记录总条数
-     * @param query
-     * @return
-     */
-    List<Login> queryLoginByLike(Query query);
-
-    /**
      * 根据用户卡号查询登入异常记录
      * @param accNo
      * @return
