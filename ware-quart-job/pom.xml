@@ -30,6 +30,16 @@
     </properties>
 
     <dependencies>
+        <!--session依赖-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!--rpc远程调用-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
