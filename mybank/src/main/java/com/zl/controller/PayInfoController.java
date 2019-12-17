@@ -42,6 +42,7 @@ public class PayInfoController {
     @RequestMapping("/dealPayee")
     public Map<String, Integer> dealPayee(PayInfo payInfo) {
         ModelAndView mv = new ModelAndView();
+
         Transfer transfer = new Transfer();
         transfer.setDealDate(new Date());
         transfer.setTransType(0);
@@ -50,30 +51,29 @@ public class PayInfoController {
         transfer.setTransFund(payInfo.getFund());
         transfer.setKind("收款转账");
         ts.transferMoney(transfer);
+
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
         return map;
     }
 
     /**
-     * 去催款通知前查询所有的催款通知
+     * 去催款通知前查询所有的催款通知，
      *
      * @return
      */
     @RequestMapping("/toPayInfoMessage")
     public ModelAndView toPayInfoMessage(Paging paging, HttpSession session) {
         ModelAndView mv = new ModelAndView();
+        paging.setRowsPage(10);//设置每页条数
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         System.out.println("当前账户" + loginAccNo);
 
-        if (paging.getQuery() != null) {
-            paging.getQuery().setDebtor(loginAccNo);
-        } else {
-            Query query = new Query();
-            query.setDebtor(loginAccNo);
-            paging.setQuery(query);
-        }
+        Query query = new Query();
+        query.setDebtor(loginAccNo);
+        paging.setQuery(query);
         List<PayInfo> payInfos = pis.queryPayInfoByPaging(paging);
+        System.out.println("消息通知" + payInfos);
         session.setAttribute("payInfos", payInfos);
         mv.setViewName("message01");
         return mv;
@@ -89,12 +89,20 @@ public class PayInfoController {
     @RequestMapping("/deletePayInfo")
     public ModelAndView deletePayInfo(HttpSession session, String creditorAcc) {
         ModelAndView mv = new ModelAndView();
+        System.out.println("进入删除payinfo");
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         PayInfo payInfo = new PayInfo();
         payInfo.setCreditorAcc(creditorAcc);
         payInfo.setDebtor(loginAccNo);
-        pis.deletePayInfo(payInfo);
-        mv.setViewName("/toPayInfoMessage");
+        int flag = pis.deletePayInfo(payInfo);
+
+        if (flag > 0) {
+            System.out.println("删除成功！");
+        } else {
+            System.out.println("删除失败");
+        }
+
+        mv.setViewName("toPayInfoMessage");
         return mv;
     }
 

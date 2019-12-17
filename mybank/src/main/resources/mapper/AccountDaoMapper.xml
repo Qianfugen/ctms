@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:必须是对应接口的全路径
+-->
+<mapper namespace="com.zl.dao.UserDao">
+
+    <select id="queryAccountByAccNo" parameterType="string" resultMap="account">
+        select * from T_ACCOUNT where ACC_NO=#{accNo}
+    </select>
+</mapper>

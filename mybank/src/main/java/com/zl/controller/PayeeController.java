@@ -51,10 +51,8 @@ public class PayeeController {
             query.setCreditorAcc(loginAccNo);
             paging.setQuery(query);
         }
-        System.out.println("进入控制层的paging "+paging);
         List<Payee> payees = ps.queryPayeeByPaging(paging);
         mv.addObject("payees", payees);
-        System.out.println("进入控制层的payees "+payees);
         mv.setViewName("activeCollection");
         return mv;
     }
@@ -93,7 +91,7 @@ public class PayeeController {
              */
             System.out.println("批量执行成功");
         }
-        mv.setViewName("/activeCollection");
+        mv.setViewName("activeCollection");
         return mv;
     }
 

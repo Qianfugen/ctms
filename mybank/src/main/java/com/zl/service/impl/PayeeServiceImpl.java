@@ -48,7 +48,6 @@ public class PayeeServiceImpl implements PayeeService {
             paging.setCurrentPage(1);
         }
         List<Payee> payees = pd.queryPayeeByPaging(paging);
-        System.out.println("payees"+payees);
         for (Payee p : payees) {
             User u1 = ud.queryUserByAccNo(p.getCreditorAcc());
             p.setCreditorName(u1.getUserName());
