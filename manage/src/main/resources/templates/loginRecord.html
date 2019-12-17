@@ -3,15 +3,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>查看用户详情页面</title>
-<link href="/css/ks.css" rel="stylesheet" type="text/css" />
-<link href="/css/bootstrap.css" type="text/css"  rel="stylesheet"  />
-<link href="/css/manager.css" type="text/css"  rel="stylesheet" />
-<link rel="stylesheet" href="/css/bootstrap.css" />
-<script type="text/javascript" src="/js/jquery.js" ></script>
-<script src="/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript">
+	<script src="https://cdn.bootcss.com/jquery-ui-timepicker-addon/1.6.3/i18n/jquery-ui-timepicker-addon-i18n.js"></script>
+	<link href="/css/ks.css" rel="stylesheet" type="text/css" />
+	<link href="/css/bootstrap.css" type="text/css"  rel="stylesheet"  />
+	<link href="/css/manager.css" type="text/css"  rel="stylesheet" />
+	<link rel="stylesheet" href="/css/bootstrap.css" />
 
-</script>
+	<link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+	<link href="/css/jquery-ui-timepicker-addon.css" type="text/css" />
+
+	<script type="text/javascript" src="/js/jquery.js" ></script>
+	<script src="/js/bootstrap.js" type="text/javascript"></script>
+
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.min.js"></script>
+	<script src="/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
+	<script src="/js/jquery.ui.datepicker-zh-CN.js.js" type="text/javascript" charset="gb2312"></script>
+	<script src="/js/jquery-ui-timepicker-zh-CN.js" type="text/javascript"></script>
+	<script type="text/javascript">
+
+	</script>
+	<script type="text/javascript">
+		jQuery(function () {
+			// 时间设置
+			jQuery('#userTime').datetimepicker({
+				timeFormat: "HH:mm:ss",
+				dateFormat: "yy-mm-dd"
+			});
+			jQuery('#accTime').datetimepicker({
+				timeFormat: "HH:mm:ss",
+				dateFormat: "yy-mm-dd"
+			});
+
+		});
+	</script>
+
 </head>
 <body>
 
@@ -69,8 +95,8 @@
 				<div align="center">
 					<form action="/custom/toCustomLogin" method="post">
 						<p>
-							起始日期：<input type="date" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>"/>
-							结束日期：<input type="date" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>"/>
+							起始日期：<input id="userTime" type="text" name="query.startDate" value="<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>"/>
+							结束日期：<input id="accTime" type="text" name="query.endDate" value="<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>"/>
 						</p>
 						<p>
 							卡号：<input type="text" name="query.qAccNo" value="<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>" readonly="readonly"/>
@@ -103,7 +129,7 @@
 									<td>${n_index!""}</td>
 									<td>${n.hostName!""}</td>
 									<td>${n.loginIp!""}</td>
-									<td><#if n.loginTime??>${n.loginTime?string('yyyy-MM-dd HH-mm-ss')}</#if></td>
+									<td><#if n.loginTime??>${n.loginTime?string('yyyy-MM-dd HH:mm:ss')}</#if></td>
 									<td>${n.loginStatus!""}</td>
 									<td>${n.loginCount!""}</td>
 									<td>${n.loginError!""}</td>
@@ -112,18 +138,18 @@
 
 						</table>
 					</form>
-					<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=1">首页</a>
+					<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=1">首页</a>
 					<#if fenYe.page<=1>
 						上一页
 					<#else>
-						<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page-1}">上一页</a>
+						<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.page-1}">上一页</a>
 					</#if>
 					<#if fenYe.page=fenYe.pageCount || fenYe.pageCount=0>
 						下一页
 					<#else>
-						<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.page+1}">下一页</a>
+						<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.page+1}">下一页</a>
 					</#if>
-					<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd')}</#if>&page=${fenYe.pageCount}">尾页</a>
+					<a href="/custom/toCustomLogin?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.pageCount}">尾页</a>
 					&nbsp;	当前第${fenYe.page}页&nbsp;共${fenYe.pageCount}页
 					<p> </p>
 				</div>

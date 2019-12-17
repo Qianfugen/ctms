@@ -27,7 +27,7 @@ public class SysInfo implements Serializable {
     /**
      * 到账时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd hh-mm-ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh-mm-ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dealDate;
 }
