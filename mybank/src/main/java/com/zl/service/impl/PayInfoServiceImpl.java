@@ -51,6 +51,7 @@ public class PayInfoServiceImpl implements PayInfoService {
 
     /**
      * 发送消息通知
+     *
      * @param payInfo
      * @return
      */
@@ -59,6 +60,25 @@ public class PayInfoServiceImpl implements PayInfoService {
         return pid.addPayInfo(payInfo);
     }
 
+    /**
+     * 删除消息通知
+     *
+     * @param payInfo
+     */
+    @Override
+    public int deletePayInfo(PayInfo payInfo) {
+        return pid.deletePayInfo(payInfo);
+    }
+
+    /**
+     * 查询催款消息通知
+     *
+     * @param payInfo
+     */
+    @Override
+    public PayInfo queryPayInfo(PayInfo payInfo) {
+        return pid.queryPayInfo(payInfo);
+    }
 
 
 }

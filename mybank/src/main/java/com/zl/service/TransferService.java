@@ -1,7 +1,6 @@
 package com.zl.service;
 
 import com.zl.pojo.Transfer;
-import com.zl.pojo.User;
 
 import java.math.BigDecimal;
 import java.util.List;

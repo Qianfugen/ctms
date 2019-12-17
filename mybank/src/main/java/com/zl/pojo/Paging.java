@@ -1,5 +1,6 @@
 package com.zl.pojo;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
  * @version 1.0 2019-12-10
  */
 @Component
+@Scope("prototype")
 public class Paging implements Serializable {
     private Integer currentPage;//当前页码
     private Integer rowsPage=5;//每页显示多少条
@@ -69,7 +71,7 @@ public class Paging implements Serializable {
         this.rowEnd = rowEnd;
     }
 
-    public com.zl.pojo.Query getQuery() {
+    public Query getQuery() {
         return query;
     }
 
