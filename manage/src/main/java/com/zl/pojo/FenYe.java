@@ -17,6 +17,19 @@ public class FenYe implements Serializable {
     private Integer rowEnd;
     private Query query;
 
+    @Override
+    public String toString() {
+        return "FenYe{" +
+                "page=" + page +
+                ", rows=" + rows +
+                ", pageCount=" + pageCount +
+                ", rowCount=" + rowCount +
+                ", rowStart=" + rowStart +
+                ", rowEnd=" + rowEnd +
+                ", query=" + query +
+                '}';
+    }
+
     public Integer getPage() {
         return page;
     }

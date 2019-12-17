@@ -4,6 +4,7 @@ import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,9 +64,36 @@ public interface TransferDao {
 
     /**
      * 根据流水号查询交易记录
-     *
+     * @param dealNo
      * @return 流水号
      */
     public Transfer queryTransferByDealNo(String dealNo);
+
+    /**
+     * 根据流水号查询未完成的记录
+     * @param dealNo
+     * @return
+     */
+    public Transfer queryTransferDealing(String dealNo);
+
+    /**
+     * 流水记录处理成功
+     * @param dealNo
+     * @return
+     */
+    public int transferConfirm(String dealNo);
+
+    /**
+     * 查询所有未完成记录
+     * @return
+     */
+    public List<Transfer> queryAllDealing();
+
+    /**
+     * 查询最大上限
+     * @param accNo
+     * @return
+     */
+    public BigDecimal queryAccLimit(String accNo);
 
 }

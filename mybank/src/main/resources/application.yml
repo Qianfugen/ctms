@@ -17,6 +17,7 @@ spring:
     username: java38
     password: 123456
     url: jdbc:oracle:thin:@10.1.13.44:1521:orcl
+#    url: jdbc:oracle:thin:@47.100.61.199:1521:orcl
     driver-class-name: oracle.jdbc.driver.OracleDriver
   #关于freemarker配置
   freemarker:
@@ -30,15 +31,34 @@ spring:
   rabbitmq:
     port: 5672
     host: 10.1.13.74
+#    host: localhost
     username: admin
     password: 123456
+    listener:
+      simple:
+        #设置消费端手动 ack
+        acknowledge-mode: manual
+        #消费者最小数量
+        concurrency: 1
+        #消费之最大数量
+        max-concurrency: 20
+        #在单个请求中处理的消息个数，他应该大于等于事务数量(unack的最大数量)
+        prefetch: 1
+  redis:
+    host: 10.1.13.74
+    port: 6379
+    ## 连接池中的最大连接数
+    poolMaxTotal: 10
+    ## 连接池中的最大空闲连接
+    poolMaxIdle: 10
+    ## 连接池最大阻塞等待时间（使用负值表示没有限制）
 
 #集成mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.zl.pojo
   configuration:
-    jdbc-type-for-null: null
+    jdbc-type-for-null: varchar
 
 
 

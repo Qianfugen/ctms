@@ -27,6 +27,10 @@ spring:
       number_format: 0.##
       classic_compatible: true
     suffix: .html
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
 
 #集成mybatis
 mybatis:
