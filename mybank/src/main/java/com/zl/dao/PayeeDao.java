@@ -30,5 +30,11 @@ public interface PayeeDao {
      */
     Payee queryPayee(Payee payee);
 
+    /**
+     * 设置payee的姓名
+     */
+    int updatePayee(Payee payee);
+
+
 
 }

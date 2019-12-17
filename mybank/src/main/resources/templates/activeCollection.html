@@ -9,20 +9,6 @@
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <script type="text/javascript" src="/js/bootstrap.js"></script>
     <script type="text/javascript"></script>
-    <script type="text/javascript">
-        //卡号的正则表达式验证(18位)
-        $(function () {
-            $("#card").blur(function () {
-                var card = $("#card").val();
-                var textCard = /^[1-9][0-9]{17}$/;
-                if (textCard.test(card)) {
-                    $("#cardSpan").html("格式正确").css({"color": "green", "font-size": "5"});
-                } else {
-                    $("#cardSpan").html("请输入18位卡号").css({"color": "red", "font-size": "5"});
-                }
-            })
-        })
-    </script>
 </head>
 <body>
 
@@ -88,52 +74,58 @@
         <div class="rightbox">
             <h2 class="mbx">主动收款</h2>
             <b></b>
-            <div>
-                <form action="/payee/activeCollection" method="get">
-                    卡号：<input id="card" type="text" name="" value=""/><span id="cardSpan"></span>
-                    付款人：<input id="name" type="text" name="" value=""/><span id="nameSpan"></span>
-                    <input type="submit" value="查询"/>
+            <div align="center">
+                <div>
+                    <form action="/payee/activeCollection" method="get">
+                        卡号：<input id="card" type="text" name="query.debtor"
+                                  value="<#if paging.query??>${paging.query.debtor!''}</#if>"/><span
+                                id="cardSpan"></span>
+                        付款人：<input id="name" type="text" name="query.debtorName"
+                                   value="<#if paging.query??>${paging.query.debtorName!''}</#if>"/><span
+                                id="nameSpan"></span>
+                        <input type="submit" value="查询"/>
+                    </form>
+                </div>
+                <form action="/payee/addPayInfos" method="get">
+                    <div>
+                        <table align="center" class="table table-striped"
+                               style="border-collapse:separate; border-spacing:10px 10px;">
+                            <tr>
+                                <td>&nbsp;&nbsp;<input type="checkbox" id="allbox">全选</td>
+                                <td>&nbsp;&nbsp;卡号</td>
+                                <td>&nbsp;&nbsp;用户名</td>
+                                <td>&nbsp;欠款金额</td>
+                            </tr>
+                            <#list payees as p>
+                                <tr>
+                                    <td>&nbsp;&nbsp;<input type="checkbox" name="id" value="${p.debtor}"/></td>
+                                    <td>&nbsp;&nbsp;${p.debtor}</td>
+                                    <td>&nbsp;&nbsp;${p.debtorName}</td>
+                                    <td>&nbsp;&nbsp;${p.fund}</td>
+                                </tr>
+                            </#list>
+                        </table>
+                        <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=1">首页</a>
+
+                        <#if paging.currentPage<=1>
+                            上一页
+                        <#else>
+                            <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage-1}">上一页</a>
+                        </#if>
+
+                        <#if paging.currentPage=paging.pages || paging.pages=0>
+                            下一页
+                        <#else>
+                            <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage+1}">下一页</a>
+                        </#if>
+
+                        <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.pages}">尾页</a>
+                        &nbsp;当前第${paging.currentPage}页&nbsp;&nbsp;共${paging.pages}页
+
+                        <h3><input type="submit" value="批量收款"/></h3>
+                    </div>
                 </form>
             </div>
-            <form action="/payee/addPayInfos" method="post">
-                <div>
-                    <table align="center" style="border-collapse:separate; border-spacing:0px 10px;">
-                        <tr>
-                            <td>&nbsp;&nbsp;<input type="checkbox" id="allbox">全选</td>
-                            <td>&nbsp;&nbsp;卡号</td>
-                            <td>&nbsp;&nbsp;用户名</td>
-                            <td>&nbsp;欠款金额</td>
-                        </tr>
-                        <#list payees as p>
-                            <tr>
-                                <td>&nbsp;&nbsp;<input type="checkbox" name="id" value="${p.debtor}"/></td>
-                                <td>&nbsp;&nbsp;${p.debtor}</td>
-                                <td>&nbsp;&nbsp;${p.debtorName}</td>
-                                <td>&nbsp;&nbsp;${p.fund}</td>
-                            </tr>
-                        </#list>
-                    </table>
-                    <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=1">首页</a>
-
-                    <#if paging.currentPage<=1>
-                        上一页
-                    <#else>
-                        <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage-1}">上一页</a>
-                    </#if>
-
-                    <#if paging.currentPage=paging.pages || paging.pages=0>
-                        下一页
-                    <#else>
-                        <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.currentPage+1}">下一页</a>
-                    </#if>
-
-                    <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.pages}">尾页</a>
-                    &nbsp;当前第${paging.currentPage}页&nbsp;共${paging.pages}页
-
-
-                    <h3><input type="submit" value="批量收款"/></h3>
-                </div>
-            </form>
         </div>
     </div>
 </div>

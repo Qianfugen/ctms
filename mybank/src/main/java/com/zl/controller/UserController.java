@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -35,8 +36,8 @@ public class UserController {
     @RequestMapping("/register")
     public ModelAndView register(String accNo, String password) {
         System.out.println("进入注册控制层");
-        System.out.println("accNo： "+accNo);
-        System.out.println("password： "+password);
+        System.out.println("accNo： " + accNo);
+        System.out.println("password： " + password);
         ModelAndView mv = new ModelAndView();
         if (accNo != null && !accNo.equals("") && password != null && !password.equals("")) {
             us.register(accNo, password);
@@ -49,7 +50,8 @@ public class UserController {
     }
 
     /**
-     *ajax后台检测是否重复注册
+     * ajax后台检测是否重复注册
+     *
      * @return false 重复 true 合法
      */
     @ResponseBody
@@ -60,17 +62,18 @@ public class UserController {
     }
 
     /**
-     *登录
+     * 登录
+     *
      * @return
      */
     @RequestMapping("/login")
-    public ModelAndView login(String accNo,  String password){
+    public ModelAndView login(HttpSession session, String accNo, String password) {
         ModelAndView mv = new ModelAndView();
         // 从SecurityUtils里边创建一个 subject
         Subject subject = SecurityUtils.getSubject();
         // 在认证提交前准备 token（令牌）
         UsernamePasswordToken token = new UsernamePasswordToken(accNo, password);
-        System.out.println("登录控制层:" +accNo+"...."+password);
+        System.out.println("登录控制层:" + accNo + "...." + password);
 
         try {
             //执行认证
@@ -92,28 +95,33 @@ public class UserController {
             return mv;
         }
         System.out.println("验证通过");
-        mv.setViewName("index");
-        System.out.println("进入index");
+        System.out.println("通过" + accNo);
+        mv.addObject("accNo", accNo);
+        mv.setViewName("toIndex");
         return mv;
     }
 
     @RequestMapping("/toLogin")
-    public String toLogin(){
+    public String toLogin() {
         return "login";
     }
 
     @RequestMapping("/toRegister")
-    public String toRegister(){
+    public String toRegister() {
         return "register";
     }
 
     @RequestMapping("/toIndex")
-    public String toIndex(){
-        return "index";
+    public ModelAndView toIndex(HttpSession session, String accNo) {
+        ModelAndView mv = new ModelAndView();
+        System.out.println("进入index");
+        session.setAttribute("loginAccNo", accNo);
+        mv.setViewName("index");
+        return mv;
     }
 
     @RequestMapping("/notLogin")
-    public String notLogin(){
+    public String notLogin() {
         return "notLogin";
     }
 

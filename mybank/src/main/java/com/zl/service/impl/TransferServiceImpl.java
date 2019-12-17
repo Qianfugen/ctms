@@ -3,11 +3,14 @@ package com.zl.service.impl;
 
 import com.zl.config.RabbitMqConfig;
 import com.zl.dao.TransferDao;
+import com.zl.pojo.Account;
 import com.zl.pojo.Job;
 import com.zl.pojo.Transfer;
+import com.zl.pojo.User;
 import com.zl.quartz.ComplexJob;
 import com.zl.service.JobService;
 import com.zl.service.TransferService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;

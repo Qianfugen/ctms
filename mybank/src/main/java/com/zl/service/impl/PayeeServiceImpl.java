@@ -1,9 +1,10 @@
 package com.zl.service.impl;
 
 import com.zl.dao.PayeeDao;
+import com.zl.dao.UserDao;
 import com.zl.pojo.Paging;
 import com.zl.pojo.Payee;
-import com.zl.pojo.Transfer;
+import com.zl.pojo.User;
 import com.zl.service.PayeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class PayeeServiceImpl implements PayeeService {
 
     @Autowired
     private PayeeDao pd;
+    @Autowired
+    private UserDao ud;
 
 
     /**
@@ -44,8 +47,15 @@ public class PayeeServiceImpl implements PayeeService {
         } else {
             paging.setCurrentPage(1);
         }
-
         List<Payee> payees = pd.queryPayeeByPaging(paging);
+        System.out.println("payees"+payees);
+        for (Payee p : payees) {
+            User u1 = ud.queryUserByAccNo(p.getCreditorAcc());
+            p.setCreditorName(u1.getUserName());
+            User u2 = ud.queryUserByAccNo(p.getDebtor());
+            p.setDebtorName(u2.getUserName());
+            pd.updatePayee(p);
+        }
         return payees;
     }
 
@@ -56,6 +66,7 @@ public class PayeeServiceImpl implements PayeeService {
      */
     @Override
     public Payee queryPayee(Payee payee) {
+
         return pd.queryPayee(payee);
     }
 

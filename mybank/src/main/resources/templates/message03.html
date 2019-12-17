@@ -79,45 +79,41 @@
 				<br />
 				<!输入界面-->
 					<div id="our" style="margin-top: 20px;" align="center">
-					<form action="#" method="post">
+					<form action="/payInfo/dealPayee" method="post">
 						<table style="border-collapse:separate; border-spacing:0px 10px;">
 						<tr>
 							<td>收款人姓名 ：</td>
-							<td><input id="name" type="text" required="required"  readonly="readonly" value="" placeholder="支持首字母搜索收款人" style="width: 300px;"  /></td>
-							
+							<td><input id="name" type="text" required="required"  readonly="readonly" value="${payInfo.creditorName}" style="width: 300px;"  /></td>
 						</tr>
 					
 						<tr>
 							<td>收款卡号 ：</td>
-							<td><input id="card" type="text" required="required"  readonly="readonly" value="" placeholder="18位银行卡号" style="width: 300px;" /></td>
+							<td><input id="card" type="text" required="required"  readonly="readonly" value="${payInfo.creditorAcc}" style="width: 300px;" /></td>
 						</tr>
 						
 						<tr>
 							<td>收款银行 ：</td>
 							<td>
 								<select>
-									<option value=""> </option>
-									<option value="">工商银行</option>
-									<option value="">中国银行</option>
+									<option >工商银行</option>
 								</select> 
 							</td>
 						</tr>
 						<tr>
 							<td>汇款金额 ：</td>
-							<td><input type="text" required="required" style="width: 300px;" /></td>
+							<td><input type="text" required="required" style="width: 300px;" value="${payInfo.fund}"/></td>
 						</tr>
 						<tr>
 							<td>汇款时间 ：</td>
 							<td>
 								<select>
-								<option value="">普通汇款</option>
-								<option value="">实时汇款</option>
-							</select>
+								<option >普通汇款</option>
+								</select>
 							</td>
 						</tr>
 						
 						<tr align="center">
-							<td> </td>
+							<td></td>
 							<td><input id="sub" type="submit" value="确认转账" /> </td>
 						</tr>
 					</table>

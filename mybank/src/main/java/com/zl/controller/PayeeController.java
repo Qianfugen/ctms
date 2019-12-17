@@ -1,9 +1,9 @@
 package com.zl.controller;
 
+
 import com.zl.pojo.*;
 import com.zl.service.PayInfoService;
 import com.zl.service.PayeeService;
-import com.zl.service.TransferService;
 import com.zl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +32,6 @@ public class PayeeController {
     private PayInfoService pis;
 
 
-
-
     /**
      * 去主动收款界面前查询出当前账户的借款人集合
      *
@@ -46,17 +44,17 @@ public class PayeeController {
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         System.out.println("当前账户" + loginAccNo);
-
         if (paging.getQuery() != null) {
             paging.getQuery().setCreditorAcc(loginAccNo);
-        } else {
+        }else {
             Query query = new Query();
             query.setCreditorAcc(loginAccNo);
             paging.setQuery(query);
         }
-
+        System.out.println("进入控制层的paging "+paging);
         List<Payee> payees = ps.queryPayeeByPaging(paging);
-        session.setAttribute("payees", payees);
+        mv.addObject("payees", payees);
+        System.out.println("进入控制层的payees "+payees);
         mv.setViewName("activeCollection");
         return mv;
     }

@@ -33,7 +33,7 @@ public class TransferController {
     public Map<String, Integer> subMoney(Transfer transfer) {
         transfer.setAccOut("6222305891736516103");
         System.out.println("transfer:"+transfer);
-//        transferService.transferMoney(transfer);
+//      transferService.transferMoney(transfer);
         transferService.executeJob(transfer);
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
