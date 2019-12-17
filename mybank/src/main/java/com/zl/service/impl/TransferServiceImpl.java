@@ -49,7 +49,8 @@ public class TransferServiceImpl implements TransferService {
      * 任务分类，定时转账or立即转账
      */
     @Override
-    public void executeJob(Transfer transfer) {
+    public int executeJob(Transfer transfer) {
+        int flag=0;
         if ("0".equals(transfer.getKind())) {
             //立即转账
             System.out.println("立即转账。。。");
@@ -91,7 +92,9 @@ public class TransferServiceImpl implements TransferService {
 
             //调用定时任务模块
             jobAPI.insertJob(job);
+            flag=1;
         }
+        return flag;
     }
 
     /**
@@ -107,12 +110,12 @@ public class TransferServiceImpl implements TransferService {
         //生成流水号
         String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
         transfer.setDealNo(dealNo);
-        String banktype=transfer.getAccIn().substring(0,6);
-        if("622230".equals(banktype)){
+        String banktype = transfer.getAccIn().substring(0, 6);
+        if ("622230".equals(banktype)) {
             //同行转账
             transfer.setKind("同行转账");
             transfer.setTransType(0);
-        }else{
+        } else {
             //跨行转账
             transfer.setKind("跨行转账");
             transfer.setTransType(1);
@@ -136,15 +139,15 @@ public class TransferServiceImpl implements TransferService {
 //        //设置回滚点
 //        TransactionStatus status = transactionManager.getTransaction(def);
 //        try {
-            System.out.println(transfer);
-            transferDao.subMoney(transfer);
-            transferDao.addMoney(transfer);
-            //转账成功，设置交易状态为“成功”
-            transfer.setTransStatus("成功");
-            //写入交易记录
-            int flag=writeDeal(transfer);
-            System.out.println("执行结果："+flag);
-            System.out.println("转账成功");
+        System.out.println(transfer);
+        transferDao.subMoney(transfer);
+        transferDao.addMoney(transfer);
+        //转账成功，设置交易状态为“成功”
+        transfer.setTransStatus("成功");
+        //写入交易记录
+        int flag = writeDeal(transfer);
+        System.out.println("执行结果：" + flag);
+        System.out.println("转账成功");
 //        } catch (Exception e) {
 //            //事务回滚
 //            transactionManager.rollback(status);
@@ -167,7 +170,7 @@ public class TransferServiceImpl implements TransferService {
         transfer.setAccInName("张三");
 
         System.out.println("境外转账service开始");
-        System.out.println("transfer"+transfer);
+        System.out.println("transfer" + transfer);
         //汇率转换，计算账户需要扣金额
         String host = "https://ali-waihui.showapi.com";
         String path = "/waihui-transform";
@@ -189,7 +192,7 @@ public class TransferServiceImpl implements TransferService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("moneyCNY:"+moneyCNY);
+        System.out.println("moneyCNY:" + moneyCNY);
         BigDecimal balance = queryBalance(transfer.getAccOut());
         BigDecimal transMoney = new BigDecimal(moneyCNY);
 
@@ -251,12 +254,18 @@ public class TransferServiceImpl implements TransferService {
                 /**
                  * 写入交易记录
                  */
-                System.out.println("开始插入transfer"+transfer);
-                List<Transfer> overDealing= (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+                System.out.println("开始插入transfer" + transfer);
+                List<Transfer> overDealing = (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+                if (overDealing == null) {
+                    overDealing = transferDao.queryAllDealing();
+                    if (overDealing == null) {
+                        overDealing = new ArrayList<Transfer>();
+                    }
+                }
                 overDealing.add(transfer);
-                redisTemplate.opsForList().leftPush("overDealing",overDealing);
-                int flag=writeDeal(transfer);
-                System.out.println("插入完毕。。。"+flag);
+                redisTemplate.opsForList().leftPush("overDealing", overDealing);
+                int flag = writeDeal(transfer);
+                System.out.println("插入完毕。。。" + flag);
                 /**
                  * 发送消息到队列
                  */
@@ -377,13 +386,14 @@ public class TransferServiceImpl implements TransferService {
      */
     @Override
     public void autoSend() {
-        List<Transfer> overDealing= (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
-        if(overDealing==null){
+        List<Transfer> overDealing = (List<Transfer>) redisTemplate.opsForList().leftPop("overDealing");
+        if (overDealing == null) {
             overDealing = transferDao.queryAllDealing();
-            redisTemplate.opsForList().leftPush("overDealing",overDealing);
+            redisTemplate.opsForList().leftPush("overDealing", overDealing);
         }
         if (overDealing != null && overDealing.size() > 0) {
             for (Transfer transfer : overDealing) {
+                System.out.println(transfer);
                 /**
                  * 把交易记录放到Map中准备发送到消息队列
                  */
@@ -404,5 +414,106 @@ public class TransferServiceImpl implements TransferService {
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B, map);
             }
         }
+    }
+
+    /**
+     * 查询最大上限
+     *
+     * @param accNo
+     * @return
+     */
+    @Override
+    public BigDecimal queryAccLimit(String accNo) {
+        return transferDao.queryAccLimit(accNo);
+    }
+
+    /**
+     * 查询启用状态
+     *
+     * @param accNo
+     * @return
+     */
+    @Override
+    public int queryAccStatus(String accNo) {
+        return transferDao.queryAccStatus(accNo);
+    }
+
+    /**
+     * 转账前的验证
+     *
+     * @param transfer
+     * @param bank
+     * status  0 冻结，1 定时任务取消成功，2 受理中， 100 超出上限，200 转账成，400 余额不足
+     * @return
+     */
+    @Override
+    public Map<String, Integer> verifyTransfer(Transfer transfer, String bank) {
+        Map<String, Integer> map = new HashMap<>();
+        //判断是否冻结
+        if (queryAccStatus(transfer.getAccOut()) != 0) {
+            //没冻结
+            if ("0".equals(bank)) {
+                //境内转账
+                String banktype = transfer.getAccIn().substring(0, 6);
+                System.out.println("银行前六位：" + banktype);
+                if ("622230".equals(banktype)) {
+                    //同行转账
+                    //判断上限
+                    BigDecimal limit = queryAccLimit(transfer.getAccOut());
+                    //判断余额
+                    BigDecimal balance = queryBalance(transfer.getAccOut());
+                    if (limit.compareTo(transfer.getTransFund()) < 0) {
+                        //超过上限
+                        map.put("status", 100);
+                    } else if (balance.compareTo(transfer.getTransFund()) >= 0) {
+                        System.out.println("同行转账。。。");
+                        int flag=executeJob(transfer);
+                        if(flag>0){
+                            //定时转账
+                            map.put("status", 2);
+                        }else{
+                            map.put("status",200);
+                        }
+                    } else {
+                        //余额不足
+                        map.put("status", 400);
+                    }
+                } else {
+                    //跨行转账
+                    //判断上限
+                    BigDecimal limit = queryAccLimit(transfer.getAccOut());
+                    //查询余额
+                    BigDecimal balance = queryBalance(transfer.getAccOut());
+
+                    if (limit.compareTo(transfer.getTransFund()) < 0) {
+                        //超过上限
+                        map.put("status", 100);
+                    } else if (balance.compareTo(transfer.getTransFund()) >= 0) {
+                        System.out.println("跨行转账。。。");
+                        executeJob(transfer);
+                        map.put("status", 200);
+                    } else {
+                        //余额不足
+                        map.put("status", 400);
+                    }
+                }
+            } else {
+                //跨境转账
+                //查询余额
+                BigDecimal balance = queryBalance(transfer.getAccOut());
+                if (balance.compareTo(transfer.getTransFund()) >= 0) {
+                    System.out.println("跨境转账。。。");
+                    transfer.setTransType(2);
+                    transferMoneyOver(transfer);
+                    map.put("status", 200);
+                } else {
+                    //余额不足
+                    map.put("status", 400);
+                }
+            }
+        } else {
+            map.put("status", 0);
+        }
+        return map;
     }
 }

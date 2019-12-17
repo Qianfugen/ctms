@@ -48,6 +48,12 @@
     <select id="queryAllDealing" resultType="transfer">
         select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
         ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
-        CURRENCY currency, TRANS_FUND transFund from T_TRANSFER WHERE trans_Status != 1 AND transType = 2
+        CURRENCY currency, TRANS_FUND transFund,KIND kind from T_TRANSFER WHERE trans_Status != 1 AND trans_Type = 2
+    </select>
+    <select id="queryAccLimit" parameterType="string" resultType="java.math.BigDecimal">
+        select ACC_LIMIT from T_ACCOUNT where ACC_NO=#{accNo}
+    </select>
+    <select id="queryAccStatus" parameterType="string" resultType="int">
+        select ACC_STATUS from T_ACCOUNT where ACC_NO=#{accNo}
     </select>
 </mapper>

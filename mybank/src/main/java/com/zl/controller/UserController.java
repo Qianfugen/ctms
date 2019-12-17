@@ -10,6 +10,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -130,6 +131,16 @@ public class UserController {
     @RequestMapping("/notLogin")
     public String notLogin() {
         return "notLogin";
+    }
+
+    @RequestMapping("/queryCustom")
+    public ModelAndView queryCustom(@RequestParam("accNo") String accNO){
+        System.out.println("accNo:"+accNO);
+        ModelAndView mv=new ModelAndView();
+        User user = us.queryCustom(accNO);
+        mv.addObject("user",user);
+        mv.setViewName("CustermInfo");
+        return mv;
     }
 
 }

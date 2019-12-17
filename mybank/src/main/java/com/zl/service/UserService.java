@@ -29,4 +29,11 @@ public interface UserService {
      * @return
      */
     Map<String, Object> regName(String accNo);
+
+    /**
+     * 根据卡号查询用户详细信息
+     * @param accNo
+     * @return
+     */
+    User queryCustom(String accNo);
 }

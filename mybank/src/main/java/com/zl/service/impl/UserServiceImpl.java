@@ -65,4 +65,15 @@ public class UserServiceImpl implements UserService {
         ud.updateUserPwd(user);
         System.out.println("加密password: " + user.getUserPwd());
     }
+
+    /**
+     * 根据卡号查询用户详细信息
+     *
+     * @param accNo
+     * @return
+     */
+    @Override
+    public User queryCustom(String accNo) {
+        return ud.queryCustom(accNo);
+    }
 }
