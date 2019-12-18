@@ -7,7 +7,7 @@
         update T_ACCOUNT set ACC_FUND=ACC_FUND+#{transFund} WHERE ACC_NO=#{accIn}
     </update>
     <update id="subMoney" parameterType="transfer">
-        update T_ACCOUNT set ACC_FUND=ACC_FUND-#{transFund} WHERE ACC_NO=#{accOut}
+        update T_ACCOUNT set ACC_FUND=ACC_FUND-#{transFund}-#{fee} WHERE ACC_NO=#{accOut}
     </update>
     <select id="queryTransferByDealNo" parameterType="string" resultType="transfer">
         select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
