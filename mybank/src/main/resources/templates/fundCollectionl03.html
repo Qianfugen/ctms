@@ -127,24 +127,24 @@
 				<b></b>
 				<div align="center">
 					<form action="/cashSweep/updateColl" method="post" ><br />
-					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
+					<table style="border-collapse: separate; border-spacing: 15px 10px;">
 						<tr>
 							<td> 用户名 ：</td>
-							<td> <input id="username" type="text" required="required" name="mainUser" value="${coll.mainUser}"/></td>
+							<td> <input id="username" type="text" required="required" name="mainUser" value="${coll.mainUser}" style="width: 200px"/></td>
 							<td> <span id="nameSpan"></span></td>
 						</tr>
 						<tr>
 							<td> 签 约卡号 ：</td> 
-							<td> <input id="mainAcc" type="text" required="required" name="mainAcc" value="${coll.mainAcc}"/></td>
+							<td> <input id="mainAcc" type="text" required="required" name="mainAcc" value="${coll.mainAcc}" style="width: 200px"/></td>
 							<td> <span id="cardSpan"></span></td>
 						</tr>
 						<tr>
 							<td> 开户行：</td>
-							<td> <input id="bankName" name="mainBank" value="${coll.mainBank}"/></td>
+							<td> <input id="bankName" name="mainBank" value="${coll.mainBank}" style="width: 200px"/></td>
 						</tr>
 						<tr>
 							<td> 签约金额 ：</td>
-							<td> <input id="signFund" type="text" required="required" name="signFund"  οnkeypress="checkNumber();" value="${coll.signFund}"/></td>
+							<td> <input id="signFund" type="text" required="required" name="signFund"  οnkeypress="checkNumber();" value="${coll.signFund}" style="width: 200px"/></td>
 						</tr>
 						<tr>
 							<td> </td>

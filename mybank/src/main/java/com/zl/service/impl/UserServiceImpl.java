@@ -1,6 +1,7 @@
 package com.zl.service.impl;
 
 import com.zl.dao.UserDao;
+import com.zl.pojo.FenYe;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 import com.zl.service.UserService;
@@ -74,12 +75,27 @@ public class UserServiceImpl implements UserService {
     /**
      * 根据用户卡号查询交易记录
      *
-     * @param accNo
+     * @param fenYe
      * @return
      */
     @Override
-    public List<Transfer> queryTransferByAccNo(String accNo) {
-        return ud.queryTransferByAccNo(accNo);
+    public List<Transfer> queryTransferByAccNo(FenYe fenYe) {
+        fenYe.setRowCount(ud.queryTransByLike(fenYe.getQuery()));
+        if (fenYe.getRowCount()==0){
+            return null;
+        }
+        if (fenYe.getPage()!=null){
+            if (fenYe.getPage()<1){
+                fenYe.setPage(1);
+            }else if (fenYe.getPage()>fenYe.getPageCount()){
+                fenYe.setPage(fenYe.getPageCount());
+            }
+        }else {
+            fenYe.setPage(1);
+        }
+
+        List<Transfer> transfers = ud.queryTransferByAccNo(fenYe);
+        return transfers;
     }
 
     /**
