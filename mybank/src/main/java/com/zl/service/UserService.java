@@ -1,7 +1,9 @@
 package com.zl.service;
 
+import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,4 +38,11 @@ public interface UserService {
      * @return
      */
     User queryCustom(String accNo);
+
+    /**
+     * 根据用户卡号查询交易记录
+     * @param accNo
+     * @return
+     */
+    List<Transfer> queryTransferByAccNo(String accNo);
 }

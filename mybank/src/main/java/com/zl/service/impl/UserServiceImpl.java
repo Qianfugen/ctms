@@ -1,6 +1,7 @@
 package com.zl.service.impl;
 
 import com.zl.dao.UserDao;
+import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 import com.zl.service.UserService;
 import com.zl.utils.EncryptionUtil;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,5 +77,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryCustom(String accNo) {
         return ud.queryCustom(accNo);
+    }
+
+    /**
+     * 根据用户卡号查询交易记录
+     *
+     * @param accNo
+     * @return
+     */
+    @Override
+    public List<Transfer> queryTransferByAccNo(String accNo) {
+        return ud.queryTransferByAccNo(accNo);
     }
 }
