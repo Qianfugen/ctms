@@ -76,6 +76,21 @@ public class TransferController {
     }
 
     /**
+     * 跨行转账
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/transferMoneyDemo")
+    public Map<String, Integer> transferMoneyDemo(@RequestBody Transfer transfer) {
+        System.out.println("transfer:" + transfer);
+        System.out.println("正在进行跨行转账。。。");
+        transferService.transferMoneyDome(transfer);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("status", 200);
+        return map;
+    }
+    /**
      * 跨境转账
      *
      * @param transfer
@@ -180,7 +195,7 @@ public class TransferController {
     @RequestMapping("/checkUser")
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
         Boolean flag=false;
-        if(accNo.matches("622230*")){
+        if(accNo.matches("^622230.*")){
             System.out.println("本行账户");
              flag= transferService.checkUser(userName, accNo);
         }else {

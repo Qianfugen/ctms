@@ -19,4 +19,13 @@ public interface MybankAPI {
     @ResponseBody
     @RequestMapping("/transfer/transferMoney")
     public Map<String, Integer> transferMoney(@RequestBody Transfer transfer);
+
+    /**
+     * 跨行转账
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/transferMoneyDemo")
+    public Map<String, Integer> transferMoneyDemo(@RequestBody Transfer transfer);
 }

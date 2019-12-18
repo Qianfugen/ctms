@@ -31,8 +31,13 @@ public class TransferTask implements TransferService {
         transfer.setAccOut(accOut);
         transfer.setTransFund(BigDecimal.valueOf(Long.parseLong(transferFund)));
         transfer.setCurrency(currency);
+        System.out.println("定时任务的transfer:"+transfer);
         //时间一到，执行任务
-        mybankAPI.transferMoney(transfer);
+        if(accIn.matches("^622230.*")){
+            mybankAPI.transferMoney(transfer);
+        }else {
+            mybankAPI.transferMoneyDemo(transfer);
+        }
         //执行完毕，删除任务
         scheduleJobService.delete(Long.parseLong(accOut));
         System.out.println("交易已完成。。。");
