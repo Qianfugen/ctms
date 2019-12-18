@@ -54,7 +54,9 @@ public class CustomServiceImpl implements ICustomService {
 
     @Override
     public int deleteCustom(String userId) {
-        return cd.deleteCustom(userId);
+        cd.deleteCustom(userId);
+        cd.deleteCard(userId);
+        return 1;
     }
 
     @Override

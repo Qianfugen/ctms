@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>登入</title>
+    <title>异常处理页面</title>
 </head>
 <body>
-<form action="/admin/login" method="post">
-    <span>${error!""}</span><p></p>
-    用户名：<input type="text" name="name" /><p>
-    密码：<input type="text" name="password" /><p>
-    <input type="submit" value="登入" />
-</form>
+<div>
+    <h1>异常处理界面</h1>
+    <h3>异常信息：${exception.message!""}</h3>
+    <h3>异常的连接：${url!""}</h3>
+</div>
 </body>
 </html>

@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author junqi
@@ -15,6 +16,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @ComponentScan("com.zl")
 @MapperScan("com.zl.dao")
 @EnableRedisHttpSession
+@EnableTransactionManagement
 public class ManageApplication {
 
     public static void main(String[] args) {
