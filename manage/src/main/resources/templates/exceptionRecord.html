@@ -20,11 +20,11 @@
 	<script src="/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
 	<script src="/js/jquery.ui.datepicker-zh-CN.js.js" type="text/javascript" charset="gb2312"></script>
 	<script src="/js/jquery-ui-timepicker-zh-CN.js" type="text/javascript"></script>
-	<script type="text/javascript">
-
-	</script>
 <script type="text/javascript">
 	$(function(){
+		if ($("#message").html()!=null&&$("#message").html()!=""){
+			alert($("#message").html());
+		};
 		var mess=$("#mess").html();
 		if("登入异常"==mess){
 			$("#loginException").attr("disabled",true)
@@ -39,9 +39,7 @@
 			$("#loginException01").css("display","none"),
 					$("#transferException01").css("display","block")
 		};
-		if ($("#message").html()!=null&&$("#message").html()!=""){
-			alert($("#message").html());
-		};
+
 	})
 </script>
 	<script type="text/javascript">
@@ -60,8 +58,8 @@
 	</script>
 </head>
 <body>
+<div id="message" style="">${message!""}</div>
 <div id="mess" style="display: none">${mess!""}</div>
-<div id="message" style="display: none">${message!""}</div>
 	<div class="banner">
 		<div class="bgh">
 			<div class="page">
