@@ -48,11 +48,10 @@ public class PayeeServiceImpl implements PayeeService {
             paging.setCurrentPage(1);
         }
         List<Payee> payees = pd.queryPayeeByPaging(paging);
-        System.out.println("payees"+payees);
         for (Payee p : payees) {
-            User u1 = ud.queryUserByAccNo(p.getCreditorAcc());
+            User u1 = ud.queryCustom(p.getCreditorAcc());
             p.setCreditorName(u1.getUserName());
-            User u2 = ud.queryUserByAccNo(p.getDebtor());
+            User u2 = ud.queryCustom(p.getDebtor());
             p.setDebtorName(u2.getUserName());
             if(p.getCreditorName().equals("") || p.getCreditorName().equals("")){
                 pd.updatePayee(p);

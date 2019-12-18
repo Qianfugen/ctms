@@ -51,10 +51,8 @@ public class PayeeController {
             query.setCreditorAcc(loginAccNo);
             paging.setQuery(query);
         }
-        System.out.println("进入控制层的paging "+paging);
         List<Payee> payees = ps.queryPayeeByPaging(paging);
         mv.addObject("payees", payees);
-        System.out.println("进入控制层的payees "+payees);
         mv.setViewName("activeCollection");
         return mv;
     }
@@ -66,12 +64,13 @@ public class PayeeController {
      */
     @RequestMapping("/addPayInfos")
     public ModelAndView addPayInfos(HttpSession session, String[] ids) {
+        System.out.println("进入发消息   ：");
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         //查询出当前登录卡的用户
-        User loginUser = us.queryUserByAccNo(loginAccNo);
+        User loginUser = us.queryCustom(loginAccNo);
         int index = 0;//成功的条数
-
+        System.out.println("ids"+ids);
         for (int i = 0; i < ids.length; i++) {
             PayInfo payInfo = new PayInfo();
             Payee payee = new Payee();
@@ -83,7 +82,7 @@ public class PayeeController {
             payInfo.setFund(ps.queryPayee(payee).getFund());
             payInfo.setInfoTime(new Date());
             payInfo.setCreditorName(loginUser.getUserName());
-            payInfo.setDebtorName(us.queryUserByAccNo(ids[i]).getUserName());
+            payInfo.setDebtorName(us.queryCustom(ids[i]).getUserName());
             index = pis.addPayInfo(payInfo);
         }
 
@@ -93,7 +92,7 @@ public class PayeeController {
              */
             System.out.println("批量执行成功");
         }
-        mv.setViewName("/activeCollection");
+        mv.setViewName("activeCollection");
         return mv;
     }
 
