@@ -4,6 +4,7 @@ import com.zl.pojo.Admin;
 import com.zl.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -79,6 +80,7 @@ public class AdminController {
      *修改管理员密码请求
      */
     @RequestMapping("/updateAdminPwd")
+    @Transactional
     public ModelAndView updateAdminPwd(Admin admin, @RequestParam("password1") String password1, @RequestParam("password2") String password2){
         ModelAndView mv=new ModelAndView();
         if(as.loginAdmin(admin)!=null){

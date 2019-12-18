@@ -153,18 +153,18 @@
 
 						</table>
 					</form>
-					<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=1">首页</a>
+					<a href="/custom/toCustomRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=1">首页</a>
 					<#if fenYe.page<=1>
 						上一页
 					<#else>
-						<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.page-1}">上一页</a>
+						<a href="/custom/toCustomRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.page-1}">上一页</a>
 					</#if>
 					<#if fenYe.page=fenYe.pageCount || fenYe.pageCount=0>
 						下一页
 					<#else>
-						<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.page+1}">下一页</a>
+						<a href="/custom/toCustomRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.page+1}">下一页</a>
 					</#if>
-					<a href="/custom/toAllRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.pageCount}">尾页</a>
+					<a href="/custom/toCustomRecord?query.qType=<#if fenYe.query??>${fenYe.query.qType!''}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!''}</#if>&query.startDate=<#if fenYe.query?? && fenYe.query.startDate??>${fenYe.query.startDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&query.endDate=<#if fenYe.query?? && fenYe.query.endDate??>${fenYe.query.endDate?string('yyyy-MM-dd HH:mm:ss')}</#if>&page=${fenYe.pageCount}">尾页</a>
 					&nbsp;	当前第${fenYe.page}页&nbsp;共${fenYe.pageCount}页
 					<p> </p>
 				</div>
