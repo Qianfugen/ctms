@@ -62,4 +62,7 @@
     <select id="queryAccStatus" parameterType="string" resultType="int">
         select ACC_STATUS from T_ACCOUNT where ACC_NO=#{accNo}
     </select>
+    <select id="queryCusUsual" resultType="usualColl">
+        select acc_In accIn,acc_InName accInName from T_USUALCOLL where MAIN_ACC=#{accNo,jdbcType=VARCHAR} and rownum between 1 and 5
+    </select>
 </mapper>

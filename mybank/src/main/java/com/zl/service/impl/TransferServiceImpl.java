@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zl.api.JobAPI;
 import com.zl.config.RabbitMqConfig;
 import com.zl.dao.TransferDao;
-import com.zl.pojo.Account;
-import com.zl.pojo.Job;
-import com.zl.pojo.Transfer;
-import com.zl.pojo.User;
+import com.zl.pojo.*;
 import com.zl.service.TransferService;
 import com.zl.utils.HttpUtils;
 import org.apache.http.HttpResponse;
@@ -700,5 +697,10 @@ public class TransferServiceImpl implements TransferService {
             map.put("status", 0);
         }
         return map;
+    }
+
+    @Override
+    public List<UsualColl> queryCusUsual(String accNo) {
+        return transferDao.queryCusUsual(accNo);
     }
 }

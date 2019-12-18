@@ -159,11 +159,17 @@ public class UserController {
     }
 
     @RequestMapping("/toCustomRecord")
-    public ModelAndView toCustomRecord(HttpSession session){
+    public ModelAndView toCustomRecord(FenYe fenYe,HttpSession session){
         String accNo= (String) session.getAttribute("loginAccNo");
         System.out.println("accNo: "+accNo);
+        Query query=new Query();
+        if (fenYe.getQuery()!=null){
+            query=fenYe.getQuery();
+        }
+        query.setqAccNo(accNo);
+        fenYe.setQuery(query);
         ModelAndView mv=new ModelAndView();
-        List<Transfer> transfers=us.queryTransferByAccNo(accNo);
+        List<Transfer> transfers=us.queryTransferByAccNo(fenYe);
         if (transfers!=null){
             mv.addObject("transfers",transfers);
         }else {

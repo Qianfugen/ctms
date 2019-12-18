@@ -322,7 +322,7 @@
                             <td>收款银行 ：</td>
                             <td>
                                 <select>
-                                    <option value="${map.accInBank!'请选择'}"></option>
+                                    <option value="请选择"></option>
                                     <option value="">工商银行</option>
                                     <option value="">中国银行</option>
                                     <option value="">农业银行</option>
@@ -369,19 +369,21 @@
                             <div class="modal-body">
                                 <table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
                                     <tr>
+                                        <td>序号</td>
                                         <td>姓名</td>
                                         <td>&nbsp;&nbsp;&nbsp;卡号</td>
-                                        <td>&nbsp;&nbsp;&nbsp;开户行</td>
                                         <td>操作</td>
                                     </tr>
-                                    <tr>
-                                        <td>&nbsp;葛盈彬</td>
-                                        <td>&nbsp;&nbsp;&nbsp;6222308239911999317</td>
-                                        <td>&nbsp;&nbsp;&nbsp;工商银行</td>
-                                        <td>
-                                            <a href="/transfer/addUser?accInName=葛盈彬&accIn=6222308239911999317&accInBank=工商银行">选择</a>
-                                        </td>
-                                    </tr>
+                                    <#list usualColls as n>
+                                        <tr>
+                                            <td>${n_index!""}</td>
+                                            <td>${n.accInName!""}</td>
+                                            <td>${n.accIn!""}</td>
+                                            <td>
+                                                <a href="/transfer/addUser?accInName=${n.accInName!""}&accIn=${n.accIn!""}">选择</a>
+                                            </td>
+                                        </tr>
+                                    </#list>
                                 </table>
                             </div>
                             <div class="modal-footer">
