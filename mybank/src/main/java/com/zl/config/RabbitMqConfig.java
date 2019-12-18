@@ -10,9 +10,11 @@ public class RabbitMqConfig {
     public final static String DOMESTIC_QUEUE_NAME="domestic";
     public final static String OVERSEAS_QUEUE_NAME="overseas";
     public final static String RETURN_OVER_QUEUE_NAME="returnOver";
+    public final static String RETURN_DEME_QUEUE_NAME="teturnDome";
     public final static String ROUTINGKEY_A="toDome";
     public final static String ROUTINGKEY_B="toOver";
     public final static String ROUTINGKEY_C="reO";
+    public final static String ROUTINGKEY_D="reD";
 
 
     @Bean(RabbitMqConfig.DOMESTIC_QUEUE_NAME)
@@ -52,6 +54,16 @@ public class RabbitMqConfig {
     @Bean
     Binding bindingExchangeMessage3(@Qualifier(RabbitMqConfig.RETURN_OVER_QUEUE_NAME) Queue queue, @Qualifier("directExchange2") Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(RabbitMqConfig.ROUTINGKEY_C).noargs();
+    }
+
+    @Bean(RabbitMqConfig.RETURN_DEME_QUEUE_NAME)
+    public Queue queueD() {
+        return QueueBuilder.durable(RETURN_DEME_QUEUE_NAME).build();
+    }
+
+    @Bean
+    Binding bindingExchangeMessage4(@Qualifier(RabbitMqConfig.RETURN_DEME_QUEUE_NAME) Queue queue, @Qualifier("directExchange2") Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(RabbitMqConfig.ROUTINGKEY_D).noargs();
     }
 
 //    @Bean
