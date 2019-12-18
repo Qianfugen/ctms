@@ -47,7 +47,7 @@
                 </div>
                 <div class="cdlist">
                     <div>
-                        <a href="MyInfo/StudentInfo.html">我的信息</a>
+                        <a href="/user/queryCustom?accNo=${loginAccNo}">我的信息</a>
                     </div>
                     <div>
                         <a href="">收账人管理</a>
@@ -56,7 +56,7 @@
                         <a href="/payInfo/toPayInfoMessage">消息通知</a>
                     </div>
                     <div>
-                        <a href="">交易记录</a>
+                        <a href="/user/toCustomRecord">交易记录</a>
                     </div>
                 </div>
                 <div class="ta1">
@@ -109,7 +109,7 @@
                             </tr>
                             <#list payees as p>
                                 <tr>
-                                    <td>&nbsp;&nbsp;<input type="checkbox" name="id" value="${p.debtor}"/></td>
+                                    <td>&nbsp;&nbsp;<input type="checkbox" name="debtor" value="${p.debtor}"/></td>
                                     <td>&nbsp;&nbsp;${p.debtor}</td>
                                     <td>&nbsp;&nbsp;${p.debtorName}</td>
                                     <td>&nbsp;&nbsp;${p.fund}</td>
@@ -133,7 +133,7 @@
                         <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.pages}">尾页</a>
                         &nbsp;当前第${paging.currentPage}页&nbsp;&nbsp;共${paging.pages}页
 
-                        <h3><input type="submit" value="批量收款"/></h3>
+                        <h3><input type="submit" value="批量收款"/>
                     </div>
                 </form>
             </div>

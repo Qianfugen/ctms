@@ -14,7 +14,7 @@
             //验证注册
             $("#username").blur(function () {
                 var username = $("#username").val();
-                var cardNumber = /^[1-9][0-9]{15,18}$/;
+                var cardNumber = /^[1-9][0-9]{15,19}$/;
                 if (cardNumber.test(username)) {
                     //发送ajax请求
                     $.ajax({
