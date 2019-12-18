@@ -18,7 +18,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-    @Bean
+    @Bean(name = "shirFilter")
     public ShiroFilterFactoryBean factoryBean(SecurityManager securityManager) {
         System.out.println("进入shiroConfig");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -27,20 +27,17 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setLoginUrl("/user/login");
         //登录成功后跳转的url
         shiroFilterFactoryBean.setSuccessUrl("/user/toIndex");
+        //未授权界面
+        shiroFilterFactoryBean.setUnauthorizedUrl("/user/notLogin");
         //拦截器
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //anon:所有url可以匿名访问
-        filterChainDefinitionMap.put("/css/**","anon");
-        filterChainDefinitionMap.put("/js/**","anon");
-        filterChainDefinitionMap.put("/fonts/**","anon");
-        filterChainDefinitionMap.put("/images/**","anon");
-        filterChainDefinitionMap.put("/user/toLogin","anon");
-        filterChainDefinitionMap.put("/user/toRegister","anon");
-        //anthc:所有url都必须认证通过才可以访问
-        filterChainDefinitionMap.put("/**","authc");
+        filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/images/**", "anon");
+        //authc:所有url都必须认证通过才可以访问
+        filterChainDefinitionMap.put("/**", "authc");
 
-        //未授权界面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/user/notLogin");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -48,10 +45,11 @@ public class ShiroConfig {
     /**
      * 匹配MD5加密后的密码
      * 密码校验给予shiro的SimpleAuthenticationInfo处理
+     *
      * @return
      */
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         //散列算法
         hashedCredentialsMatcher.setHashAlgorithmName("md5");
@@ -61,7 +59,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public MyRealm myRealm(){
+    public MyRealm myRealm() {
         MyRealm myRealm = new MyRealm();
         myRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return myRealm;
@@ -70,8 +68,8 @@ public class ShiroConfig {
     /**
      * shiro接口
      */
-    @Bean
-    public SecurityManager securityManager(){
+    @Bean(name = "securityManager")
+    public SecurityManager securityManager() {
         //SecurityManager安全管理器
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myRealm());

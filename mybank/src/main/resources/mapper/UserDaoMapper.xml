@@ -35,11 +35,7 @@ namespace:必须是对应接口的全路径
     <update id="updateUserPwd" parameterType="user">
         update T_USER set USER_PWD=#{userPwd} where USER_ID=#{userId}
     </update>
-    
-    <select id="queryUserByAccNo" parameterType="string" resultType="user">
-        select USER_ID userId,USER_NAME userName,USER_SEX userSex,USER_BIRTHDATE userBirthdate,USER_CERTNO userCertNo,
-       USER_ADDR userAddr,USER_ZIPCODE userZipCode,USER_TELNO userTelNo,USER_PHONENO userPhone,USER_EMAIL userEmail,USER_PWD userPwd from CUSTOM where ACC_NO=#{accNo}
-    </select>
+
     <!--    根据用户ID查询用户详细信息-->
     <select id="queryCustom" parameterType="string" resultMap="userCustom">
         select * from CUSTOM where ACC_NO=#{accNo}

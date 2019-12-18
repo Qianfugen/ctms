@@ -88,7 +88,7 @@ public class UserController {
             return mv;
         } catch (UnknownAccountException uae) {
             System.out.println("uae异常......");
-            mv.addObject("error", "用户名或密码错误");
+            mv.addObject("error", "登录出错");
             mv.setViewName("login");
             return mv;
         } catch (Exception e) {
@@ -118,10 +118,8 @@ public class UserController {
     public ModelAndView toIndex(HttpSession session, String accNo) {
         ModelAndView mv = new ModelAndView();
         System.out.println("进入index");
-
-        User loginUser = us.queryUserByAccNo(accNo);
-        System.out.println(loginUser+"当前对象");
-
+        User loginUser = us.queryCustom(accNo);
+        System.out.println("当前对象:"+loginUser);
         session.setAttribute("loginUser",loginUser);
         session.setAttribute("loginAccNo", accNo);
         mv.setViewName("index");

@@ -67,7 +67,7 @@ public class PayeeController {
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         //查询出当前登录卡的用户
-        User loginUser = us.queryUserByAccNo(loginAccNo);
+        User loginUser = us.queryCustom(loginAccNo);
         int index = 0;//成功的条数
 
         for (int i = 0; i < ids.length; i++) {
@@ -81,7 +81,7 @@ public class PayeeController {
             payInfo.setFund(ps.queryPayee(payee).getFund());
             payInfo.setInfoTime(new Date());
             payInfo.setCreditorName(loginUser.getUserName());
-            payInfo.setDebtorName(us.queryUserByAccNo(ids[i]).getUserName());
+            payInfo.setDebtorName(us.queryCustom(ids[i]).getUserName());
             index = pis.addPayInfo(payInfo);
         }
 

@@ -22,23 +22,13 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * 根据卡号查用户
-     *
-     * @param accNo
-     */
-    @Override
-    public User queryUserByAccNo(String accNo) {
-        return ud.queryUserByAccNo(accNo);
-    }
-
-    /**
      * 验证是否重复注册
      *
      * @return
      */
     public Map<String, Object> regName(String accNo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        User user = ud.queryUserByAccNo(accNo);
+        User user = ud.queryCustom(accNo);
         if (user.getUserPwd() != null) {
             //重复注册
             result.put("flag", false);
@@ -58,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(String accNo, String password) {
         System.out.println("进入登录service");
-        User user = ud.queryUserByAccNo(accNo);
+        User user = ud.queryCustom(accNo);
         EncryptionUtil encryptionUtil = new EncryptionUtil();
         Map<String, String> encrypt = encryptionUtil.encryption(accNo, password);
         user.setUserPwd(encrypt.get("password"));
