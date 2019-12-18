@@ -96,8 +96,8 @@
 						<tr>
 							<td align="right">性别：</td>
 							<td><#if user.userSex==1>男<#elseif user.userSex==2>女<#else>不详</#if>&nbsp;</td>
-							<td align="right">学历：</td>
-							<td>本科&nbsp;</td>
+							<td align="right">客户号：</td>
+							<td>${user.userId!''}&nbsp;</td>
 							
 						</tr>
 						<tr>
@@ -108,26 +108,26 @@
 							
 						</tr>
 						<tr>
-							<td align="right">专业：</td>
-							<td>经济法学&nbsp;</td>
-							<td align="right">入学日期：</td>
-							<td>2013-09-05&nbsp;</td>
+							<td align="right">余额：</td>
+							<td><#if user.account??>${user.account.accFund!''}</#if>&nbsp;</td>
+							<td align="right">状态</td>
+							<td><#if user.account??><#if user.account.accStatus==1>启用<#else>冻结</#if></#if>&nbsp;</td>
 						</tr>
 						<tr>
 							<td align="right">出生日期：</td>
 							<td><#if user.userBirthdate??>${user.userBirthdate?string('yyyy-MM-dd')}</#if></td>
-							<td align="right">状态：</td>
-							<td>在读&nbsp;</td>
+							<td align="right">办卡日期：</td>
+							<td><#if user.userBirthdate??><#if user.account.accDate??>${user.account.accDate?string('yyyy-MM-dd')}</#if></#if>&nbsp;</td>
 						</tr>
 						<tr>
 							<td align="right">手机号码：</td>
+							<td>${user.userPhoneNo!''}</td>
+							<td align="right" width="100">固定电话号码：</td>
 							<td>${user.userTelNo!''}</td>
-							<td align="right" width="100">第二联系号码：</td>
-							<td></td>
 						</tr>
 						<tr>
-							<td align="right">QQ:</td>
-							<td></td>
+							<td align="right">邮政编码:</td>
+							<td>${user.userZipCode!''}</td>
 							<td align="right">电子邮箱：</td>
 							<td>${user.userEmail!''}</td>
 
@@ -135,13 +135,6 @@
 						<tr>
 							<td align="right">联系地址：</td>
 							<td colspan="3">${user.userAddr!''}</td>
-						</tr>
-						<tr align="center">
-							<td colspan="5" height="40">
-								<div align="center">
-									<a href="CustermMessageChangeInfo.html" >修改资料</a>
-								</div>
-							</td>
 						</tr>
 					</table>
 				</div>

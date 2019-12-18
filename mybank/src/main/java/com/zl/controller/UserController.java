@@ -1,5 +1,9 @@
 package com.zl.controller;
 
+import com.netflix.ribbon.proxy.annotation.Http;
+import com.zl.pojo.FenYe;
+import com.zl.pojo.Query;
+import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 import com.zl.service.UserService;
 import org.apache.shiro.SecurityUtils;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -150,6 +155,22 @@ public class UserController {
         User user = us.queryCustom(accNO);
         mv.addObject("user",user);
         mv.setViewName("CustermInfo");
+        return mv;
+    }
+
+    @RequestMapping("/toCustomRecord")
+    public ModelAndView toCustomRecord(HttpSession session){
+        String accNo= (String) session.getAttribute("loginAccNo");
+        System.out.println("accNo: "+accNo);
+        ModelAndView mv=new ModelAndView();
+        List<Transfer> transfers=us.queryTransferByAccNo(accNo);
+        if (transfers!=null){
+            mv.addObject("transfers",transfers);
+        }else {
+            mv.addObject("message","该用户暂无交易记录");
+        }
+
+        mv.setViewName("transferInfo");
         return mv;
     }
 

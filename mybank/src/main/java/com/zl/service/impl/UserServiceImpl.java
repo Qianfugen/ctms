@@ -1,15 +1,15 @@
 package com.zl.service.impl;
 
 import com.zl.dao.UserDao;
+import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 import com.zl.service.UserService;
 import com.zl.utils.EncryptionUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,13 +24,23 @@ public class UserServiceImpl implements UserService {
 
 
     /**
+     * 根据卡号查用户
+     *
+     * @param accNo
+     */
+    @Override
+    public User queryUserByAccNo(String accNo) {
+        return ud.queryUserByAccNo(accNo);
+    }
+
+    /**
      * 验证是否重复注册
      *
      * @return
      */
     public Map<String, Object> regName(String accNo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        User user = ud.queryCustom(accNo);
+        User user = ud.queryUserByAccNo(accNo);
         if (user.getUserPwd() != null) {
             //重复注册
             result.put("flag", false);
@@ -50,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(String accNo, String password) {
         System.out.println("进入登录service");
-        User user = ud.queryCustom(accNo);
+        User user = ud.queryUserByAccNo(accNo);
         EncryptionUtil encryptionUtil = new EncryptionUtil();
         Map<String, String> encrypt = encryptionUtil.encryption(accNo, password);
         user.setUserPwd(encrypt.get("password"));
@@ -70,13 +80,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 用户注销
+     * 根据用户卡号查询交易记录
+     *
+     * @param accNo
+     * @return
      */
     @Override
-    public void logout() {
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
-            subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
-        }
+    public List<Transfer> queryTransferByAccNo(String accNo) {
+        return ud.queryTransferByAccNo(accNo);
     }
 }
