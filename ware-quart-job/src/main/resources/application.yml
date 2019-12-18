@@ -19,8 +19,8 @@ spring:
     name: ware-quart-job
   profiles:
     active: dev
-  mvc:
-    throw-exception-if-no-handler-found:
+#  mvc:
+#    throw-exception-if-no-handler-found:
   redis:
     host: 10.1.13.74
     port: 6379
