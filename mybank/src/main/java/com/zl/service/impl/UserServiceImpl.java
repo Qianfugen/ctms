@@ -4,6 +4,8 @@ import com.zl.dao.UserDao;
 import com.zl.pojo.User;
 import com.zl.service.UserService;
 import com.zl.utils.EncryptionUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +67,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryCustom(String accNo) {
         return ud.queryCustom(accNo);
+    }
+
+    /**
+     * 用户注销
+     */
+    @Override
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
+        }
     }
 }

@@ -31,4 +31,9 @@ public interface UserService {
      * @return
      */
     User queryCustom(String accNo);
+
+    /**
+     * 用户注销
+     */
+    void logout();
 }

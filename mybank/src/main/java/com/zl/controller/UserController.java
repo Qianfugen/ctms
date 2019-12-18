@@ -104,6 +104,18 @@ public class UserController {
         return mv;
     }
 
+    /**
+     * 退出
+     * @return
+     */
+    @RequestMapping("/logout")
+    public ModelAndView logout(){
+        ModelAndView mv = new ModelAndView();
+        us.logout();
+        mv.setViewName("toLogin");
+        return mv;
+    }
+
     @RequestMapping("/toLogin")
     public String toLogin() {
         return "login";
