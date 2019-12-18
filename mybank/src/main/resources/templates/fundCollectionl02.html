@@ -82,7 +82,7 @@
 				<div align="center">
 					<h5>您已经签约，签约信息如下：</h5><br />
 					<form action="/cashSweep/beforeUpdate" method="post" >
-					<table style="border-collapse: separate; border-spacing: 15px 10px;border: solid 2px;">
+					<table style="border-collapse: separate; border-spacing: 15px 10px;">
 						<tr>
 							<td> 用户名 ：</td>
 							<td> <input id="username" type="text" name="mainUser" value="${coll.mainUser}" readonly="readonly"  /></td>
@@ -94,7 +94,7 @@
 						</tr>
 						<tr>
 							<td> 开户行： </td>
-							<td> <input id="bankName" name="mainBank" value="${coll.mainBank}"/></td>
+							<td> <input id="bankName" name="mainBank" value="${coll.mainBank}" readonly="readonly"/></td>
 						</tr>
 						<tr>
 							<td> 签约金额 ： </td>
