@@ -28,6 +28,7 @@ namespace:必须是对应接口的全路径
             <result property="accType" column="ACC_TYPE"></result>
             <result property="accDate" column="ACC_DATE"></result>
             <result property="accPwd" column="ACC_PWD"></result>
+            <result property="collStatus" column="COLL_STATUS"></result>
         </collection>
     </resultMap>
     <!--    交易记录表字段映射文件-->
