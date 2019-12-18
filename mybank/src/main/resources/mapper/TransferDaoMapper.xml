@@ -7,7 +7,7 @@
         update T_ACCOUNT set ACC_FUND=ACC_FUND+#{transFund} WHERE ACC_NO=#{accIn}
     </update>
     <update id="subMoney" parameterType="transfer">
-        update T_ACCOUNT set ACC_FUND=ACC_FUND-#{transFund} WHERE ACC_NO=#{accOut}
+        update T_ACCOUNT set ACC_FUND=ACC_FUND-#{transFund}-#{fee} WHERE ACC_NO=#{accOut}
     </update>
     <select id="queryTransferByDealNo" parameterType="string" resultType="transfer">
         select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
@@ -38,16 +38,28 @@
     <select id="queryTransferDealing" parameterType="string" resultType="transfer">
         select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
         ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
-        CURRENCY currency, TRANS_FUND transFund from T_TRANSFER WHERE DEAL_NO=#{dealNo} AND trans_Status != 1
+        CURRENCY currency, TRANS_FUND transFund from T_TRANSFER WHERE DEAL_NO=#{dealNo} AND trans_Status = 0
     </select>
 
     <update id="transferConfirm" parameterType="string">
-        update T_TRANSFER set TRANS_STATUS=1 where DEAL_NO=#{dealNo}
+        update T_TRANSFER set TRANS_STATUS='成功' where DEAL_NO=#{dealNo}
     </update>
 
-    <select id="queryAllDealing" resultType="transfer">
+    <select id="queryAllOverDealing" resultType="transfer">
         select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
         ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
-        CURRENCY currency, TRANS_FUND transFund from T_TRANSFER WHERE trans_Status != 1 AND transType = 2
+        CURRENCY currency, TRANS_FUND transFund,KIND kind from T_TRANSFER WHERE trans_Status = 0 AND TRANS_TYPE = 2
+    </select>
+
+    <select id="queryAllDomeDealing" resultType="transfer">
+        select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
+        ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
+        CURRENCY currency, TRANS_FUND transFund,KIND kind from T_TRANSFER WHERE trans_Status = 0 AND TRANS_TYPE = 1
+    </select>
+    <select id="queryAccLimit" parameterType="string" resultType="java.math.BigDecimal">
+        select ACC_LIMIT from T_ACCOUNT where ACC_NO=#{accNo}
+    </select>
+    <select id="queryAccStatus" parameterType="string" resultType="int">
+        select ACC_STATUS from T_ACCOUNT where ACC_NO=#{accNo}
     </select>
 </mapper>

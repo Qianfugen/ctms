@@ -5,13 +5,58 @@
 namespace:必须是对应接口的全路径
 -->
 <mapper namespace="com.zl.dao.UserDao">
+    <!--    客户信息和银行卡信息字段映射文件-->
+    <resultMap id="userCustom" type="com.zl.pojo.User">
+        <id property="userId" column="USER_ID"></id>
+        <result property="userName" column="USER_NAME"></result>
+        <result property="userSex" column="USER_SEX"></result>
+        <result property="userBirthdate" column="USER_BIRTHDATE"></result>
+        <result property="userCertNo" column="USER_CERTNO"></result>
+        <result property="userAddr" column="USER_ADDR"></result>
+        <result property="userZipCode" column="USER_ZIPCODE"></result>
+        <result property="userTelNo" column="USER_TELNO"></result>
+        <result property="userPhoneNo" column="USER_PHONENO"></result>
+        <result property="userEmail" column="USER_EMAIL"></result>
+        <result property="userPwd" column="USER_PWD"></result>
+        <collection property="account" ofType="com.zl.pojo.Account">
+            <id property="accNo" column="ACC_NO"></id>
+            <result property="currType" column="CURR_TYPE"></result>
+            <result property="accBankId" column="ACC_BANKID"></result>
+            <result property="accStatus" column="ACC_STATUS"></result>
+            <result property="accLimit" column="ACC_LIMIT"></result>
+            <result property="accFund" column="ACC_FUND"></result>
+            <result property="accType" column="ACC_TYPE"></result>
+            <result property="accDate" column="ACC_DATE"></result>
+            <result property="accPwd" column="ACC_PWD"></result>
+        </collection>
+    </resultMap>
+    <!--    交易记录表字段映射文件-->
+    <resultMap id="allTransFor" type="com.zl.pojo.Transfer">
+        <id column="DEAL_NO" property="dealNo"></id>
+        <result property="dealDate" column="DEAL_DATE"></result>
+        <result property="transType" column="TRANS_TYPE"></result>
+        <result property="transStatus" column="TRANS_STATUS"></result>
+        <result property="accOut" column="ACC_OUT"></result>
+        <result property="accOutName" column="ACC_OUTNAME"></result>
+        <result property="accOutBank" column="ACC_OUTBANK"></result>
+        <result property="accIn" column="ACC_IN"></result>
+        <result property="accInName" column="ACC_INNAME"></result>
+        <result property="accInBank" column="ACC_INBANK"></result>
+        <result property="currency" column="CURRENCY"></result>
+        <result property="transFund" column="TRANS_FUND"></result>
+        <result property="kind" column="KIND"></result>
+    </resultMap>
     <update id="updateUserPwd" parameterType="user">
         update T_USER set USER_PWD=#{userPwd} where USER_ID=#{userId}
     </update>
-    
-    <select id="queryUserByAccNo" parameterType="string" resultType="user">
-        select USER_ID userId,USER_NAME userName,USER_SEX userSex,USER_BIRTHDATE userBirthdate,USER_CERTNO userCertNo,
-       USER_ADDR userAddr,USER_ZIPCODE userZipCode,USER_TELNO userTelNo,USER_PHONENO userPhone,USER_EMAIL userEmail,USER_PWD userPwd from CUSTOM where ACC_NO=#{accNo}
+
+    <!--    根据用户ID查询用户详细信息-->
+    <select id="queryCustom" parameterType="string" resultMap="userCustom">
+        select * from CUSTOM where ACC_NO=#{accNo}
     </select>
 
+    <!--    根据银行卡查询用户交易信息-->
+    <select id="queryTransferByAccNo" resultMap="allTransFor" parameterType="string">
+        select * from T_TRANSFER where ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
+    </select>
 </mapper>

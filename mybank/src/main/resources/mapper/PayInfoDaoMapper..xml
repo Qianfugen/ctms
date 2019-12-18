@@ -7,29 +7,27 @@ namespace:必须是对应接口的全路径
 <mapper namespace="com.zl.dao.PayInfoDao">
 
     <!--查看全部催款记录-->
-    <select id="queryPayInfoByPaging" parameterType="paging" resultType="PayInfo">
-        select * from (select t.*,rownum r from (select * from T_PayInfo
-        <where>
-            <if test="debtor!=null and debtor!=''">
-                and debtor=#{query.debtor}
-            </if>
-        </where>
-        ) t ) where r>#{rowStart} and r<![CDATA[<=]]>#{rowEnd}
+    <select id="queryPayInfoByPaging" parameterType="paging" resultType="payInfo">
+        select CREDITOR_ACC creditorAcc ,CREDITOR_NAME creditorName,FUND fund,INFO_TIME infoTime, DEBTOR debtor,DEBTOR_NAME debtorName from (select t.*,rownum r from (select * from T_PayInfo where  debtor=#{query.debtor} ) t ) where r>#{rowStart} and r<![CDATA[<=]]>#{rowEnd}
     </select>
 
     <!--查询符合要求记录数-->
     <select id="queryPayInfoCount" parameterType="query" resultType="int">
-        select count(1) from T_PayInfo
-        <where>
-            <if test="debtor!=null and debtor!=''">
-                and debtor=#{debtor}
-            </if>
-        </where>
+        select count(1) from T_PayInfo where DEBTOR=#{debtor}
     </select>
 
     <!--    发送催款消息通知-->
     <insert id="addPayInfo" parameterType="payInfo">
         insert into T_PAYINFO values (#{creditorAcc},#{creditorName},#{fund},#{infoTime},#{debtor},#{debtorName})
     </insert>
+
+    <!--    删除消息通知-->
+    <delete id="deletePayInfo" parameterType="payInfo">
+        delete from T_PAYINFO where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
+    </delete>
+
+    <select id="queryPayInfo" parameterType="payInfo" resultType="payInfo">
+        select creditor_acc creditorAcc, creditor_name creditorName, fund fund, info_time infoTime, debtor debtor, debtor_name debtorName from T_PAYINFO where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
+    </select>
 
 </mapper>

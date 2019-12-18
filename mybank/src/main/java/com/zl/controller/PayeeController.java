@@ -1,9 +1,9 @@
 package com.zl.controller;
 
+
 import com.zl.pojo.*;
 import com.zl.service.PayInfoService;
 import com.zl.service.PayeeService;
-import com.zl.service.TransferService;
 import com.zl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +32,6 @@ public class PayeeController {
     private PayInfoService pis;
 
 
-
-
     /**
      * 去主动收款界面前查询出当前账户的借款人集合
      *
@@ -46,17 +44,15 @@ public class PayeeController {
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         System.out.println("当前账户" + loginAccNo);
-
         if (paging.getQuery() != null) {
             paging.getQuery().setCreditorAcc(loginAccNo);
-        } else {
+        }else {
             Query query = new Query();
             query.setCreditorAcc(loginAccNo);
             paging.setQuery(query);
         }
-
         List<Payee> payees = ps.queryPayeeByPaging(paging);
-        session.setAttribute("payees", payees);
+        mv.addObject("payees", payees);
         mv.setViewName("activeCollection");
         return mv;
     }
@@ -67,25 +63,27 @@ public class PayeeController {
      * @return
      */
     @RequestMapping("/addPayInfos")
-    public ModelAndView addPayInfos(HttpSession session, String[] ids) {
+    public ModelAndView addPayInfos(HttpSession session, String[] debtor) {
+        System.out.println("进入发消息   ：");
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         //查询出当前登录卡的用户
-        User loginUser = us.queryUserByAccNo(loginAccNo);
+        User loginUser = us.queryCustom(loginAccNo);
         int index = 0;//成功的条数
 
-        for (int i = 0; i < ids.length; i++) {
+        for (int i = 0; i < debtor.length; i++) {
+            System.out.println("debtor[i] "+debtor[i]);
             PayInfo payInfo = new PayInfo();
             Payee payee = new Payee();
             payee.setCreditorAcc(loginAccNo);
-            payee.setDebtor(ids[i]);
+            payee.setDebtor(debtor[i]);
 
             payInfo.setCreditorAcc(loginAccNo);
-            payInfo.setDebtor(ids[i]);
+            payInfo.setDebtor(debtor[i]);
             payInfo.setFund(ps.queryPayee(payee).getFund());
             payInfo.setInfoTime(new Date());
             payInfo.setCreditorName(loginUser.getUserName());
-            payInfo.setDebtorName(us.queryUserByAccNo(ids[i]).getUserName());
+            payInfo.setDebtorName(us.queryCustom(debtor[i]).getUserName());
             index = pis.addPayInfo(payInfo);
         }
 
@@ -95,7 +93,7 @@ public class PayeeController {
              */
             System.out.println("批量执行成功");
         }
-        mv.setViewName("/activeCollection");
+        mv.setViewName("activeCollection");
         return mv;
     }
 

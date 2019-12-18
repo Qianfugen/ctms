@@ -35,5 +35,6 @@ public class TransferTask implements TransferService {
         mybankAPI.transferMoney(transfer);
         //执行完毕，删除任务
         scheduleJobService.delete(Long.parseLong(accOut));
+        System.out.println("交易已完成。。。");
     }
 }

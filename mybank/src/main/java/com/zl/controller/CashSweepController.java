@@ -76,10 +76,10 @@ public class CashSweepController {
         String collStatus2 = "已签约";
         String collStatus3 = "主账号";
 
-        //获取当前登录的账号
-        Account loginAccount = (Account) session.getAttribute("loginAccount");
+        //获取当前登录的用户
+        User loginUser = (User) session.getAttribute("loginUser");
         //获取当前登录的账号的资金归集签约状态
-        String collStatus = loginAccount.getCollStatus();
+        String collStatus = loginUser.getAccount().getCollStatus();
 
         //如果签约状态为"未签约"或者null
         if (collStatus == null || "".equals(collStatus) || collStatus1.equals(collStatus)) {
@@ -104,8 +104,9 @@ public class CashSweepController {
     public ModelAndView signColl(HttpSession session, Coll coll) {
         ModelAndView mv = new ModelAndView();
 
-        //获取当前登录的账号
-        Account loginAccount = (Account) session.getAttribute("loginAccount");
+        //获取当前登录的用户
+        User loginUser= (User) session.getAttribute("loginUser");
+        Account loginAccount = loginUser.getAccount();
 
         //调用签约方法
         int flag = cashSweepService.signColl(loginAccount, coll);
@@ -117,7 +118,8 @@ public class CashSweepController {
         } else {
             //将会话中登录的账号签约信息更新
             loginAccount.setCollStatus(cashSweepService.queryCollStatus(loginAccount.getAccNo()));
-            session.setAttribute("loginAccount", loginAccount);
+            loginUser.setAccount(loginAccount);
+            session.setAttribute("loginUser", loginUser);
             mv.setViewName("loginAccountCollStatus");
         }
         return mv;
@@ -128,8 +130,9 @@ public class CashSweepController {
     public ModelAndView cancelColl(HttpSession session, String followAcc, String mainAcc) {
         ModelAndView mv = new ModelAndView();
 
-        //获取当前登录的账号
-        Account loginAccount = (Account) session.getAttribute("loginAccount");
+        //获取当前登录的用户
+        User loginUser= (User) session.getAttribute("loginUser");
+        Account loginAccount = loginUser.getAccount();
 
         //解除签约是否成功的标志
         int flag = 0;
@@ -167,7 +170,8 @@ public class CashSweepController {
 
         //解约成功，更新会话中的账号对象的签约状态；跳转到签约状态判断
         loginAccount.setCollStatus(cashSweepService.queryCollStatus(loginAccount.getAccNo()));
-        session.setAttribute("loginAccount", loginAccount);
+        loginUser.setAccount(loginAccount);
+        session.setAttribute("loginUser", loginUser);
         mv.setViewName("loginAccountCollStatus");
 
         return mv;
@@ -187,8 +191,9 @@ public class CashSweepController {
     public ModelAndView updateColl(Coll reviseColl, HttpSession session) {
         ModelAndView mv = new ModelAndView();
 
-        //获取当前登录的账号
-        Account loginAccount = (Account) session.getAttribute("loginAccount");
+        //获取当前登录的用户
+        User loginUser = (User) session.getAttribute("loginUser");
+        Account loginAccount = loginUser.getAccount();
 
         //调用修改签约的方法
         int flag = cashSweepService.updateColl(reviseColl, loginAccount);
@@ -208,8 +213,9 @@ public class CashSweepController {
     public ModelAndView queryColl(HttpSession session) {
         ModelAndView mv = new ModelAndView();
 
-        //获取当前登录的账号
-        Account loginAccount = (Account) session.getAttribute("loginAccount");
+        //获取当前登录的用户
+        User loginUser= (User) session.getAttribute("loginUser");
+        Account loginAccount = loginUser.getAccount();
 
         //查询当前账号（子账号）的归集签约信息
         Coll coll = cashSweepService.queryColl(loginAccount.getAccNo());
@@ -224,8 +230,9 @@ public class CashSweepController {
     public ModelAndView queryMainCollByFenYe(HttpSession session,FenYe fenYe) {
         ModelAndView mv = new ModelAndView();
 
-        //获取当前登录的账号
-        Account loginAccount = (Account) session.getAttribute("loginAccount");
+        //获取当前登录的用户
+        User loginUser= (User) session.getAttribute("loginUser");
+        Account loginAccount = loginUser.getAccount();
 
         if(fenYe.getQuery()==null){
             Query query=new Query();
@@ -259,18 +266,6 @@ public class CashSweepController {
             mv.addObject("trans", trans);
         }
         mv.setViewName("fundCollectionl05");
-        return mv;
-    }
-
-    @RequestMapping("/test")
-    public ModelAndView test(HttpSession session){
-        ModelAndView mv=new ModelAndView();
-        System.out.println("连接服务成功");
-        Account loginAccount=cashSweepService.queryAccount("6222302919195600644");
-        System.out.println(transferService.queryBankAndUserName("6222307120415995107"));
-
-        session.setAttribute("loginAccount",loginAccount);
-        mv.setViewName("loginAccountCollStatus");
         return mv;
     }
 }

@@ -1,7 +1,9 @@
 package com.zl.service;
 
+import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,11 +11,6 @@ import java.util.Map;
  * @version 1.0 2019-12-9
  */
 public interface UserService {
-
-    /**
-     * 根据卡号查用户
-     */
-    User queryUserByAccNo(String accNo);
 
     /**
      * 用户注册（修改密码为加密密码）
@@ -29,4 +26,23 @@ public interface UserService {
      * @return
      */
     Map<String, Object> regName(String accNo);
+
+    /**
+     * 根据卡号查询用户详细信息
+     * @param accNo
+     * @return
+     */
+    User queryCustom(String accNo);
+
+    /**
+     * 根据用户卡号查询交易记录
+     * @param accNo
+     * @return
+     */
+    List<Transfer> queryTransferByAccNo(String accNo);
+
+    /**
+     * 注销登录
+     */
+    void logout();
 }

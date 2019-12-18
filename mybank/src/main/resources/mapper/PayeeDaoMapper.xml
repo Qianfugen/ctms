@@ -8,15 +8,15 @@ namespace:必须是对应接口的全路径
 
     <!--查看全部贷方记录-->
     <select id="queryPayeeByPaging" parameterType="paging" resultType="payee">
-        select * from (select t.*,rownum r from (select * from T_PAYEE
+        select CREDITOR_ACC creditorAcc ,DEBTOR debtor,FUND fund,CREDITOR_NAME creditorName,DEBTOR_NAME debtorName from (select t.*,rownum r from (select * from T_PAYEE
         <where>
-            <if test="debtor!=null and debtor!=''">
-                and debtor=#{debtor}
+            <if test="query.debtor!=null and query.debtor!=''">
+                and debtor like concat('%',concat(#{query.debtor},'%'))
             </if>
-            <if test="debtorName!=null and debtorName!=''">
-                and debtorName like concat('%',concat(#{debtorName},'%'))
+            <if test="query.debtorName!=null and query.debtorName!=''">
+                and debtor_Name like concat('%',concat(#{query.debtorName},'%'))
             </if>
-            and creditorAcc=#{query.creditorAcc}
+            and CREDITOR_ACC=#{query.creditorAcc}
         </where>
         ) t ) where r>#{rowStart} and r<![CDATA[<=]]>#{rowEnd}
     </select>
@@ -26,12 +26,12 @@ namespace:必须是对应接口的全路径
         select count(1) from T_PAYEE
         <where>
             <if test="debtor!=null and debtor!=''">
-                and debtor=#{debtor}
+                and debtor like concat('%',concat(#{debtor},'%'))
             </if>
             <if test="debtorName!=null and debtorName!=''">
-                and debtorName like concat('%',concat(#{debtorName},'%'))
+                and debtor_Name like concat('%',concat(#{debtorName},'%'))
             </if>
-            and creditorAcc=#{creditorAcc}
+            and creditor_Acc=#{creditorAcc}
         </where>
     </select>
 
@@ -39,4 +39,8 @@ namespace:必须是对应接口的全路径
     <select id="queryPayee" parameterType="payee" resultType="payee">
         select * from T_PAYEE where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
     </select>
+
+    <update id="updatePayee" parameterType="payee">
+        update T_PAYEE set DEBTOR_NAME=#{debtorName} , CREDITOR_NAME=#{creditorName} where DEBTOR=#{debtor} and CREDITOR_ACC=#{creditorAcc}
+    </update>
 </mapper>

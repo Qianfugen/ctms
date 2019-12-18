@@ -84,9 +84,29 @@ public interface TransferDao {
     public int transferConfirm(String dealNo);
 
     /**
-     * 查询所有未完成记录
+     * 查询所有境外转账未完成记录
      * @return
      */
-    public List<Transfer> queryAllDealing();
+    public List<Transfer> queryAllOverDealing();
+
+    /**
+     * 查询所有跨行转账未完成记录
+     * @return
+     */
+    public List<Transfer> queryAllDomeDealing();
+
+    /**
+     * 查询最大上限
+     * @param accNo
+     * @return
+     */
+    public BigDecimal queryAccLimit(String accNo);
+
+    /**
+     * 查询启用状态
+     * @param accNo
+     * @return
+     */
+    public int queryAccStatus(String accNo);
 
 }

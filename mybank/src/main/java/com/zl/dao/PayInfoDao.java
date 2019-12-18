@@ -26,5 +26,15 @@ public interface PayInfoDao {
      */
     int addPayInfo(PayInfo payInfo);
 
+    /**
+     * 删除催款消息通知
+     */
+    int deletePayInfo(PayInfo payInfo);
+
+    /**
+     * 查询催款消息通知
+     */
+    PayInfo queryPayInfo(PayInfo payInfo);
+
 
 }

@@ -93,7 +93,9 @@ public class TransferServiceImpl implements TransferService {
         Account account=new Account();
         account.setAccNo(accNo);
         user.setAccount(account);
+        System.out.println(user);
         user = transferDao.checkUser(user);
+        System.out.println(user);
         //用户存在
         if (user != null) {
             return true;
