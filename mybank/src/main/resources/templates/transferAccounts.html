@@ -222,7 +222,7 @@
                 </a>
             </div>
             <div class="topxx ">
-                <h1>xxx，欢迎您！</h1>
+                <h1>${loginUser.userName!''}，欢迎您！</h1>
                 <a href="../User/Account/ChangePasswd.html">密码修改</a>
                 <a href="####">安全退出</a>
             </div>
@@ -257,16 +257,16 @@
                 </div>
                 <div class="cdlist">
                     <div>
-                        <a href="">转账</a>
+                        <a href="/transfer/toTransfer">转账</a>
                     </div>
                     <div>
-                        <a href="">主动收款</a>
+                        <a href="/payee/activeCollection">主动收款</a>
                     </div>
                     <div>
                         <a href="/cashSweep/loginAccountCollStatus">资金归集</a>
                     </div>
                     <div>
-                        <a href="">注销登录</a>
+                        <a href="/user/logout">注销登录</a>
                     </div>
                 </div>
 
