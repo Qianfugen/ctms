@@ -1,5 +1,6 @@
 package com.zl.controller;
 
+import com.zl.api.CheckUser2API;
 import com.zl.api.CheckUserAPI;
 import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
@@ -28,6 +29,8 @@ public class TransferController {
     private TransferService transferService;
     @Autowired
     private JobAPI jobAPI;
+    @Autowired
+    private CheckUser2API checkUser2API;
     @Autowired
     private CheckUserAPI checkUserAPI;
 
@@ -176,8 +179,17 @@ public class TransferController {
     @ResponseBody
     @RequestMapping("/checkUser")
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
+        Boolean flag=false;
+        if(accNo.matches("622230*")){
+            System.out.println("本行账户");
+             flag= transferService.checkUser(userName, accNo);
+        }else {
+            System.out.println("他行账户");
+            flag=checkUser2API.checkUser(userName,accNo).get("status");
+        }
         Map<String, Boolean> map = new HashMap<>();
-        Boolean flag = transferService.checkUser(userName, accNo);
+
+
         //存在返回true,不存在返回false
         System.out.println("执行结果：" + flag);
         map.put("status", flag);
