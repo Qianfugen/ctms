@@ -1,7 +1,5 @@
 package com.zl.dao;
 
-import com.zl.pojo.FenYe;
-import com.zl.pojo.Query;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 
