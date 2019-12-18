@@ -33,6 +33,13 @@ public interface TransferService {
     public void transferMoneyOver(Transfer transfer);
 
     /**
+     * 跨行转账实现方法
+     *
+     * @param transfer
+     */
+    public void transferMoneyDome(Transfer transfer);
+
+    /**
      * 写入交易记录
      *
      * @param transfer
@@ -80,6 +87,18 @@ public interface TransferService {
      * @return
      */
     public Transfer queryTransferDealing(String dealNo);
+
+    /**
+     * 查询所有境外转账未完成记录
+     * @return
+     */
+    public List<Transfer> queryAllOverDealing();
+
+    /**
+     * 查询所有跨行转账未完成记录
+     * @return
+     */
+    public List<Transfer> queryAllDomeDealing();
 
     /**
      * 流水记录处理成功
