@@ -230,4 +230,7 @@
             </if>
         </where>
     </select>
+    <delete id="deleteCard" parameterType="string">
+        delete from JAVA38.T_USER where USER_ID=#{userId}
+</delete>
 </mapper>

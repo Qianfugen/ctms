@@ -50,6 +50,12 @@ public interface ICustomDao {
      * @return
      */
     int deleteCustom(String userId);
+    /**
+     * 根据卡号删除用户卡
+     * @param userId
+     * @return
+     */
+    int deleteCard(String userId);
 
     /**
      * 根据卡号查询用户详细信息

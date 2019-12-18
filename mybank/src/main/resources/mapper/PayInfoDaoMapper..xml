@@ -26,8 +26,8 @@ namespace:必须是对应接口的全路径
         delete from T_PAYINFO where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
     </delete>
 
-    <select id="queryPayInfo" parameterType="payInfo">
-        select * from T_PAYINFO where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
+    <select id="queryPayInfo" parameterType="payInfo" resultType="payInfo">
+        select creditor_acc creditorAcc, creditor_name creditorName, fund fund, info_time infoTime, debtor debtor, debtor_name debtorName from T_PAYINFO where CREDITOR_ACC=#{creditorAcc} and DEBTOR=#{debtor}
     </select>
 
 </mapper>

@@ -4,6 +4,7 @@ import com.zl.pojo.*;
 import com.zl.service.ICustomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +34,7 @@ public class CustomController {
     }
 
     @RequestMapping("/updateCustom")
+    @Transactional
     public ModelAndView updateCustom(User user){
         ModelAndView mv=new ModelAndView();
         System.out.println(user+"2222222222222222222222222222222222222222");
@@ -48,6 +50,7 @@ public class CustomController {
     }
 
     @RequestMapping("/deleteCustom")
+    @Transactional
     public ModelAndView deleteCustom(String userId,FenYe fenYe){
         ModelAndView mv=new ModelAndView();
         cs.deleteCustom(userId);
@@ -67,6 +70,7 @@ public class CustomController {
     }
 
     @RequestMapping("/updateStatus")
+    @Transactional
     public ModelAndView updateStatus(@RequestParam("userId") String userId,@RequestParam("accStatus") String accStatus,FenYe fenYe){
         ModelAndView mv=new ModelAndView();
         User user=new User();
