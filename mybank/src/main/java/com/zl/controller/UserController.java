@@ -35,6 +35,7 @@ public class UserController {
     @Autowired
     private UserService us;
 
+
     /**
      * 注册(卡号)
      *
@@ -48,10 +49,10 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         if (accNo != null && !accNo.equals("") && password != null && !password.equals("")) {
             us.register(accNo, password);
-            mv.setViewName("/user/toLogin");
+            mv.setViewName("toLogin");
         } else {
             mv.addObject("error", "请填写注册信息");
-            mv.setViewName("/user/toRegister");
+            mv.setViewName("toRegister");
         }
         return mv;
     }
@@ -92,7 +93,7 @@ public class UserController {
             return mv;
         } catch (UnknownAccountException uae) {
             System.out.println("uae异常......");
-            mv.addObject("error", "用户名或密码错误");
+            mv.addObject("error", "登录出错");
             mv.setViewName("login");
             return mv;
         } catch (Exception e) {
@@ -105,6 +106,18 @@ public class UserController {
         System.out.println("通过" + accNo);
         mv.addObject("accNo", accNo);
         mv.setViewName("toIndex");
+        return mv;
+    }
+
+    /**
+     * 退出
+     * @return
+     */
+    @RequestMapping("/logout")
+    public ModelAndView logout(){
+        ModelAndView mv = new ModelAndView();
+        us.logout();
+        mv.setViewName("toLogin");
         return mv;
     }
 
@@ -122,6 +135,9 @@ public class UserController {
     public ModelAndView toIndex(HttpSession session, String accNo) {
         ModelAndView mv = new ModelAndView();
         System.out.println("进入index");
+        User loginUser = us.queryCustom(accNo);
+        System.out.println("当前对象:"+loginUser);
+        session.setAttribute("loginUser",loginUser);
         session.setAttribute("loginAccNo", accNo);
         mv.setViewName("index");
         return mv;

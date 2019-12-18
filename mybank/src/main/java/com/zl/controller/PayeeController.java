@@ -51,10 +51,8 @@ public class PayeeController {
             query.setCreditorAcc(loginAccNo);
             paging.setQuery(query);
         }
-        System.out.println("进入控制层的paging "+paging);
         List<Payee> payees = ps.queryPayeeByPaging(paging);
         mv.addObject("payees", payees);
-        System.out.println("进入控制层的payees "+payees);
         mv.setViewName("activeCollection");
         return mv;
     }
@@ -65,25 +63,27 @@ public class PayeeController {
      * @return
      */
     @RequestMapping("/addPayInfos")
-    public ModelAndView addPayInfos(HttpSession session, String[] ids) {
+    public ModelAndView addPayInfos(HttpSession session, String[] debtor) {
+        System.out.println("进入发消息   ：");
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         //查询出当前登录卡的用户
-        User loginUser = us.queryUserByAccNo(loginAccNo);
+        User loginUser = us.queryCustom(loginAccNo);
         int index = 0;//成功的条数
 
-        for (int i = 0; i < ids.length; i++) {
+        for (int i = 0; i < debtor.length; i++) {
+            System.out.println("debtor[i] "+debtor[i]);
             PayInfo payInfo = new PayInfo();
             Payee payee = new Payee();
             payee.setCreditorAcc(loginAccNo);
-            payee.setDebtor(ids[i]);
+            payee.setDebtor(debtor[i]);
 
             payInfo.setCreditorAcc(loginAccNo);
-            payInfo.setDebtor(ids[i]);
+            payInfo.setDebtor(debtor[i]);
             payInfo.setFund(ps.queryPayee(payee).getFund());
             payInfo.setInfoTime(new Date());
             payInfo.setCreditorName(loginUser.getUserName());
-            payInfo.setDebtorName(us.queryUserByAccNo(ids[i]).getUserName());
+            payInfo.setDebtorName(us.queryCustom(debtor[i]).getUserName());
             index = pis.addPayInfo(payInfo);
         }
 
@@ -93,7 +93,7 @@ public class PayeeController {
              */
             System.out.println("批量执行成功");
         }
-        mv.setViewName("/activeCollection");
+        mv.setViewName("activeCollection");
         return mv;
     }
 

@@ -13,11 +13,6 @@ import java.util.Map;
 public interface UserService {
 
     /**
-     * 根据卡号查用户
-     */
-    User queryUserByAccNo(String accNo);
-
-    /**
      * 用户注册（修改密码为加密密码）
      *
      * @param accNo
@@ -45,4 +40,9 @@ public interface UserService {
      * @return
      */
     List<Transfer> queryTransferByAccNo(String accNo);
+
+    /**
+     * 注销登录
+     */
+    void logout();
 }

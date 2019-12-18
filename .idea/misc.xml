@@ -10,7 +10,6 @@
     <file type="web" url="file://$PROJECT_DIR$/quartjob" />
     <file type="web" url="file://$PROJECT_DIR$/selfbank" />
     <file type="web" url="file://$PROJECT_DIR$/ware-quart-job" />
-    <file type="web" url="file://$PROJECT_DIR$/zuul" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -23,7 +22,6 @@
         <option value="$PROJECT_DIR$/mybank/pom.xml" />
         <option value="$PROJECT_DIR$/quartjob/pom.xml" />
         <option value="$PROJECT_DIR$/ware-quart-job/pom.xml" />
-        <option value="$PROJECT_DIR$/zuul/pom.xml" />
       </list>
     </option>
   </component>

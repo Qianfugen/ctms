@@ -1,7 +1,5 @@
 package com.zl.dao;
 
-import com.zl.pojo.FenYe;
-import com.zl.pojo.Query;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 
@@ -19,10 +17,6 @@ public interface UserDao {
      */
     int updateUserPwd(User user);
 
-    /**
-     * 根据卡号查用户
-     */
-    User queryUserByAccNo(String accNo);
 
     /**
      * 根据卡号查询用户详细信息
