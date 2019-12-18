@@ -10,6 +10,10 @@
     <script src="/js/jquery.js/"></script>
     <script src="/js/bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript">
+        $(function () {
+            //获取当前用户账号
+            var accNo=$("#loginAccNo").val();
+
         //（境内转账）单选按钮的点击事件
         $(function () {
             $("#bank01").click(function () {
@@ -100,7 +104,7 @@
                     dataType: "json",
                     //发送的数据(姓名和卡号),转账人的卡号
                     // data: {"accNo": $("#accNo").val()},
-                    data: {"accNo": "6222303626811324642"},
+                    data: {"accNo": accNo},
 
                     /*
                         响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
@@ -190,7 +194,7 @@
                     dataType: "json",
                     //发送的数据(姓名和卡号),转账人的卡号
                     // data: {"accNo": $("#accNo").val()},
-                    data: {"accNo": "6222303626811324642"},
+                    data: {"accNo": accNo},
 
                     /*
                         响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
@@ -207,7 +211,7 @@
 
             })
         });
-
+        })
     </script>
 
 </head>
@@ -217,14 +221,10 @@
     <div class="bgh">
         <div class="page">
             <div id="logo">
-                <a href="Index.aspx.html"> <img src="../../img/Images/Student/logo2.png"
-                                                alt="" width="48" height="48"/>
-                </a>
+                <img src="/images/Images/Student/logo2.png" alt="" width="48" height="48" />
             </div>
             <div class="topxx ">
                 <h1>${loginUser.userName!''}，欢迎您！</h1>
-                <a href="../User/Account/ChangePasswd.html">密码修改</a>
-                <a href="####">安全退出</a>
             </div>
         </div>
     </div>
@@ -285,6 +285,7 @@
             </div>
             <!--（境内转账）输入界面-->
             <div id="our" style="margin-top: 20px;" align="center">
+                <input id="loginAccNo" type="hidden" value=${loginAccNo}></input>
                 <form action="/transfer/sortTransfer?bank=0" method="post">
                     <table style="border-collapse:separate; border-spacing:0px 10px;">
                         <tr>

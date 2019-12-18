@@ -44,9 +44,11 @@ public class TransferController {
         //结果页面
         mv.setViewName("transferAccountResult");
         //预先设置一个转出账户，本应从页面获取，这里仅做测试
-//        session.getAttribute("loginUser");
+        String accOut= (String) session.getAttribute("loginAccNo");
+        System.out.println("当前用户卡号accNO:"+accOut);
+        transfer.setAccOut(accOut);
         //启动账户
-        transfer.setAccOut("6222303626811324642");
+//        transfer.setAccOut("6222303626811324642");
         //冻结账户
 //        transfer.setAccOut("6222304497903198673");
         Map<String, Integer> map = transferService.verifyTransfer(transfer, bank);
