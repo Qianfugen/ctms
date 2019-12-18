@@ -4,8 +4,6 @@
 <!--
 namespace:必须是对应接口的全路径
 -->
-
-
 <mapper namespace="com.zl.dao.UserDao">
     <!--    客户信息和银行卡信息字段映射文件-->
     <resultMap id="userCustom" type="com.zl.pojo.User">

@@ -1,129 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>催款通知>转账</title>
-<link href="/css/ks.css" rel="stylesheet" type="text/css" />
-<link href="/js/bootstrap.css" type="text/css"  rel="stylesheet"  />
-<link href="/css/Customer.css" type="text/css"  rel="stylesheet" />
-<script src="/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>催款通知>转账</title>
+    <link href="/css/ks.css" rel="stylesheet" type="text/css"/>
+    <link href="/js/bootstrap.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/Customer.css" type="text/css" rel="stylesheet"/>
+    <script src="/js/bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
 
-</script>
+    </script>
 </head>
 <body>
 
-	<div class="banner">
-		<div class="bgh">
-			<div class="page">
-				<div id="logo">
-					<a href="../Index.html"> 
-						<img src="/images/Images/Student/logo2.png" alt="" width="48" height="48" />
-					</a>
-				</div>
-				<div class="topxx">
-					<h1>xxx，欢迎您！</h1>
-					<a href="../../User/Account/ChangePasswd.html">密码修改</a> 
-					<a href="####">安全退出</a>
-				</div>
+<div class="banner">
+    <div class="bgh">
+        <div class="page">
+            <div id="logo">
+                <a href="../Index.html">
+                    <img src="/images/Images/Student/logo2.png" alt="" width="48" height="48"/>
+                </a>
+            </div>
+            <div class="topxx">
+                <h1>xxx，欢迎您！</h1>
+                <a href="../../User/Account/ChangePasswd.html">密码修改</a>
+                <a href="/user/logout">安全退出</a>
+            </div>
 
-			</div>
-		</div>
-	</div>
-	<div class="page">
-		<div class="box mtop">
-			<div class="leftbox">
-				<div class="l_nav2">
-					<div class="ta1">
-						<strong>个人中心</strong>
-						<div class="leftbgbt"></div>
-					</div>
-					<div class="cdlist">
-						<div>
-							<a href="/user/queryCustom?accNo=${loginAccNo}">我的信息</a>
-						</div>
-						<div>
-							<a href="">收账人管理</a>
-						</div>
-						<div>
-							<a href="/payInfo/toPayInfoMessage">消息通知</a>
-						</div>
-						<div>
-							<a href="/user/toCustomRecord">交易记录</a>
-						</div>
-					</div>
-					<div class="ta1">
-						<strong>业务中心</strong>
-						<div class="leftbgbt2"></div>
-					</div>
-					<div class="cdlist">
-						<div>
-							<a href="">转账</a>
-						</div>
-						<div>
-							<a href="">主动收款</a>
-						</div>
-						<div>
-							<a href="">资金归集</a>
-						</div>
-						<div>
-							<a href="">注销登录</a>
-						</div>
-					</div>
-					<!--结束-->
-				</div>
-			</div>
-			<div class="rightbox">
-			
-				<h2 class="mbx">消息通知 &gt;催款通知&gt;转账</h2>
-				<br />
-				<!输入界面-->
-					<div id="our" style="margin-top: 20px;" align="center">
-					<form action="/payInfo/dealPayee" method="post">
-						<table style="border-collapse:separate; border-spacing:0px 10px;">
-						<tr>
-							<td>收款人姓名 ：</td>
-							<td><input id="name" type="text" required="required"  readonly="readonly" value="${payInfo.creditorName}" style="width: 300px;"  /></td>
-						</tr>
-					
-						<tr>
-							<td>收款卡号 ：</td>
-							<td><input id="card" type="text" required="required"  readonly="readonly" value="${payInfo.creditorAcc}" style="width: 300px;" /></td>
-						</tr>
-						
-						<tr>
-							<td>收款银行 ：</td>
-							<td>
-								<select>
-									<option >工商银行</option>
-								</select> 
-							</td>
-						</tr>
-						<tr>
-							<td>汇款金额 ：</td>
-							<td><input type="text" required="required" style="width: 300px;" value="${payInfo.fund}"/></td>
-						</tr>
-						<tr>
-							<td>汇款时间 ：</td>
-							<td>
-								<select>
-								<option >普通汇款</option>
-								</select>
-							</td>
-						</tr>
-						
-						<tr align="center">
-							<td></td>
-							<td><input id="sub" type="submit" value="确认转账" /> </td>
-						</tr>
-					</table>
-					</form>
-					
-					</div>
-					<!--（行内转账）输入界面(末尾)-->
-			</div>
-				
-		</div>
-	</div>
+        </div>
+    </div>
+</div>
+<div class="page">
+    <div class="box mtop">
+        <div class="leftbox">
+            <div class="l_nav2">
+                <div class="ta1">
+                    <strong>个人中心</strong>
+                    <div class="leftbgbt"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="/user/queryCustom?accNo=${loginAccNo}">我的信息</a>
+                    </div>
+                    <div>
+                        <a href="">收账人管理</a>
+                    </div>
+                    <div>
+                        <a href="/payInfo/toPayInfoMessage">消息通知</a>
+                    </div>
+                    <div>
+                        <a href="/user/toCustomRecord">交易记录</a>
+                    </div>
+                </div>
+                <div class="ta1">
+                    <strong>业务中心</strong>
+                    <div class="leftbgbt2"></div>
+                </div>
+                <div class="cdlist">
+                    <div>
+                        <a href="">转账</a>
+                    </div>
+                    <div>
+                        <a href="/payee/activeCollection">主动收款</a>
+                    </div>
+                    <div>
+                        <a href="">资金归集</a>
+                    </div>
+                    <div>
+                        <a href="/user/logout">注销登录</a>
+                    </div>
+                </div>
+                <!--结束-->
+            </div>
+        </div>
+        <div class="rightbox">
+
+            <h2 class="mbx">消息通知 &gt;催款通知&gt;转账</h2>
+            <br/>
+            <!输入界面-->
+            <div id="our" style="margin-top: 20px;" align="center">
+                <form action="/payInfo/dealPayee" method="post">
+                    <table style="border-collapse:separate; border-spacing:0px 10px;">
+                        <tr>
+                            <td>收款人姓名 ：</td>
+                            <td><input id="name" type="text" readonly="readonly" name="creditorName" value="${payInfo.creditorName}"
+                                       style="width: 300px;"/></td>
+                        </tr>
+
+                        <tr>
+                            <td>收款卡号 ：</td>
+                            <td><input id="card" type="text" readonly="readonly" name="creditorAcc" value="${payInfo.creditorAcc}"
+                                       style="width: 300px;"/></td>
+                        </tr>
+
+                        <tr>
+                            <td>收款银行 ：</td>
+                            <td>
+                                <select>
+                                    <option>工商银行</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>汇款金额 ：</td>
+                            <td><input type="text" style="width: 300px;" name="fund" value="${payInfo.fund}"/></td>
+                        </tr>
+                        <tr>
+                            <td>汇款时间 ：</td>
+                            <td>
+                                <select>
+                                    <option>普通汇款</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr align="center">
+                            <td></td>
+                            <td><input id="sub" type="submit" value="确认转账"/></td>
+                        </tr>
+                    </table>
+                </form>
+
+            </div>
+            <!--（行内转账）输入界面(末尾)-->
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

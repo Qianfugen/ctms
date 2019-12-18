@@ -9,7 +9,6 @@ import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -38,23 +37,25 @@ public class PayInfoController {
      * @param payInfo
      * @return
      */
-    @ResponseBody
     @RequestMapping("/dealPayee")
-    public Map<String, Integer> dealPayee(PayInfo payInfo) {
+    public ModelAndView dealPayee(HttpSession session,PayInfo payInfo) {
         ModelAndView mv = new ModelAndView();
 
         Transfer transfer = new Transfer();
         transfer.setDealDate(new Date());
         transfer.setTransType(0);
-        transfer.setAccOut(payInfo.getDebtor());
+        transfer.setAccOut((String) session.getAttribute("loginAccNo"));
         transfer.setAccIn(payInfo.getCreditorAcc());
         transfer.setTransFund(payInfo.getFund());
         transfer.setKind("收款转账");
         ts.transferMoney(transfer);
 
+        System.out.println("执行成功");
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
-        return map;
+        mv.addObject("map",map);
+        mv.setViewName("transferAccountResult");
+        return mv;
     }
 
     /**
@@ -119,6 +120,7 @@ public class PayInfoController {
         pi.setCreditorAcc(creditorAcc);
         pi.setDebtor(loginAccNo);
         PayInfo payInfo = pis.queryPayInfo(pi);
+        System.out.println("payInfo "+payInfo);
         mv.addObject("payInfo", payInfo);
         mv.setViewName("message03");
         return mv;
