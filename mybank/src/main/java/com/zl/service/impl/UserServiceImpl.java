@@ -91,6 +91,5 @@ public class UserServiceImpl implements UserService {
         if (subject.isAuthenticated()) {
             subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
         }
-
     }
 }
