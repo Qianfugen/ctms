@@ -49,6 +49,7 @@ public class TransferController {
         //预先设置一个转出账户，本应从页面获取，这里仅做测试
         String accOut= (String) session.getAttribute("loginAccNo");
         System.out.println("当前用户卡号accNO:"+accOut);
+        System.out.println("transfer"+transfer);
         transfer.setAccOut(accOut);
         //启动账户
 //        transfer.setAccOut("6222303626811324642");

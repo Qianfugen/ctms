@@ -17,6 +17,7 @@ public class TransferTask implements TransferService {
 
     @Override
     public void run(String params) {
+        System.out.println("定时任务开始执行。。。");
         String[] bankInfo = params.split(",");
         String accIn = bankInfo[0];
         String accOut = bankInfo[1];

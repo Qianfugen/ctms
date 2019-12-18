@@ -7,6 +7,7 @@ import com.zl.service.TransferService;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -67,6 +68,7 @@ public class Consumer {
                     Map returnMessage = new HashMap();
                     map.put("dealNo", transfer.getDealNo());
                     map.put("transStatus", 1);
+                    rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                     rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_D, map);
                 } else {
                     channel.basicNack(message.getMessageProperties().getDeliveryTag(),true,true);
@@ -85,6 +87,7 @@ public class Consumer {
                 Map returnMessage = new HashMap();
                 map.put("dealNo", dealNo);
                 map.put("transStatus", 1);
+                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_D, map);
             } catch (IOException e) {
                 e.printStackTrace();

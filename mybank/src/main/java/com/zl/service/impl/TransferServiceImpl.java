@@ -13,6 +13,7 @@ import com.zl.utils.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -273,6 +274,7 @@ public class TransferServiceImpl implements TransferService {
                 /**
                  * 发送消息到队列
                  */
+                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B, map);
                 System.out.println("跨境转账处理中，发送消息到境外银行。。。。");
 //                TransactionStatus status2 = transactionManager.getTransaction(def);
@@ -367,6 +369,7 @@ public class TransferServiceImpl implements TransferService {
                 /**
                  * 发送消息到队列
                  */
+                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_A, map);
                 System.out.println("跨行转账处理中，发送消息到国内其他银行。。。。");
 //                TransactionStatus status2 = transactionManager.getTransaction(def);
@@ -532,6 +535,7 @@ public class TransferServiceImpl implements TransferService {
                 map.put("transFund", transfer.getTransFund());
                 map.put("kind", transfer.getKind());
                 //发送消息到消息队列
+                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B, map);
             }
         }
@@ -564,6 +568,7 @@ public class TransferServiceImpl implements TransferService {
                 map.put("transFund", transfer.getTransFund());
                 map.put("kind", transfer.getKind());
                 //发送消息到消息队列
+                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_A, map);
             }
         }
@@ -677,6 +682,7 @@ public class TransferServiceImpl implements TransferService {
                 //跨境转账
                 //查询余额
                 BigDecimal balance = queryBalance(transfer.getAccOut());
+                System.out.println("余额"+balance);
                 //计算手续费
                 fee = transfer.getTransFund().multiply(BigDecimal.valueOf(0.0008));
                 if (fee.compareTo(BigDecimal.valueOf(40.00)) < 0) {
