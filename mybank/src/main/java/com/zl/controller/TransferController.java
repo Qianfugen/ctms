@@ -1,5 +1,6 @@
 package com.zl.controller;
 
+import com.zl.api.CheckUser2API;
 import com.zl.api.CheckUserAPI;
 import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
@@ -29,6 +30,8 @@ public class TransferController {
     @Autowired
     private JobAPI jobAPI;
     @Autowired
+    private CheckUser2API checkUser2API;
+    @Autowired
     private CheckUserAPI checkUserAPI;
 
     /**
@@ -44,9 +47,11 @@ public class TransferController {
         //结果页面
         mv.setViewName("transferAccountResult");
         //预先设置一个转出账户，本应从页面获取，这里仅做测试
-//        session.getAttribute("loginUser");
+        String accOut= (String) session.getAttribute("loginAccNo");
+        System.out.println("当前用户卡号accNO:"+accOut);
+        transfer.setAccOut(accOut);
         //启动账户
-        transfer.setAccOut("6222303626811324642");
+//        transfer.setAccOut("6222303626811324642");
         //冻结账户
 //        transfer.setAccOut("6222304497903198673");
         Map<String, Integer> map = transferService.verifyTransfer(transfer, bank);
@@ -174,8 +179,17 @@ public class TransferController {
     @ResponseBody
     @RequestMapping("/checkUser")
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
+        Boolean flag=false;
+        if(accNo.matches("622230*")){
+            System.out.println("本行账户");
+             flag= transferService.checkUser(userName, accNo);
+        }else {
+            System.out.println("他行账户");
+            flag=checkUser2API.checkUser(userName,accNo).get("status");
+        }
         Map<String, Boolean> map = new HashMap<>();
-        Boolean flag = transferService.checkUser(userName, accNo);
+
+
         //存在返回true,不存在返回false
         System.out.println("执行结果：" + flag);
         map.put("status", flag);
