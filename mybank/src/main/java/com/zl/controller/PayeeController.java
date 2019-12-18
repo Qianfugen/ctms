@@ -64,12 +64,13 @@ public class PayeeController {
      */
     @RequestMapping("/addPayInfos")
     public ModelAndView addPayInfos(HttpSession session, String[] ids) {
+        System.out.println("进入发消息   ：");
         ModelAndView mv = new ModelAndView();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         //查询出当前登录卡的用户
         User loginUser = us.queryCustom(loginAccNo);
         int index = 0;//成功的条数
-
+        System.out.println("ids"+ids);
         for (int i = 0; i < ids.length; i++) {
             PayInfo payInfo = new PayInfo();
             Payee payee = new Payee();
