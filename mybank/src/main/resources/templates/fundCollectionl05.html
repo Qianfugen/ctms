@@ -82,7 +82,7 @@
 				<b></b>
 				<div align="center">
 					<button> <a href="/cashSweep/loginAccountCollStatus">返回</a></button>&nbsp;&nbsp;&nbsp;
-					<button><a href="/cashSweep/cancelColl?followAcc=${fenYe.query.qFollowAccNo}">解除签约</a></button>
+					<button><a href="/cashSweep/cancelColl?followAcc=${fenYe.query.qFollowAccNo}" onclick="return confirm('确认解除当前签约关系？')">解除签约</a></button>
 				</div>
 				<div align="center">
 					<form action="/cashSweep/queryTransfersByFenYe?query.qFollowAccNo=${fenYe.query.qFollowAccNo}&query.qMainAccNo=${fenYe.query.qMainAccNo}" method="post">
