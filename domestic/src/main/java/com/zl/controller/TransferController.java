@@ -37,10 +37,4 @@ public class TransferController {
         map.put("status", flag);
         return map;
     }
-
-    @ResponseBody
-    @RequestMapping("/test")
-    public String test() {
-        return "success";
-    }
 }
