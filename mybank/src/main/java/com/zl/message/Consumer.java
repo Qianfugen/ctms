@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ public class Consumer {
      * @param map
      */
     @RabbitListener(queues = RabbitMqConfig.RETURN_OVER_QUEUE_NAME)
-    public void process(Message message, Channel channel, Map map){
+    public void process(Message message, Channel channel, @Payload Map map){
         System.out.println("over:收到消息："+map);
 
         String dealNo= (String) map.get("dealNo");
@@ -81,7 +82,7 @@ public class Consumer {
      * @param map
      */
     @RabbitListener(queues = RabbitMqConfig.RETURN_DEME_QUEUE_NAME)
-    public void process2(Message message, Channel channel, Map map){
+    public void process2(Message message, Channel channel,@Payload Map map){
         System.out.println("domestic:收到消息："+map);
 
         String dealNo= (String) map.get("dealNo");

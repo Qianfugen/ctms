@@ -271,7 +271,7 @@ public class TransferServiceImpl implements TransferService {
             /**
              * 发送消息到队列
              */
-            rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+//            rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B, map);
             System.out.println("跨境转账处理中，发送消息到境外银行。。。。");
 //                TransactionStatus status2 = transactionManager.getTransaction(def);
@@ -365,7 +365,7 @@ public class TransferServiceImpl implements TransferService {
             /**
              * 发送消息到队列
              */
-            rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+//            rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_A, map);
             System.out.println("跨行转账处理中，发送消息到国内其他银行。。。。");
 //                TransactionStatus status2 = transactionManager.getTransaction(def);
@@ -531,7 +531,7 @@ public class TransferServiceImpl implements TransferService {
                 map.put("transFund", transfer.getTransFund());
                 map.put("kind", transfer.getKind());
                 //发送消息到消息队列
-                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+//                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B, map);
             }
         }
@@ -564,7 +564,7 @@ public class TransferServiceImpl implements TransferService {
                 map.put("transFund", transfer.getTransFund());
                 map.put("kind", transfer.getKind());
                 //发送消息到消息队列
-                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+//                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_A, map);
             }
         }
