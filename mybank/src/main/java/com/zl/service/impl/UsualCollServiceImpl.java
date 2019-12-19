@@ -1,8 +1,9 @@
 package com.zl.service.impl;
 
 import com.zl.dao.UsualCollDao;
+import com.zl.pojo.Payee;
 import com.zl.pojo.UsualColl;
-import com.zl.pojo.uFenYe;
+import com.zl.pojo.UFenYe;
 import com.zl.service.UsualCollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,11 @@ import java.util.List;
 public class UsualCollServiceImpl implements UsualCollService {
     @Autowired
     private UsualCollDao uc;
+
+    @Override
+    public List<UsualColl> queryUsualColl(String mainAcc) {
+        return uc.queryUsualColl(mainAcc);
+    }
     @Override
     public int deleteUsualColl(String accIn) {
         return uc.deleteUsualColl(accIn);
@@ -20,39 +26,59 @@ public class UsualCollServiceImpl implements UsualCollService {
 
     @Override
     public int addUsualColl(UsualColl usualColl) {
-        return uc.addUsualColl(usualColl);
-    }
-
-    @Override
-    public List<UsualColl> queryAllUsualColl(String accNo) {
-        return uc.queryAllUsualColl(accNo);
-    }
-
-    @Override
-    public List<UsualColl> queryUsualCollByFy(uFenYe ufenye) {
-        if(ufenye!=null){
-            if(ufenye.getPage()<=1){
-                ufenye.setPage(1);
-            }
-            if(ufenye.getRowStart()!=null&&ufenye.getRowStart()<=0){
-                ufenye.setRowStart(0);
-            }
-            if(ufenye.getRowEnd()!=null&&ufenye.getRowEnd()<=1){
-                ufenye.setRowEnd(4);
-            }
+        UsualColl usualColl1 = uc.queryUsualCollByaccIn(usualColl.getAccIn());
+        if (usualColl==null){
+            return uc.addUsualColl(usualColl);
         }else{
-            ufenye =new uFenYe();
+            return 0;
         }
-        return uc.queryUsualCollByFy(ufenye);
+
     }
 
     @Override
-    public UsualColl queryUsualColl(String accIn) {
-        return  uc.queryUsualColl(accIn);
+    public UsualColl queryUsualCollByaccIn(String accIn) {
+        return uc.queryUsualCollByaccIn(accIn);
     }
 
+    //    @Override
+//    public List<UsualColl> queryAllUsualColl(String accNo) {
+//        return uc.queryAllUsualColl(accNo);
+//    }
+//
     @Override
-    public int queryUserByAccNo(UsualColl usualColl) {
-        return uc.queryUserByAccNo(usualColl);
+    public List<UsualColl> queryUsualCollByFy(UFenYe uFenYe) {
+
+        //设置符合要求的记录总数
+        uFenYe.setRowsCount(uc.queryUsualCount(uFenYe.getUquery()));
+
+        /**
+         * 处理分页对象
+         */
+        //设置当前页码
+        if (uFenYe.getPage() != null) {
+            if (uFenYe.getPage()  <= 0) {
+                uFenYe.setPage(1);
+            }
+            //如果大于最大页数
+            if (uFenYe.getPage()  > uFenYe.getPageCount()) {
+                uFenYe.setPage(uFenYe.getPageCount());
+            }
+        } else {
+            uFenYe.setPage(1);
+        }
+        System.out.println("總tiao數"+uFenYe.getRowsCount());
+        System.out.println("總頁ma數"+uFenYe.getPageCount());
+        List<UsualColl> usualColls = uc.queryUsualCollByFy(uFenYe);
+        return usualColls;
     }
+
+//    @Override
+//    public UsualColl queryUsualColl(String accIn) {
+//        return  uc.queryUsualColl(accIn);
+//    }
+//
+//    @Override
+//    public int queryUserByAccNo(UsualColl usualColl) {
+//        return uc.queryUserByAccNo(usualColl);
+//    }
 }

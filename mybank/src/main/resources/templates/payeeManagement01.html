@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>收款人管理》添加收款人</title>
+	<link href="/css/Customer.css" type="text/css" rel="stylesheet"/>
+	<link href="/css/ks.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="/js/jquery.js"></script>
+	<link rel="stylesheet" href="/css/bootstrap.css"/>
+	<script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript">
+	$(function (){
+		//卡号和账号查询
+		$("#card").blur(function () {
+			//发送ajax请求
+			$.ajax({
+				//该ajax发送请求到那个地址处理
+				url: "/UsualColl/regName",
+				//请求方式
+				type: "post",
+				//预计服务器返回的数据格式
+				dataType: "json",
+				//发送的数据(姓名和卡号)
+				data: {"accInName": $("#name").val(), "accIn": $("#card").val()},
+				/*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                 */
+				success: function (data) {
+					if (data.flag) {
+						alert("收款人已存在！！！");
+					} else {
+						alert("收款人或者卡号有误！！！");
+						;
+					}
+				},
+				//响应失败以后执行的回调函数
+				error: function () {
+					alert("失败....");
+				}
+			})
+		})
+	})
+
+</script>
+</head>
+<body>
+
+	<div class="banner">
+		<div class="bgh">
+			<div class="page">
+				<div id="logo">
+					<a href="../Index.html"> 
+						<img src="/images/Images/Student/logo2.png" alt="" width="48" height="48" />
+					</a>
+				</div>
+				<div class="topxx">
+					<h1>xxx，欢迎您！</h1>
+					<a href="../../User/Account/ChangePasswd.html">密码修改</a> 
+					<a href="/user/logout">安全退出</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="page">
+		<div class="box mtop">
+			<div class="leftbox">
+				<div class="l_nav2">
+					<div class="ta1">
+						<strong>个人中心</strong>
+						<div class="leftbgbt"></div>
+					</div>
+					<div class="cdlist">
+						<div>
+							<a href="/user/queryCustom?accNo=${loginAccNo}">我的信息</a>
+						</div>
+						<div>
+							<a href="/UsualColl/queryUsualColl">收账人管理</a>
+						</div>
+						<div>
+							<a href="/payInfo/toPayInfoMessage">消息通知</a>
+						</div>
+						<div>
+							<a href="/user/toCustomRecord">交易记录</a>
+						</div>
+					</div>
+					<div class="ta1">
+						<strong>业务中心</strong>
+						<div class="leftbgbt2"></div>
+					</div>
+					<div class="cdlist">
+						<div>
+							<a href="/transfer/toTransfer">转账</a>
+						</div>
+						<div>
+							<a href="/payee/activeCollection">主动收款</a>
+						</div>
+						<div>
+							<a href="/cashSweep/loginAccountCollStatus">资金归集</a>
+						</div>
+						<div>
+							<a href="/user/logout">注销登录</a>
+						</div>
+					</div>
+					<!--结束-->
+				</div>
+			</div>
+			<div class="rightbox">
+				<h2 class="mbx">收款人管理 &gt;添加收款人</h2>
+				<b></b>
+				<div align="center">
+					<form action="/UsualColl/addUsualColl" method="post" >
+					<h3>用户名：<input id="name" type="text" name="accInName" /></h3></br>
+					<h3>账号：<input id="card" type="text" name="accIn"/></h3></br>
+					<h3>转账金额：<input id="money" type="text" name="transFund"/></h3></br>
+					<h3><input id="sub" type="submit" value="提交"  /></h3><br>
+					</form>
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

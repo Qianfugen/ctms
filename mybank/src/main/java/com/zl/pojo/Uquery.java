@@ -1,5 +1,6 @@
 package com.zl.pojo;
 
+import org.bouncycastle.math.ec.custom.sec.SecT409Field;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -10,6 +11,8 @@ public class Uquery implements Serializable {
     private String qAccInName;
     //收款人账号
     private String qAccIn;
+    //自己賬戶
+    private String qMainAcc;
 
     public String getqAccInName() {
         return qAccInName;
@@ -25,5 +28,22 @@ public class Uquery implements Serializable {
 
     public void setqAccIn(String qAccIn) {
         this.qAccIn = qAccIn;
+    }
+
+    public String getqMainAcc() {
+        return qMainAcc;
+    }
+
+    public void setqMainAcc(String qMainAcc) {
+        this.qMainAcc = qMainAcc;
+    }
+
+    @Override
+    public String toString() {
+        return "Uquery{" +
+                "qAccInName='" + qAccInName + '\'' +
+                ", qAccIn='" + qAccIn + '\'' +
+                ", qMainAcc='" + qMainAcc + '\'' +
+                '}';
     }
 }

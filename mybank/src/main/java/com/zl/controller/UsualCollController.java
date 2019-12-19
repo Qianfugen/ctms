@@ -1,8 +1,8 @@
 package com.zl.controller;
 
-import com.zl.pojo.Uquery;
-import com.zl.pojo.UsualColl;
-import com.zl.pojo.uFenYe;
+import com.zl.pojo.*;
+import com.zl.service.TransferService;
+import com.zl.service.UserService;
 import com.zl.service.UsualCollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,106 +13,128 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/UsualColl")
 public class UsualCollController {
     @Autowired
     private UsualCollService ucs;
+
+    @Autowired
+    private TransferService ts;
+
+    @Autowired
+    private UserService us;
+
     @RequestMapping("/deleteUsuslColl")
     public ModelAndView deleteUsuslColl(@RequestParam("accIn") String accIn){
         ModelAndView mv=new ModelAndView();
         int flag=ucs.deleteUsualColl(accIn);
         if(flag>0){
-            mv.setViewName("/UsualColl/toPayeeManagement");
+            mv.setViewName("queryUsualCollByFy");
         }else {
             System.out.println("错误");
         }
         return mv;
     }
-    @RequestMapping("/addUsualColl")
-   public ModelAndView addUsualColl(@RequestParam("accIn")String accIn, @RequestParam("accInName")String accInName, @RequestParam("transFund") BigDecimal transFund, HttpSession ss){
-       ModelAndView mv=new ModelAndView();
-        UsualColl uc=new UsualColl();
-        String accNo= (String) ss.getAttribute("loginAccNo");
-        System.out.println(accNo+"***********************************");
-        uc.setAccIn(accIn);
-        uc.setMainAcc("6222309287143333829");
-        uc.setAccInName(accInName);
-        uc.setTransFund(transFund);
-        int num=ucs.queryUserByAccNo(uc);
-       if(num>0){
 
-           System.out.println(uc);
-           int flag=ucs.addUsualColl(uc);
-            if(flag>0){
-                mv.setViewName("queryAllUsualColl");
-            }else {
-                mv.setViewName("toAddUser");
-            }
-        }else {
-            mv.setViewName("toAddUser");
-        }
-        return mv;
-   }
-    @RequestMapping("/queryAllUsualColl")
-    public ModelAndView queryAllUsualColl(HttpSession session){
-        ModelAndView mv=new ModelAndView();
-        session.getAttribute("loginAccNo");
-        List<UsualColl> usualColls=ucs.queryAllUsualColl("6222304960031779591");
-        mv.addObject("usualColles",usualColls);
-        mv.setViewName("/UsualColl/toPayeeManagement");
-        return mv;
-    }
-    @RequestMapping("/queryUsualColl")
-    @ResponseBody
-    public String queryUsualColl(@RequestParam("accIn")String accIn){
-        String mess=null;
-        UsualColl usualColl=new UsualColl();
-        usualColl=ucs.queryUsualColl(accIn);
-        if(usualColl==null){
-            mess="{\"flag\":false}";
-        }else {
-            mess="{\"flag\":true}";
-        }
-        return mess;
-    }
-    @RequestMapping("/toPayeeManagement")
-    public ModelAndView toPayeeManagement(HttpSession session){
-        ModelAndView mv=new ModelAndView();
-        String accNo= (String) session.getAttribute("loginAccNo");
 
-        List<UsualColl> usualColls=ucs.queryAllUsualColl("6222309287143333829");
+    @RequestMapping("/queryUsualCollByFy")
+    public ModelAndView queryUsualCollByFy(UFenYe uFenYe, HttpSession session ){
+        ModelAndView mv=new ModelAndView();
+        String loginAccNo= (String) session.getAttribute("loginAccNo");
+        if (uFenYe.getUquery()!=null){
+            uFenYe.getUquery().setqMainAcc(loginAccNo);
+        }else{
+            Uquery uquery=new Uquery();
+            uquery.setqMainAcc(loginAccNo);
+            uFenYe.setUquery(uquery);
+        }
+        List<UsualColl> usualColls = ucs.queryUsualCollByFy(uFenYe);
         mv.addObject("usualColls",usualColls);
+        int flag = 0;
+        for (UsualColl u :
+                usualColls) {
+            System.out.println(u);
+            flag++;
+
+        }
+        System.out.println(flag);
+        mv.addObject("uFenYe",uFenYe);
         mv.setViewName("payeeManagement");
+        System.out.println(uFenYe+"lllll");
         return mv;
     }
-    @RequestMapping("/toPay")
-    public String toPay(){
+
+
+    @RequestMapping("toAdd")
+    public String toAdd(){
         return "payeeManagement01";
     }
-    @RequestMapping("/queryUsualCollByFy")
-    public ModelAndView queryUsualCollByFy(@RequestParam("accIn")String accIn,@RequestParam("accInName")String accInName ){
-        ModelAndView mv=new ModelAndView();
-        uFenYe u=new uFenYe();
-        Uquery uquery=new Uquery();
-        uquery.setqAccIn(accIn);
-        uquery.setqAccInName(accInName);
-        u.setUquery(uquery);
-        List<UsualColl>usualColls=ucs.queryUsualCollByFy(u);
-        mv.addObject("usualColls",usualColls);
-        mv.setViewName("payeeManagement");
-        return mv;
 
+    @RequestMapping("addUsualColl")
+    public ModelAndView addUsualColl(@RequestParam("accIn")String accIn, @RequestParam("accInName")String accInName, @RequestParam("transFund") BigDecimal transFund, HttpSession ss){
+        ModelAndView mv=new ModelAndView();
+        UsualColl uc=new UsualColl();
+        String loginAccNo= (String) ss.getAttribute("loginAccNo");
+        System.out.println(loginAccNo+"***********************************");
+        uc.setAccIn(accIn);
+        uc.setMainAcc(loginAccNo);
+        uc.setAccInName(accInName);
+        uc.setTransFund(transFund);
+        int flag=ucs.addUsualColl(uc);
+        mv.setViewName("queryUsualCollByFy");
+        return mv;
     }
 
-    @RequestMapping("/toAddUser")
-    public ModelAndView toAddUser(){
-        ModelAndView mv=new ModelAndView();
+    @RequestMapping("/batchTransfer")
+    public ModelAndView batchTransfer(String[] fkcheck,String[] accIn,BigDecimal[] transFund,HttpSession session){
+        ModelAndView mv = new ModelAndView();
+        List<Transfer> transferList=new ArrayList<Transfer>();
+        String loginAccNo = (String) session.getAttribute("loginAccNo");
+        System.out.println(fkcheck.length+">>"+accIn.length+"hh"+transFund.length);
 
-        mv.setViewName("payeeManagement01");
+        for (int i = 0; i <fkcheck.length; i++) {
+            for (int j = 0; j < accIn.length; j++) {
+                if (fkcheck[i].equals(accIn[j])){
+                    Transfer transfer = new Transfer();
+                    transfer.setAccIn(accIn[j]);
+                    transfer.setAccOut(loginAccNo);
+                    transfer.setTransFund(transFund[j]);
+                    transferList.add(transfer);
+                }
+            }
+        }
+        for (Transfer t :transferList) {
+            ts.transferMoney(t);
+        }
+        Map<String, Integer> map = new HashMap<>();
+        map.put("status", 200);
+        mv.addObject("map",map);
+        mv.setViewName("transferAccountResult");
         return mv;
+    }
 
+    /**
+     * 验证卡号是否和姓名一致
+     * @param accInName
+     * @param accIn
+     * @return
+     */
+    @RequestMapping("/regName")
+    @ResponseBody
+    public Map<String,Object> regName(String accInName,String accIn){
+        Map<String,Object> map = new HashMap<>();
+        User user = us.queryCustom(accIn);
+        if(user.getUserName().equals(accInName)){
+            map.put("flag",true);
+        }else{
+            map.put("flag",false);
+        }
+        return map;
     }
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.dao.UsualCollDao">
+
+    <resultMap id="usualColl" type="com.zl.pojo.UsualColl">
+        <result column="ACC_IN" property="accIn"></result>
+        <result column="MAIN_ACC" property="mainAcc"></result>
+        <result column="ACC_INNAME" property="accInName"></result>
+        <result column="TRANS_FUND" property="transFund"></result>
+    </resultMap>
+
+    <delete id="deleteUsualColl" parameterType="string">
+        delete from T_USUALCOLL where ACC_IN=#{accIn}
+    </delete>
+    <insert id="addUsualColl" parameterType="com.zl.pojo.UsualColl">
+        insert into T_USUALCOLL(acc_in, acc_inname, trans_fund,MAIN_ACC)values(#{accIn},#{accInName},#{transFund},#{mainAcc})
+    </insert>
+    <select id="queryAllUsualColl" parameterType="string" resultMap="usualColl">
+        　select * from T_USUALCOLL where MAIN_ACC=#{mainAcc}
+    </select>
+    <select id="queryUsualCollByFy" parameterType="uFenYe" resultMap="usualColl">
+        select * from (select t.*,rownum r from(select * from T_USUALCOLL
+        <where>
+            <if test="uquery!=null">
+                <if test="uquery.qAccInName!=null and uquery.qAccInName!=''">
+                    and acc_inname like concat('%',concat(#{uquery.qAccInName},'%'))
+                </if>
+                <if test="uquery.qAccIn!=null and uquery.qAccIn!=''">
+                    and acc_in like concat('%',concat(#{uquery.qAccIn},'%'))
+                </if>
+                and MAIN_ACC=#{uquery.qMainAcc}
+            </if>
+        </where>
+        )t)where r>#{rowStart} and r<![CDATA[<=]]>#{rowEnd}
+    </select>
+
+    <select id="queryUsualCount" parameterType="uquery" resultType="int">
+        SELECT count(1) from T_USUALCOLL
+        <where>
+            <if test="qAccInName!=null and qAccInName!=''">
+                and Acc_inname like concat('%',concat(#{qAccInName},'%'))
+            </if>
+            <if test="qAccIn!=null and qAccIn!=''">
+                and acc_in like concat('%',concat(#{qAccIn},'%'))
+            </if>
+            and MAIN_ACC=#{qMainAcc}
+        </where>
+    </select>
+    <select id="queryUsualCollByaccIn" parameterType="string" resultMap="usualColl">
+        select * from T_USUALCOLL where ACC_IN=#{accIn}
+    </select>
+<!--    </select>-->
+<!--    <select id="queryUserByAccNo" parameterType="com.zl.pojo.UsualColl" resultType="int">-->
+<!--        select count(1) from T_ACCOUNT where ACC_NO=#{accIn}-->
+<!--    </select>-->
+    <select id="queryUsualColl" parameterType="string" resultMap="usualColl">
+    　select * from T_USUALCOLL where MAIN_ACC=#{mainAcc}
+    </select>
+</mapper>

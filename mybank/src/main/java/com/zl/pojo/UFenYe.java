@@ -7,14 +7,14 @@ import java.io.Serializable;
 
 @Component
 @Scope("prototype")
-public class uFenYe implements Serializable {
+public class UFenYe implements Serializable {
 
-    private Integer page=1;//当前的页码
+    private Integer page;//当前的页码
     private Integer pageRows=4;//每页显示多少行
     private Integer pageCount;//总页码数
     private Integer rowsCount;//符合要求的记录数
-    private Integer rowStart=0;//当前页码的开始条
-    private Integer rowEnd=4;//当前页码的结束条
+    private Integer rowStart;//当前页码的开始条
+    private Integer rowEnd;//当前页码的结束条
     private Uquery uquery;//当前请求分页的查询条件
 
     public Integer getPage() {
@@ -35,6 +35,7 @@ public class uFenYe implements Serializable {
 
     public Integer getPageCount() {
         pageCount = (int)Math.ceil(getRowsCount()/(getPageRows()*1.0));
+        System.out.println("多少頁"+pageCount);
         return pageCount;
     }
 
