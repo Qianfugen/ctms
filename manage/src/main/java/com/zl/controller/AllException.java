@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author jinqi
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class AllException {
 
-    @ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("exception", e);
-        mav.addObject("url", req.getRequestURL());
-        mav.setViewName("reg");
-        return mav;
-    }
+//    @ExceptionHandler(value = Exception.class)
+//    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+//        ModelAndView mav = new ModelAndView();
+//        mav.addObject("exception", e);
+//        mav.addObject("url", req.getRequestURL());
+//        mav.setViewName("reg");
+//        return mav;
+//    }
 
 }

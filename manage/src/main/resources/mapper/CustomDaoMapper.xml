@@ -96,7 +96,11 @@
     </select>
 <!--    修改用户信息-->
     <update id="updateUser" parameterType="com.zl.pojo.User">
-        update T_USER set user_name=#{userName,jdbcType=VARCHAR}, user_sex=#{userSex,jdbcType=INTEGER}, user_birthdate=#{userBirthdate,jdbcType=TIMESTAMP}, user_certno=#{userCertNo,jdbcType=VARCHAR}, user_addr=#{userAddr,jdbcType=VARCHAR}, user_zipcode=#{userZipCode,jdbcType=VARCHAR}, user_telno=#{userTelNo,jdbcType=VARCHAR}, user_phoneno=#{userPhoneNo,jdbcType=VARCHAR}, user_email=#{userEmail,jdbcType=VARCHAR}, user_pwd=#{userPwd,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
+        update T_USER set user_name=#{userName,jdbcType=VARCHAR}, user_sex=#{userSex,jdbcType=INTEGER}, user_birthdate=#{userBirthdate,jdbcType=TIMESTAMP}, user_certno=#{userCertNo,jdbcType=VARCHAR}, user_addr=#{userAddr,jdbcType=VARCHAR}, user_zipcode=#{userZipCode,jdbcType=VARCHAR}, user_telno=#{userTelNo,jdbcType=VARCHAR}, user_phoneno=#{userPhoneNo,jdbcType=VARCHAR}, user_email=#{userEmail,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
+    </update>
+    <!--    修改用户信息-->
+    <update id="updateCustomPwd" parameterType="com.zl.pojo.User">
+        update T_USER set USER_PWD=#{userPwd,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
     </update>
 <!--    修改银行卡信息-->
     <update id="updateAccount" parameterType="com.zl.pojo.User">

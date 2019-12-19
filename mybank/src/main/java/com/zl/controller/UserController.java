@@ -13,6 +13,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,6 +68,16 @@ public class UserController {
     public Map<String, Object> regName(String accNo) {
         System.out.println("regName");
         return us.regName(accNo);
+    }
+
+    /**
+     * 提供加密密码的接口
+     */
+    @ResponseBody
+    @RequestMapping("/regUserPwd")
+    public String regUserPwd(@RequestBody User user) {
+        System.out.println(user+"---------------------");
+        return us.regUserPwd(user.getAccount().getAccNo(),user.getUserPwd());
     }
 
     /**

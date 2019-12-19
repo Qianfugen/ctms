@@ -145,7 +145,7 @@
 					<#else>
 					<a href="/custom/allCustom?query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.qType=<#if fenYe.query??>${fenYe.query.qType!""}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!""}</#if>&page=${fenYe.page+1}">下一页</a>
 					</#if>
-					<a href="/custom/allCustom?query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.qType=<#if fenYe.query??>${fenYe.query.qType!""}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!""}</#if>&page=${fenYe.pageCount}">尾页</a>
+					<a href="/custom/allCustom?query.qname=<#if fenYe.query??>${fenYe.query.qname!''}</#if>&query.qType=<#if fenYe.query??>${fenYe.query.qType!""}</#if>&query.qAccNo=<#if fenYe.query??>${fenYe.query.qAccNo!""}</#if>&page=${fenYe.pageCount}" style="display: none">尾页</a>
 				&nbsp;	当前第${fenYe.page}页&nbsp;共${fenYe.pageCount}页
 				</div>
 				
