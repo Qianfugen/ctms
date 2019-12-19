@@ -30,4 +30,45 @@ public class UsualColl implements Serializable {
      */
     private BigDecimal transFund;
 
+    public String getMainAcc() {
+        return mainAcc;
+    }
+
+    public void setMainAcc(String mainAcc) {
+        this.mainAcc = mainAcc;
+    }
+
+    public String getAccIn() {
+        return accIn;
+    }
+
+    public void setAccIn(String accIn) {
+        this.accIn = accIn;
+    }
+
+    public String getAccInName() {
+        return accInName;
+    }
+
+    public void setAccInName(String accInName) {
+        this.accInName = accInName;
+    }
+
+    public BigDecimal getTransFund() {
+        return transFund;
+    }
+
+    public void setTransFund(BigDecimal transFund) {
+        this.transFund = transFund;
+    }
+
+    @Override
+    public String toString() {
+        return "UsualColl{" +
+                "mainAcc='" + mainAcc + '\'' +
+                ", accIn='" + accIn + '\'' +
+                ", accInName='" + accInName + '\'' +
+                ", transFund=" + transFund +
+                '}';
+    }
 }

@@ -1,5 +1,7 @@
 package com.zl.dao;
 
+import com.zl.pojo.FenYe;
+import com.zl.pojo.Query;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 
@@ -27,9 +29,16 @@ public interface UserDao {
 
     /**
      * 根据用户卡号查询交易记录
-     * @param accNo
+     * @param fenYe
      * @return
      */
-    List<Transfer> queryTransferByAccNo(String accNo);
+    List<Transfer> queryTransferByAccNo(FenYe fenYe);
+
+    /**
+     * 根据用户卡号查询交易记录
+     * @param query
+     * @return
+     */
+    int queryTransByLike(Query query);
 
 }
