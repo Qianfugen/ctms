@@ -74,9 +74,10 @@ public class UserController {
      * 提供加密密码的接口
      */
     @RequestMapping("/regUserPwd")
+    @ResponseBody
     public String regUserPwd(@RequestBody User user) {
-        System.out.println(user+"---------------------");
-        return us.regUserPwd(user.getAccount().getAccNo(),user.getUserPwd());
+        System.out.println(user + "---------------------");
+        return us.regUserPwd(user.getAccount().getAccNo(), user.getUserPwd());
     }
 
     /**
@@ -121,10 +122,11 @@ public class UserController {
 
     /**
      * 退出
+     *
      * @return
      */
     @RequestMapping("/logout")
-    public ModelAndView logout(){
+    public ModelAndView logout() {
         ModelAndView mv = new ModelAndView();
         us.logout();
         mv.setViewName("toLogin");
@@ -146,8 +148,8 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         System.out.println("进入index");
         User loginUser = us.queryCustom(accNo);
-        System.out.println("当前对象:"+loginUser);
-        session.setAttribute("loginUser",loginUser);
+        System.out.println("当前对象:" + loginUser);
+        session.setAttribute("loginUser", loginUser);
         session.setAttribute("loginAccNo", accNo);
         mv.setViewName("index");
         return mv;
@@ -159,33 +161,32 @@ public class UserController {
     }
 
     @RequestMapping("/queryCustom")
-    public ModelAndView queryCustom(@RequestParam("accNo") String accNO){
-        System.out.println("accNo:"+accNO);
-        ModelAndView mv=new ModelAndView();
+    public ModelAndView queryCustom(@RequestParam("accNo") String accNO) {
+        System.out.println("accNo:" + accNO);
+        ModelAndView mv = new ModelAndView();
         User user = us.queryCustom(accNO);
-        mv.addObject("user",user);
+        mv.addObject("user", user);
         mv.setViewName("CustermInfo");
         return mv;
     }
 
     @RequestMapping("/toCustomRecord")
-    public ModelAndView toCustomRecord(FenYe fenYe,HttpSession session){
-        String accNo= (String) session.getAttribute("loginAccNo");
-        System.out.println("accNo: "+accNo);
-        Query query=new Query();
-        if (fenYe.getQuery()!=null){
-            query=fenYe.getQuery();
+    public ModelAndView toCustomRecord(FenYe fenYe, HttpSession session) {
+        String accNo = (String) session.getAttribute("loginAccNo");
+        System.out.println("accNo: " + accNo);
+        Query query = new Query();
+        if (fenYe.getQuery() != null) {
+            query = fenYe.getQuery();
         }
         query.setqAccNo(accNo);
         fenYe.setQuery(query);
-        ModelAndView mv=new ModelAndView();
-        List<Transfer> transfers=us.queryTransferByAccNo(fenYe);
-        if (transfers!=null){
-            mv.addObject("transfers",transfers);
-        }else {
-            mv.addObject("message","该用户暂无交易记录");
+        ModelAndView mv = new ModelAndView();
+        List<Transfer> transfers = us.queryTransferByAccNo(fenYe);
+        if (transfers != null) {
+            mv.addObject("transfers", transfers);
+        } else {
+            mv.addObject("message", "该用户暂无交易记录");
         }
-
         mv.setViewName("transferInfo");
         return mv;
     }

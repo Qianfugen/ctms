@@ -37,6 +37,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/toLogin","anon");
         filterChainDefinitionMap.put("/user/toRegister","anon");
         filterChainDefinitionMap.put("/user/regName","anon");
+        filterChainDefinitionMap.put("/transfer/transferMoney","anon");
         //authc:所有url都必须认证通过才可以访问
         filterChainDefinitionMap.put("/**", "authc");
 
