@@ -27,7 +27,7 @@ public class ScheduleJobWeb {
         scheduleJobBean.setJobId(job.getId());
         scheduleJobBean.setBeanName("transferTask");
         scheduleJobBean.setCronExpression(job.getCron());
-        String params=job.getAccIn()+","+job.getAccOut()+","+job.getTransFund().toString()+","+job.getCurrency();
+        String params=job.getAccIn()+","+job.getAccOut()+","+job.getTransFund().toString()+","+job.getCurrency()+","+job.getFee();
         System.out.println("得到的param："+params);
         scheduleJobBean.setParams(params);
         scheduleJobBean.setStatus(0);

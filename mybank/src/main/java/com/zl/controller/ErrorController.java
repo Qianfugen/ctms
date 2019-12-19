@@ -11,6 +11,7 @@ public class ErrorController {
     @ExceptionHandler
     public ModelAndView error(Exception e){
         ModelAndView mv=new ModelAndView();
+        System.out.println("出错啦！");
         e.printStackTrace();
         mv.addObject("msg",e.getMessage());
         mv.setViewName("error");

@@ -84,7 +84,7 @@
 								<option value="">请选择</option>
 								<option value="成功" <#if fenYe.query??&&fenYe.query.qType='成功'>selected="selected"</#if>>已成功订单</option>
 								<option value="失败" <#if fenYe.query??&&fenYe.query.qType='失败'>selected="selected"</#if>>失败订单</option>
-								<option value="待处理" <#if fenYe.query??&&fenYe.query.qType='待处理'>selected="selected"</#if>>待处理订单</option>
+								<option value="0" <#if fenYe.query??&&fenYe.query.qType='0'>selected="selected"</#if>>待处理订单</option>
 							</select>
 							<input type="submit"   value="查询"/>
 						</p>

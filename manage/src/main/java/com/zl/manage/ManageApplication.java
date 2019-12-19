@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableEurekaClient
 @ComponentScan("com.zl")
 @MapperScan("com.zl.dao")
-@EnableRedisHttpSession
 @EnableTransactionManagement
 @EnableFeignClients("com.zl.api")
 public class ManageApplication {

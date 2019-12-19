@@ -74,6 +74,19 @@ public class Transfer implements Serializable {
      */
     private String kind;
 
+    /**
+     * 手续费
+     */
+    private BigDecimal fee;
+
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
+    }
+
     public String getDealNo() {
         return dealNo;
     }
@@ -194,6 +207,7 @@ public class Transfer implements Serializable {
                 ", currency='" + currency + '\'' +
                 ", transFund=" + transFund +
                 ", kind='" + kind + '\'' +
+                ", fee=" + fee +
                 '}';
     }
 }

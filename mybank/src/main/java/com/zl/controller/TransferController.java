@@ -6,7 +6,6 @@ import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.UsualColl;
 import com.zl.service.TransferService;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +50,7 @@ public class TransferController {
         //预先设置一个转出账户，本应从页面获取，这里仅做测试
         String accOut= (String) session.getAttribute("loginAccNo");
         System.out.println("当前用户卡号accNO:"+accOut);
+        System.out.println("transfer"+transfer);
         transfer.setAccOut(accOut);
         //启动账户
 //        transfer.setAccOut("6222303626811324642");
@@ -112,14 +112,14 @@ public class TransferController {
      * 删除定时转账，从session获取用户卡号
      * status: 0 冻结，1 定时任务取消成功， 100 超出上限，200 转账成，400 余额不足
      *
-     * @param accNo
      * @return
      */
     @ResponseBody
     @RequestMapping("deleteJob")
-    public ModelAndView deleteJob(@RequestParam("accNo") String accNo) {
+    public ModelAndView deleteJob(HttpSession session) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("transferAccountResult");
+        String accNo= (String) session.getAttribute("loginAccNo");
         String result = jobAPI.deleteJob(accNo);
         Map<String, Integer> map = new HashMap<>();
         if (result.equals("success")) {

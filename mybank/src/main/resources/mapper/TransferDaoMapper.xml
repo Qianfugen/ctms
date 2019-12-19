@@ -35,11 +35,11 @@
        where USER_NAME=#{userName} and ACC_NO=#{account.accNo}
     </select>
 
-    <select id="queryTransferDealing" parameterType="string" resultType="transfer">
-        select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
-        ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
-        CURRENCY currency, TRANS_FUND transFund from T_TRANSFER WHERE DEAL_NO=#{dealNo} AND trans_Status = 0
-    </select>
+<!--    <select id="queryTransferDealing" parameterType="string" resultType="transfer">-->
+<!--        select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,-->
+<!--        ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,-->
+<!--        CURRENCY currency, TRANS_FUND transFund from T_TRANSFER WHERE DEAL_NO=#{dealNo} AND trans_Status = '0'-->
+<!--    </select>-->
 
     <update id="transferConfirm" parameterType="string">
         update T_TRANSFER set TRANS_STATUS='成功' where DEAL_NO=#{dealNo}
@@ -48,13 +48,13 @@
     <select id="queryAllOverDealing" resultType="transfer">
         select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
         ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
-        CURRENCY currency, TRANS_FUND transFund,KIND kind from T_TRANSFER WHERE trans_Status = 0 AND TRANS_TYPE = 2
+        CURRENCY currency, TRANS_FUND transFund,KIND kind from T_TRANSFER WHERE trans_Status = '0' AND TRANS_TYPE = 2
     </select>
 
     <select id="queryAllDomeDealing" resultType="transfer">
         select DEAL_NO dealNo, DEAL_DATE dealDate, TRANS_TYPE transType, TRANS_STATUS transStatus, ACC_OUT accOut,
         ACC_OUTNAME accOutName, ACC_OUTBANK accOutBank, ACC_IN accIn, ACC_INNAME accInName, ACC_INBANK accInBank,
-        CURRENCY currency, TRANS_FUND transFund,KIND kind from T_TRANSFER WHERE trans_Status = 0 AND TRANS_TYPE = 1
+        CURRENCY currency, TRANS_FUND transFund,KIND kind from T_TRANSFER WHERE trans_Status = '0' AND TRANS_TYPE = 1
     </select>
     <select id="queryAccLimit" parameterType="string" resultType="java.math.BigDecimal">
         select ACC_LIMIT from T_ACCOUNT where ACC_NO=#{accNo}

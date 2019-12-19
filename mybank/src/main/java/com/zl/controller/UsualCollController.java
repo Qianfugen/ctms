@@ -76,7 +76,7 @@ public class UsualCollController {
         return "payeeManagement01";
     }
 
-    @RequestMapping("addUsualColl")
+    @RequestMapping("/addUsualColl")
     public ModelAndView addUsualColl(@RequestParam("accIn")String accIn, @RequestParam("accInName")String accInName, @RequestParam("transFund") BigDecimal transFund, HttpSession ss){
         ModelAndView mv=new ModelAndView();
         UsualColl uc=new UsualColl();

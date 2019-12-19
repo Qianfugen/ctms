@@ -201,7 +201,7 @@
                      */
                     success: function (data) {
                         balance = data.balance;
-                        $("#balance").html(":￥" + balance.toString() + " 元").css({"color": "green", "font-size": "5"});
+                        $("#balance02").html(":￥" + balance.toString() + " 元").css({"color": "green", "font-size": "5"});
                     },
                     //响应失败以后执行的回调函数
                     error: function () {
@@ -352,7 +352,7 @@
                             <td></td>
                             <td><input id="sub" type="submit" disabled="disabled" value="确认转账"/></td>
                         </tr>
-                        <tr><a href="/transfer/deleteJob?accNo=6222303626811324642">取消定时转账</a></tr>
+                        <tr><a href="/transfer/deleteJob">取消定时转账</a></tr>
                     </table>
                 </form>
                 <!-- 模态框（Modal） -->
@@ -468,7 +468,7 @@
                             <td>汇款金额 ：</td>
                             <td><input type="text" name="transFund" required="required" style="width: 300px;" placeholder="请选择币种单位"/>
                             </td>
-                            <td><a id="queryBalance02">余额<span id="balance"></span></a></td>
+                            <td><a id="queryBalance02">余额<span id="balance02"></span></a></td>
                         </tr>
                         <tr>
                             <td>汇款时间 ：</td>

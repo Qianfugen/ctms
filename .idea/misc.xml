@@ -20,12 +20,11 @@
         <option value="$PROJECT_DIR$/overseas/pom.xml" />
         <option value="$PROJECT_DIR$/manage/pom.xml" />
         <option value="$PROJECT_DIR$/mybank/pom.xml" />
-        <option value="$PROJECT_DIR$/quartjob/pom.xml" />
         <option value="$PROJECT_DIR$/ware-quart-job/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8 (2)" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

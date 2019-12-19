@@ -27,11 +27,7 @@ public class UsualCollServiceImpl implements UsualCollService {
     @Override
     public int addUsualColl(UsualColl usualColl) {
         UsualColl usualColl1 = uc.queryUsualCollByaccIn(usualColl.getAccIn());
-        if (usualColl==null){
             return uc.addUsualColl(usualColl);
-        }else{
-            return 0;
-        }
 
     }
 

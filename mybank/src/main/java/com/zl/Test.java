@@ -75,7 +75,8 @@ public class Test {
 //        long date6 = System.currentTimeMillis();
 //        System.out.println("使用时间" + (date6 - date5) + "ms");
 
-        String s="0123456789";
-        System.out.println(s.substring(0,5));
+//        String s="0123456789";
+//        System.out.println(s.substring(0,5));
+        System.out.println(new BigDecimal("0.0"));
     }
 }

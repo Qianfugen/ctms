@@ -11,12 +11,12 @@
         <module name="ctms" />
         <module name="mybank" />
         <module name="domestic" />
-        <module name="quartjob" />
         <module name="eurekaserver" />
         <module name="manage" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="quartjob" target="1.8" />
       <module name="redismq" target="1.8" />
       <module name="zuul" target="1.8" />
     </bytecodeTargetLevel>
