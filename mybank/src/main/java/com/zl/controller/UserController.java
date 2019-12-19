@@ -71,14 +71,14 @@ public class UserController {
     }
 
     /**
-     * 加密修改密码
+     * 提供加密密码的接口
      */
     @RequestMapping("/regUserPwd")
     public String regUserPwd(@RequestBody User user) {
         System.out.println(user+"---------------------");
-
         return us.regUserPwd(user.getAccount().getAccNo(),user.getUserPwd());
     }
+
     /**
      * 登录
      *

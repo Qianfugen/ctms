@@ -50,7 +50,6 @@ public class UserServiceImpl implements UserService {
      * @param password
      */
     @Override
-
     public void register(String accNo, String password) {
         System.out.println("进入登录service");
         User user = ud.queryCustom(accNo);
@@ -60,6 +59,14 @@ public class UserServiceImpl implements UserService {
         ud.updateUserPwd(user);
         System.out.println("加密password: " + user.getUserPwd());
     }
+
+    /**
+     * 提供加密密码的方法
+     * @param accNo
+     * @param password
+     * @return
+     */
+    @Override
     public String regUserPwd(String accNo, String password) {
         EncryptionUtil encryptionUtil = new EncryptionUtil();
         Map<String, String> encrypt = encryptionUtil.encryption(accNo, password);
