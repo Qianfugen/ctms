@@ -35,10 +35,11 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
-        filterChainDefinitionMap.put("/user/**","anon");
-        filterChainDefinitionMap.put("/transfer/transferMoney","anon");
-        filterChainDefinitionMap.put("/transfer/transferMoneyDemo","anon");
-        filterChainDefinitionMap.put("/transfer/transferMoneyOver","anon");
+        filterChainDefinitionMap.put("/user/**", "anon");
+        filterChainDefinitionMap.put("/transfer/transferMoney", "anon");
+        filterChainDefinitionMap.put("/transfer/transferMoneyDemo", "anon");
+        filterChainDefinitionMap.put("/transfer/transferMoneyOver", "anon");
+        filterChainDefinitionMap.put("/user/regUserPwd", "anon");
         //authc:所有url都必须认证通过才可以访问
         filterChainDefinitionMap.put("/**", "authc");
 

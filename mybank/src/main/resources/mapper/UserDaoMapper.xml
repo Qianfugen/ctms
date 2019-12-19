@@ -85,7 +85,7 @@ namespace:必须是对应接口的全路径
                     </if>
                 </if>
             </if>
-            and rownum<![CDATA[<]]>#{rowEnd}
+            and rownum<![CDATA[<]]>#{rowEnd} order by deal_date desc
         </where>
         ) e) where r>#{rowStart}
     </select>

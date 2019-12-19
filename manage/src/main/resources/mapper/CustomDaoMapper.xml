@@ -100,7 +100,7 @@
     </update>
     <!--    修改用户信息-->
     <update id="updateCustomPwd" parameterType="com.zl.pojo.User">
-        update T_USER set USER_PWD=#{userPwd,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
+        update T_ACCOUNT set ACC_PWD=#{userPwd,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
     </update>
 <!--    修改银行卡信息-->
     <update id="updateAccount" parameterType="com.zl.pojo.User">
