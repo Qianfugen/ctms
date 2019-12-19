@@ -17,11 +17,18 @@ public interface ICustomService {
     List<User> queryAllCustom(FenYe fenYe);
 
     /**
-     * 根据卡号修改用户卡状态（冻结或启用）
+     * 修改用户信息
      * @param user
      * @return
      */
     int updateCustom(User user);
+
+    /**
+     * 修改用户登入密码
+     * @param user
+     * @return
+     */
+    int updateCustomPwd(User user);
 
     /**
      * 根据用户id删除用户卡

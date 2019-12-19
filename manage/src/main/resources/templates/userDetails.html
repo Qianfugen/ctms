@@ -92,9 +92,9 @@
 				</div>
 				<p> </p>
 				<div align="center">
-					<form action="/custom/updateCustom" method="post">
-						<div style="width: 530px;height: 650px;">
-							<div style="float: left;width: 530px;height: 470px;">
+					<div style="width: 530px;height: 650px;">
+						<form action="/custom/updateCustom" method="post">
+							<div style="float: left;width: 530px;height: 367px;">
 								<table class="table table-hover" style="border-collapse: separate;">
 									<tr>
 										<td>用户ID：</td>
@@ -162,30 +162,26 @@
 									<tr>
 										<td>手机号码：</td>
 										<td><input type="text" name="userPhoneNo" value="${user.userPhoneNo!""}" /></td>
-                                        <td>支付密码：</td>
-                                        <td><input type="text" name="account.accPwd" value="${user.account.accPwd!""}" /></td>
-									</tr>
-									<tr>
 										<td>邮箱：</td>
 										<td><input type="text" name="userEmail" value="${user.userEmail!""}" /></td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
 									</tr>
-									<tr>
-										<td>登录密码：</td>
-										<td><input type="password" name="userPwd" value="${user.userPwd!""}" /></td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-									</tr>
-
 								</table>
 							</div>
 							<div style="clear: both;"></div>
 							<button><a href="/custom/deleteCustom?userId=${user.userId!""}">删除</a></button>
-							<button type="submit" value="修改">修改</button>
-						</div>
-
-					</form>
+							<button type="submit" value="修改">修改信息</button>
+						</form>
+						<form action="/custom/updateCustomPwd" method="post">
+							<table class="table table-hover" style="border-collapse: separate; margin-top: 7px;">
+								<tr>
+									<td>登录密码：</td>
+									<td><input type="password" name="userPwd" value="ChangePassWord" /></td>
+									<td><td><input type="text" name="account.accNo" value="${user.account.accNo}" style="display: none;" /></td></td>
+									<td><button type="submit" value="修改">修改密码</button></td>
+								</tr>
+							</table>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -73,6 +73,7 @@ public class UserController {
     /**
      * 提供加密密码的接口
      */
+    @ResponseBody
     @RequestMapping("/regUserPwd")
     public String regUserPwd(@RequestBody User user) {
         System.out.println(user+"---------------------");
