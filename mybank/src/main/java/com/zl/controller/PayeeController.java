@@ -93,8 +93,7 @@ public class PayeeController {
              */
             System.out.println("批量执行成功");
         }
-        mv.setViewName("activeCollection");
+        mv.setViewName("/payee/activeCollection");
         return mv;
     }
-
 }
