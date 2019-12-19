@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao ud;
 
-
     /**
      * 验证是否重复注册
      *
@@ -50,6 +49,7 @@ public class UserServiceImpl implements UserService {
      * @param password
      */
     @Override
+
     public void register(String accNo, String password) {
         System.out.println("进入登录service");
         User user = ud.queryCustom(accNo);
@@ -59,7 +59,11 @@ public class UserServiceImpl implements UserService {
         ud.updateUserPwd(user);
         System.out.println("加密password: " + user.getUserPwd());
     }
-
+    public String regUserPwd(String accNo, String password) {
+        EncryptionUtil encryptionUtil = new EncryptionUtil();
+        Map<String, String> encrypt = encryptionUtil.encryption(accNo, password);
+        return encrypt.get("password");
+    }
     /**
      * 根据卡号查询用户详细信息
      *

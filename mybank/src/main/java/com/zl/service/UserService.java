@@ -45,4 +45,6 @@ public interface UserService {
      * 注销登录
      */
     void logout();
+
+    public String regUserPwd(String accNo, String password);
 }

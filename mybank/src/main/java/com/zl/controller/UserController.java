@@ -13,6 +13,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,6 +70,15 @@ public class UserController {
         return us.regName(accNo);
     }
 
+    /**
+     * 加密修改密码
+     */
+    @RequestMapping("/regUserPwd")
+    public String regUserPwd(@RequestBody User user) {
+        System.out.println(user+"---------------------");
+
+        return us.regUserPwd(user.getAccount().getAccNo(),user.getUserPwd());
+    }
     /**
      * 登录
      *
