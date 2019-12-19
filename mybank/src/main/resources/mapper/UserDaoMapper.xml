@@ -28,6 +28,7 @@ namespace:必须是对应接口的全路径
             <result property="accType" column="ACC_TYPE"></result>
             <result property="accDate" column="ACC_DATE"></result>
             <result property="accPwd" column="ACC_PWD"></result>
+            <result property="collStatus" column="COLL_STATUS"></result>
         </collection>
     </resultMap>
     <!--    交易记录表字段映射文件-->
@@ -55,8 +56,64 @@ namespace:必须是对应接口的全路径
         select * from CUSTOM where ACC_NO=#{accNo}
     </select>
 
-    <!--    根据银行卡查询用户交易信息-->
-    <select id="queryTransferByAccNo" resultMap="allTransFor" parameterType="string">
-        select * from T_TRANSFER where ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
+    <!--    分页条件查询所有交易信息-->
+    <select id="queryTransferByAccNo" parameterType="com.zl.pojo.FenYe" resultMap="allTransFor">
+        select * from(
+        select e.*,ROWNUM r from(
+        select * from T_TRANSFER
+        <where>
+            <if test="query!=null">
+                <if test="query.qType!=null and query.qType!=''">
+                    and TRANS_STATUS=#{query.qType}
+                </if>
+                <if test="query.startDate!=null">
+                    and DEAL_DATE>#{query.startDate}
+                </if>
+                <if test="query.endDate!=null">
+                    and DEAL_DATE<![CDATA[<]]>#{query.endDate}
+                </if>
+                <if test="query.qAccNo!=null and query.qAccNo!=''">
+                    and ACC_IN=#{query.qAccNo,jdbcType=VARCHAR} and rownum<![CDATA[<]]>#{rowEnd} or ACC_OUT=#{query.qAccNo,jdbcType=VARCHAR}
+                    <if test="query.qType!=null and query.qType!=''">
+                        and TRANS_STATUS=#{query.qType}
+                    </if>
+                    <if test="query.startDate!=null">
+                        and DEAL_DATE>#{query.startDate}
+                    </if>
+                    <if test="query.endDate!=null">
+                        and DEAL_DATE<![CDATA[<]]>#{query.endDate}
+                    </if>
+                </if>
+            </if>
+            and rownum<![CDATA[<]]>#{rowEnd}
+        </where>
+        ) e) where r>#{rowStart}
+    </select>
+    <!--    条件查询用户交易信息总条数-->
+    <select id="queryTransByLike" parameterType="com.zl.pojo.Query" resultType="int">
+        select count(1) from T_TRANSFER
+        <where>
+            <if test="qType!=null and qType!=''">
+                and TRANS_STATUS=#{qType}
+            </if>
+            <if test="startDate!=null">
+                and DEAL_DATE>#{startDate}
+            </if>
+            <if test="endDate!=null">
+                and DEAL_DATE<![CDATA[<]]>#{endDate}
+            </if>
+            <if test="qAccNo!=null and qAccNo!=''">
+                and ACC_IN=#{qAccNo,jdbcType=VARCHAR} or ACC_OUT=#{qAccNo,jdbcType=VARCHAR}
+                <if test="qType!=null and qType!=''">
+                    and TRANS_STATUS=#{qType}
+                </if>
+                <if test="startDate!=null">
+                    and DEAL_DATE>#{startDate}
+                </if>
+                <if test="endDate!=null">
+                    and DEAL_DATE<![CDATA[<]]>#{endDate}
+                </if>
+            </if>
+        </where>
     </select>
 </mapper>

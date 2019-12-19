@@ -1,5 +1,6 @@
 package com.zl.service;
 
+import com.zl.pojo.FenYe;
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
 
@@ -36,13 +37,21 @@ public interface UserService {
 
     /**
      * 根据用户卡号查询交易记录
-     * @param accNo
+     * @param fenYe
      * @return
      */
-    List<Transfer> queryTransferByAccNo(String accNo);
+    List<Transfer> queryTransferByAccNo(FenYe fenYe);
 
     /**
      * 注销登录
      */
     void logout();
+
+    /**
+     * 提供加密密码的方法
+     * @param accNo
+     * @param password
+     * @return
+     */
+    String regUserPwd(String accNo, String password);
 }

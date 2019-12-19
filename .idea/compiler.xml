@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="overseas" />
-        <module name="zuul" />
         <module name="ware-quart-job" />
         <module name="ctms" />
         <module name="mybank" />

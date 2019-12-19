@@ -1,5 +1,6 @@
 package com.zl.service.impl;
 
+import com.zl.api.MyBankApi;
 import com.zl.dao.ICustomDao;
 import com.zl.pojo.*;
 import com.zl.service.ICustomService;
@@ -21,6 +22,8 @@ public class CustomServiceImpl implements ICustomService {
     @Autowired
     @Qualifier("redisTemplate")
     private RedisTemplate rt;
+    @Autowired
+    private MyBankApi ma;
 
     @Override
     public List<User> queryAllCustom(FenYe fenYe) {
@@ -50,6 +53,13 @@ public class CustomServiceImpl implements ICustomService {
             flag=1;
         }
         return flag;
+    }
+
+    @Override
+    public int updateCustomPwd(User user) {
+        user.setUserPwd(ma.regUserPwd(user));
+
+        return cd.updateCustomPwd(user);
     }
 
     @Override

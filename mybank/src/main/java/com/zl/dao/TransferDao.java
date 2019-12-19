@@ -2,10 +2,11 @@ package com.zl.dao;
 
 import com.zl.pojo.Transfer;
 import com.zl.pojo.User;
+import com.zl.pojo.UsualColl;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * @author root
@@ -109,4 +110,10 @@ public interface TransferDao {
      */
     public int queryAccStatus(String accNo);
 
+    /**
+     * 查询常用收款人信息
+     * @param accNo
+     * @return
+     */
+    public List<UsualColl> queryCusUsual(String accNo);
 }

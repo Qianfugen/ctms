@@ -1,6 +1,7 @@
 package com.zl.service;
 
 import com.zl.pojo.Transfer;
+import com.zl.pojo.UsualColl;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -137,4 +138,11 @@ public interface TransferService {
      * @return
      */
     public Map<String, Integer> verifyTransfer(Transfer transfer, String bank);
+
+    /**
+     * 查询常用收款人信息
+     * @param accNo
+     * @return
+     */
+    public List<UsualColl> queryCusUsual(String accNo);
 }

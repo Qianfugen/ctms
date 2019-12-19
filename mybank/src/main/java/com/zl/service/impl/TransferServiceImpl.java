@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zl.api.JobAPI;
 import com.zl.config.RabbitMqConfig;
 import com.zl.dao.TransferDao;
-import com.zl.pojo.Account;
-import com.zl.pojo.Job;
-import com.zl.pojo.Transfer;
-import com.zl.pojo.User;
+import com.zl.pojo.*;
 import com.zl.service.TransferService;
 import com.zl.utils.HttpUtils;
 import org.apache.http.HttpResponse;
@@ -50,11 +47,17 @@ public class TransferServiceImpl implements TransferService {
      */
     @Override
     public int executeJob(Transfer transfer) {
-        int flag=0;
+        int flag = 0;
         if ("0".equals(transfer.getKind())) {
             //立即转账
             System.out.println("立即转账。。。");
-            transferMoney(transfer);
+            if (transfer.getTransType() == 0) {
+                //同行转账
+                transferMoney(transfer);
+            } else if (transfer.getTransType() == 1) {
+                //跨行转账
+                transferMoneyDome(transfer);
+            }
         } else {
             //1分钟后转账
             System.out.println("1分钟后转账");
@@ -92,7 +95,7 @@ public class TransferServiceImpl implements TransferService {
 
             //调用定时任务模块
             jobAPI.insertJob(job);
-            flag=1;
+            flag = 1;
         }
         return flag;
     }
@@ -104,7 +107,7 @@ public class TransferServiceImpl implements TransferService {
      * @param transfer 交易对象
      * @return
      */
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void transferMoney(Transfer transfer) {
         //生成流水号
@@ -120,8 +123,6 @@ public class TransferServiceImpl implements TransferService {
             transfer.setKind("跨行转账");
             transfer.setTransType(1);
         }
-        //补充交易对象信息
-        transfer.setCurrency("CNY");
         //收入行信息
         String accIn = transfer.getAccIn();
         Map<String, String> mapIn = queryBankAndUserName(accIn);
@@ -295,7 +296,7 @@ public class TransferServiceImpl implements TransferService {
         System.out.println("transfer" + transfer);
 
         //判断余额是否充足
-        if (queryBalance(transfer.getAccOut()).compareTo(transfer.getTransFund())>0) {
+        if (queryBalance(transfer.getAccOut()).compareTo(transfer.getTransFund()) > 0) {
             //添加事务管理
             DefaultTransactionDefinition def = new DefaultTransactionDefinition();
             def.setName("SomeTxName");
@@ -591,19 +592,18 @@ public class TransferServiceImpl implements TransferService {
      * 转账前的验证
      *
      * @param transfer
-     * @param bank
-     * status  0 冻结，1 定时任务取消成功，2 受理中， 100 超出上限，200 转账成，400 余额不足
-     * 手续费
-     * 同行   免费
-     * 跨行   <5000：免费 ；5000-10000：5元/笔；10000-50000：7.5元/笔
-     * 跨境   汇款金额的0.08%,最低40元/笔,最高208元/笔
+     * @param bank     status  0 冻结，1 定时任务取消成功，2 受理中， 100 超出上限，200 转账成，400 余额不足
+     *                 手续费
+     *                 同行   免费
+     *                 跨行   <5000：免费 ；5000-10000：5元/笔；10000-50000：7.5元/笔
+     *                 跨境   汇款金额的0.08%,最低40元/笔,最高208元/笔
      * @return
      */
     @Override
     public Map<String, Integer> verifyTransfer(Transfer transfer, String bank) {
         Map<String, Integer> map = new HashMap<>();
         //手续费
-        BigDecimal fee=BigDecimal.valueOf(0.00);
+        BigDecimal fee = BigDecimal.valueOf(0.00);
         //判断是否冻结
         if (queryAccStatus(transfer.getAccOut()) != 0) {
             //没冻结
@@ -617,20 +617,22 @@ public class TransferServiceImpl implements TransferService {
                     BigDecimal limit = queryAccLimit(transfer.getAccOut());
                     //判断余额
                     BigDecimal balance = queryBalance(transfer.getAccOut());
-                    System.out.println("balance: "+balance+" accOut: "+transfer.getAccOut());
+                    System.out.println("balance: " + balance + " accOut: " + transfer.getAccOut());
                     if (limit.compareTo(transfer.getTransFund()) < 0) {
                         //超过上限
                         map.put("status", 100);
                     } else if (balance.compareTo(transfer.getTransFund()) >= 0) {
                         //设置手续费
                         transfer.setFee(fee);
-                        System.out.println("同行转账,手续费："+fee+"元");
-                        int flag=executeJob(transfer);
-                        if(flag>0){
+                        System.out.println("同行转账,手续费：" + fee + "元");
+                        transfer.setTransType(0);
+                        transfer.setCurrency("CNY");
+                        int flag = executeJob(transfer);
+                        if (flag > 0) {
                             //定时转账
                             map.put("status", 2);
-                        }else{
-                            map.put("status",200);
+                        } else {
+                            map.put("status", 200);
                         }
                     } else {
                         //余额不足
@@ -643,12 +645,12 @@ public class TransferServiceImpl implements TransferService {
                     //查询余额
                     BigDecimal balance = queryBalance(transfer.getAccOut());
                     //计算手续费
-                    if(transfer.getTransFund().compareTo(BigDecimal.valueOf(5000.00))<=0){
-                        fee=BigDecimal.valueOf(0.00);
-                    }else if(transfer.getTransFund().compareTo(BigDecimal.valueOf(10000.00))<=0){
-                        fee=BigDecimal.valueOf(5.00);
-                    }else {
-                        fee=BigDecimal.valueOf(7.50);
+                    if (transfer.getTransFund().compareTo(BigDecimal.valueOf(5000.00)) <= 0) {
+                        fee = BigDecimal.valueOf(0.00);
+                    } else if (transfer.getTransFund().compareTo(BigDecimal.valueOf(10000.00)) <= 0) {
+                        fee = BigDecimal.valueOf(5.00);
+                    } else {
+                        fee = BigDecimal.valueOf(7.50);
                     }
                     //设置手续费
                     transfer.setFee(fee);
@@ -656,10 +658,12 @@ public class TransferServiceImpl implements TransferService {
                         //超过上限
                         map.put("status", 100);
                     } else if (balance.compareTo(transfer.getTransFund().add(fee)) >= 0) {
-                        System.out.println("跨行转账,收取手续费："+fee+"元");
+                        System.out.println("跨行转账,收取手续费：" + fee + "元");
                         //executeJob(transfer);
                         //跨行转账方法
-                        transferMoneyDome(transfer);
+                        transfer.setTransType(1);
+                        transfer.setCurrency("CNY");
+                        executeJob(transfer);
                         map.put("status", 200);
                     } else {
                         //余额不足
@@ -671,16 +675,16 @@ public class TransferServiceImpl implements TransferService {
                 //查询余额
                 BigDecimal balance = queryBalance(transfer.getAccOut());
                 //计算手续费
-                fee=transfer.getTransFund().multiply(BigDecimal.valueOf(0.0008));
-                if(fee.compareTo(BigDecimal.valueOf(40.00))<0){
-                    fee=BigDecimal.valueOf(40.00);
-                }else if(fee.compareTo(BigDecimal.valueOf(208.00))>0){
-                    fee=BigDecimal.valueOf(208.00);
+                fee = transfer.getTransFund().multiply(BigDecimal.valueOf(0.0008));
+                if (fee.compareTo(BigDecimal.valueOf(40.00)) < 0) {
+                    fee = BigDecimal.valueOf(40.00);
+                } else if (fee.compareTo(BigDecimal.valueOf(208.00)) > 0) {
+                    fee = BigDecimal.valueOf(208.00);
                 }
                 //设置手续费
                 transfer.setFee(fee);
                 if (balance.compareTo(transfer.getTransFund()) >= 0) {
-                    System.out.println("跨境转账，收取手续费："+fee+"元");
+                    System.out.println("跨境转账，收取手续费：" + fee + "元");
                     transfer.setTransType(2);
                     transferMoneyOver(transfer);
                     map.put("status", 200);
@@ -693,5 +697,10 @@ public class TransferServiceImpl implements TransferService {
             map.put("status", 0);
         }
         return map;
+    }
+
+    @Override
+    public List<UsualColl> queryCusUsual(String accNo) {
+        return transferDao.queryCusUsual(accNo);
     }
 }

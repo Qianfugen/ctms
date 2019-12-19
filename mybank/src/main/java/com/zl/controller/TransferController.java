@@ -4,6 +4,7 @@ import com.zl.api.CheckUser2API;
 import com.zl.api.CheckUserAPI;
 import com.zl.api.JobAPI;
 import com.zl.pojo.Transfer;
+import com.zl.pojo.UsualColl;
 import com.zl.service.TransferService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,6 +77,21 @@ public class TransferController {
         return map;
     }
 
+    /**
+     * 跨行转账
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/transferMoneyDemo")
+    public Map<String, Integer> transferMoneyDemo(@RequestBody Transfer transfer) {
+        System.out.println("transfer:" + transfer);
+        System.out.println("正在进行跨行转账。。。");
+        transferService.transferMoneyDome(transfer);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("status", 200);
+        return map;
+    }
     /**
      * 跨境转账
      *
@@ -163,8 +180,12 @@ public class TransferController {
      * @return
      */
     @RequestMapping("/toTransfer")
-    public ModelAndView toTransfer() {
+    public ModelAndView toTransfer(HttpSession session) {
         ModelAndView mv = new ModelAndView();
+        String accNo= (String) session.getAttribute("loginAccNo");
+        List<UsualColl> usualColls = transferService.queryCusUsual(accNo);
+        System.out.println(usualColls);
+        mv.addObject("usualColls",usualColls);
         mv.setViewName("transferAccounts");
         return mv;
     }
@@ -180,7 +201,7 @@ public class TransferController {
     @RequestMapping("/checkUser")
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
         Boolean flag=false;
-        if(accNo.matches("622230*")){
+        if(accNo.matches("^622230.*")){
             System.out.println("本行账户");
              flag= transferService.checkUser(userName, accNo);
         }else {
@@ -224,14 +245,14 @@ public class TransferController {
      */
     @ResponseBody
     @RequestMapping("/addUser")
-    public ModelAndView addUser(@RequestParam("accInName") String accInName, @RequestParam("accIn") String accIn,
-                                @RequestParam("accInBank") String accInBank) {
+    public ModelAndView addUser(@RequestParam("accInName") String accInName, @RequestParam("accIn") String accIn,HttpSession session) {
         ModelAndView mv = new ModelAndView();
+        String accNo= (String) session.getAttribute("loginAccNo");
+        List<UsualColl> usualColls = transferService.queryCusUsual(accNo);
         Map<String, String> map = new HashMap<>();
         map.put("accInName", accInName);
         map.put("accIn", accIn);
-        map.put("accInBank", accInBank);
-        System.out.println(accInBank);
+        mv.addObject("usualColls",usualColls);
         mv.addObject("map", map);
         mv.setViewName("transferAccounts");
         return mv;

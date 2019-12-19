@@ -10,7 +10,6 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * 登录认证类
@@ -22,6 +21,11 @@ public class MyRealm extends AuthorizingRealm {
     @Autowired
     private UserService us;
 
+    /**
+     * 权限认证
+     * @param principalCollection
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         return null;

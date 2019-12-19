@@ -48,6 +48,25 @@ public class CustomController {
         mv.setViewName("userDetails");
         return mv;
     }
+    @RequestMapping("/updateCustomPwd")
+    @Transactional
+    public ModelAndView updateCustomPwd(User user){
+        ModelAndView mv=new ModelAndView();
+        System.out.println(user+"2222222222222222222222222222222222222222");
+        int flag=cs.updateCustomPwd(user);
+        System.out.println(flag+"******************修改用户密码***************");
+        if (flag==0){
+            mv.addObject("message","修改失败，请核对信息！");
+        }else {
+            mv.addObject("message","修改成功！");
+        }
+        user=cs.queryCustom(user.getAccount().getAccNo());
+        System.out.println(user+"******************进入用户详情信息界面***************");
+        mv.addObject("user",user);
+        mv.setViewName("userDetails");
+        return mv;
+    }
+
 
     @RequestMapping("/deleteCustom")
     @Transactional
