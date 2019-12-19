@@ -75,7 +75,6 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping("/regUserPwd")
-    @ResponseBody
     public String regUserPwd(@RequestBody User user) {
         System.out.println(user + "---------------------");
         return us.regUserPwd(user.getAccount().getAccNo(), user.getUserPwd());
