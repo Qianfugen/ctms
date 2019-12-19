@@ -46,12 +46,4 @@ public interface UserService {
      * 注销登录
      */
     void logout();
-
-    /**
-     * 提供加密密码的方法
-     * @param accNo
-     * @param password
-     * @return
-     */
-    String regUserPwd(String accNo, String password);
 }

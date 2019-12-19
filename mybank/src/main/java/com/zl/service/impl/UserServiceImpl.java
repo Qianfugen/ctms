@@ -61,18 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 提供加密密码的方法
-     * @param accNo
-     * @param password
-     * @return
-     */
-    @Override
-    public String regUserPwd(String accNo, String password) {
-        EncryptionUtil encryptionUtil = new EncryptionUtil();
-        Map<String, String> encrypt = encryptionUtil.encryption(accNo, password);
-        return encrypt.get("password");
-    }
-    /**
      * 根据卡号查询用户详细信息
      *
      * @param accNo
