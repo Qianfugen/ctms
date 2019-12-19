@@ -31,6 +31,13 @@ public interface ICustomDao {
     int updateUser(User user);
 
     /**
+     * 修改用户登入密码
+     * @param user
+     * @return
+     */
+    int updateCustomPwd(User user);
+
+    /**
      * 根据用户ID修改用户卡信息
      * @param user
      * @return
