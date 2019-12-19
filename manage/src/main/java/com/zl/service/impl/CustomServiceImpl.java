@@ -4,8 +4,6 @@ import com.zl.dao.ICustomDao;
 import com.zl.pojo.*;
 import com.zl.service.ICustomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +16,6 @@ public class CustomServiceImpl implements ICustomService {
 
     @Autowired
     private ICustomDao cd;
-    @Autowired
-    @Qualifier("redisTemplate")
-    private RedisTemplate rt;
 
     @Override
     public List<User> queryAllCustom(FenYe fenYe) {

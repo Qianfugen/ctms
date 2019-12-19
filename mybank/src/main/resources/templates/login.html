@@ -30,7 +30,7 @@
                     }
 
                 } else {
-                    $("#nameSpan").html("请输入15~19位卡号或者11位手机号码").css({"color": "red", "font-size": "5"});
+                    $("#nameSpan").html("请输入正确卡号或手机号").css({"color": "red", "font-size": "5"});
                     $("#phoneDiv").css("display", "none");
                 }
             })
@@ -105,14 +105,14 @@
             <div class="col-lg-10"></div>
             <div id="sub" class="col-lg-10">
                 &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12">登录</button>
-                <p>
-                    &nbsp;&nbsp;<button type="submit" class="btn btn-success col-lg-12"><a
-                                href="/user/toRegister">注册</a>
-                    </button>
+                <div>&nbsp;</div>
+                <button class="btn btn-success col-lg-12">
+                    <a href="/user/toRegister">注册</a></button>
             </div>
         </div>
     </div>
 </form>
+
 <div id="err" style="display: none">${error!''}</div>
 </body>
 </html>

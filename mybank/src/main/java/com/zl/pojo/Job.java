@@ -33,6 +33,19 @@ public class Job implements Serializable {
      */
     private String currency;
 
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
+    }
+
+    /**
+     * 手续费
+     */
+    private BigDecimal fee;
+
     public Long getId() {
         return id;
     }
@@ -88,8 +101,9 @@ public class Job implements Serializable {
                 ", cron='" + cron + '\'' +
                 ", accIn='" + accIn + '\'' +
                 ", accOut='" + accOut + '\'' +
-                ", transFund='" + transFund + '\'' +
+                ", transFund=" + transFund +
                 ", currency='" + currency + '\'' +
+                ", fee=" + fee +
                 '}';
     }
 }

@@ -92,6 +92,7 @@ public class TransferServiceImpl implements TransferService {
             //设置为CNY交易，境外转账从页面获取，这里仅做测试
             job.setCurrency("CNY");
             job.setTransFund(transfer.getTransFund());
+            job.setFee(transfer.getFee());
             job.setCron(cron);
 
             //调用定时任务模块
@@ -291,6 +292,7 @@ public class TransferServiceImpl implements TransferService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @Override
     public void transferMoneyDome(Transfer transfer) {
+        //调用api
         transfer.setAccInBank("瑞士银行");
         transfer.setAccInName("张三");
 
@@ -299,13 +301,13 @@ public class TransferServiceImpl implements TransferService {
 
         //判断余额是否充足
         if (queryBalance(transfer.getAccOut()).compareTo(transfer.getTransFund()) > 0) {
-            //添加事务管理
-            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-            def.setName("SomeTxName");
-            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-            //设置回滚点
-            TransactionStatus status = transactionManager.getTransaction(def);
-            try {
+//            //添加事务管理
+//            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+//            def.setName("SomeTxName");
+//            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+//            //设置回滚点
+//            TransactionStatus status = transactionManager.getTransaction(def);
+//            try {
                 //生成交易流水号,32位随机不重复
                 String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
                 transfer.setDealNo(dealNo);
@@ -325,6 +327,7 @@ public class TransferServiceImpl implements TransferService {
                 Map<String, String> mapOut = queryBankAndUserName(accOut);
                 transfer.setAccOutName(mapOut.get("userName"));
                 transfer.setAccOutBank(mapOut.get("bankName"));
+            System.out.println("跨行转账transfer:"+transfer);
 
                 /**
                  * 把交易记录放到Map中准备发送到消息队列
@@ -371,11 +374,11 @@ public class TransferServiceImpl implements TransferService {
                 System.out.println("跨行转账处理中，发送消息到国内其他银行。。。。");
 //                TransactionStatus status2 = transactionManager.getTransaction(def);
 //                transactionManager.commit(status2);
-            } catch (Exception e) {
-                //事务回滚
-                transactionManager.rollback(status);
-                e.printStackTrace();
-            }
+//            } catch (Exception e) {
+//                //事务回滚
+//                transactionManager.rollback(status);
+//                e.printStackTrace();
+//            }
         } else {
             //余额不足。。。。
         }
@@ -668,8 +671,13 @@ public class TransferServiceImpl implements TransferService {
                         //跨行转账方法
                         transfer.setTransType(1);
                         transfer.setCurrency("CNY");
-                        executeJob(transfer);
-                        map.put("status", 200);
+                        int flag = executeJob(transfer);
+                        if (flag > 0) {
+                            //定时转账
+                            map.put("status", 2);
+                        } else {
+                            map.put("status", 200);
+                        }
                     } else {
                         //余额不足
                         map.put("status", 400);
