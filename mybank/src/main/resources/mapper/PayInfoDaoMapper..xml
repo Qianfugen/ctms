@@ -18,7 +18,7 @@ namespace:必须是对应接口的全路径
 
     <!--    发送催款消息通知-->
     <insert id="addPayInfo" parameterType="payInfo">
-        insert into T_PAYINFO values (#{creditorAcc},#{creditorName},#{fund},#{infoTime},#{debtor},#{debtorName})
+        insert into T_PAYINFO(creditor_acc, creditor_name, fund, info_time, debtor, debtor_name) values (#{creditorAcc},#{creditorName},#{fund},#{infoTime},#{debtor},#{debtorName})
     </insert>
 
     <!--    删除消息通知-->
