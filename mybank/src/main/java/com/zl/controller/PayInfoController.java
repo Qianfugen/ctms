@@ -9,9 +9,12 @@ import com.zl.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +52,6 @@ public class PayInfoController {
         transfer.setTransFund(payInfo.getFund());
         transfer.setKind("收款转账");
         ts.transferMoney(transfer);
-
-        System.out.println("执行成功");
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
         mv.addObject("map",map);
@@ -124,5 +125,31 @@ public class PayInfoController {
         mv.addObject("payInfo", payInfo);
         mv.setViewName("message03");
         return mv;
+    }
+
+    /**
+     * 验证余额是否充足
+     * @return
+     */
+    @RequestMapping("/checkFund")
+    @ResponseBody
+    public Map<String,Object> checkFund(HttpSession session,@RequestParam("fund") BigDecimal fund){
+        String loginAccNo = (String) session.getAttribute("loginAccNo");
+        BigDecimal balance = ts.queryBalance(loginAccNo);
+        System.out.println("余额： "+balance);
+        Map<String,Object> result = new HashMap<>();
+        /**
+         * 比较余额和转账金额
+         *  a = -1,表示balance小于fund；
+         *  a = 0,表示balance等于fund；
+         *  a = 1,表示balance大于fund；
+         */
+        int a = balance.compareTo(fund);
+        if(a==-1){
+            result.put("flag",false);
+        }else {
+            result.put("flag",true);
+        }
+      return result;
     }
 }

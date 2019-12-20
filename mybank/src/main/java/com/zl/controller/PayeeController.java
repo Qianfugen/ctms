@@ -4,15 +4,21 @@ package com.zl.controller;
 import com.zl.pojo.*;
 import com.zl.service.PayInfoService;
 import com.zl.service.PayeeService;
+import com.zl.service.TransferService;
 import com.zl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 主动收款的控制层
@@ -30,6 +36,7 @@ public class PayeeController {
     private UserService us;
     @Autowired
     private PayInfoService pis;
+
 
 
     /**
@@ -84,7 +91,11 @@ public class PayeeController {
             payInfo.setInfoTime(new Date());
             payInfo.setCreditorName(loginUser.getUserName());
             payInfo.setDebtorName(us.queryCustom(debtor[i]).getUserName());
-            index = pis.addPayInfo(payInfo);
+            if(pis.queryPayInfo(payInfo)==null){
+                index = pis.addPayInfo(payInfo);
+            }else{
+                System.out.println("有重复催款通知发送");
+            }
         }
 
         if (index != 0) {

@@ -6,9 +6,36 @@
     <link href="/css/ks.css" rel="stylesheet" type="text/css"/>
     <link href="/js/bootstrap.css" type="text/css" rel="stylesheet"/>
     <link href="/css/Customer.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery.js"></script>
     <script src="/js/bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript">
-
+        $(function () {
+            $.ajax({
+                //该ajax发送请求到那个地址处理
+                url: "/payInfo/checkFund",
+                //请求方式
+                type: "post",
+                //预计服务器返回的数据格式
+                dataType: "json",
+                //发送的数据(姓名和卡号)
+                data: {"fund": $("#fund").val()},
+                /*
+                        响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
+                 */
+                success: function (data) {
+                    if (data.flag) {
+                        $("#fundSpan").html("可用").css({"color": "green", "font-size": "10"});
+                        $("#sub").attr("disabled", false);
+                    } else {
+                        $("#fundSpan").html("余额不足").css({"color": "red", "font-size": "10"});
+                    }
+                },
+                //响应失败以后执行的回调函数
+                error: function () {
+                    alert("失败....");
+                }
+            })
+        })
     </script>
 </head>
 <body>
@@ -22,7 +49,7 @@
                 </a>
             </div>
             <div class="topxx">
-                <h1>xxx，欢迎您！</h1>
+                <h1>${loginUser.userName!''}，欢迎您！</h1>
                 <a href="../../User/Account/ChangePasswd.html">密码修改</a>
                 <a href="/user/logout">安全退出</a>
             </div>
@@ -83,13 +110,15 @@
                     <table style="border-collapse:separate; border-spacing:0px 10px;">
                         <tr>
                             <td>收款人姓名 ：</td>
-                            <td><input id="name" type="text" readonly="readonly" name="creditorName" value="${payInfo.creditorName}"
+                            <td><input id="name" type="text" readonly="readonly" name="creditorName"
+                                       value="${payInfo.creditorName}"
                                        style="width: 300px;"/></td>
                         </tr>
 
                         <tr>
                             <td>收款卡号 ：</td>
-                            <td><input id="card" type="text" readonly="readonly" name="creditorAcc" value="${payInfo.creditorAcc}"
+                            <td><input id="card" type="text" readonly="readonly" name="creditorAcc"
+                                       value="${payInfo.creditorAcc}"
                                        style="width: 300px;"/></td>
                         </tr>
 
@@ -103,7 +132,9 @@
                         </tr>
                         <tr>
                             <td>汇款金额 ：</td>
-                            <td><input type="text" style="width: 300px;" name="fund" value="${payInfo.fund}"/></td>
+                            <td><input readonly="readonly" type="text" style="width: 300px;" name="fund" id="fund"
+                                       value="${payInfo.fund}"/>
+                                <span id="fundSpan"></span></td>
                         </tr>
                         <tr>
                             <td>汇款时间 ：</td>
@@ -116,7 +147,7 @@
 
                         <tr align="center">
                             <td></td>
-                            <td><input id="sub" type="submit" value="确认转账"/></td>
+                            <td><input id="sub" type="submit" value="确认转账" disabled="disabled"/></td>
                         </tr>
                     </table>
                 </form>
@@ -127,5 +158,6 @@
 
     </div>
 </div>
+
 </body>
 </html>

@@ -16,6 +16,9 @@
             $("#notAllBox").click(function () {
                 $("input").prop("checked", false);
             })
+            $("#btn").click(function () {
+                alert("执行成功");
+            })
         })
     </script>
 </head>
@@ -130,7 +133,7 @@
                         <a href="/payee/activeCollection?query.debtor=<#if paging.query??>${paging.query.debtor!''}</#if>&query.debtorName=<#if paging.query??>${paging.query.debtorName!''}</#if>&currentPage=${paging.pages}">尾页</a>
                         &nbsp;当前第${paging.currentPage}页&nbsp;&nbsp;共${paging.pages}页
 
-                        <h3><input type="submit" value="批量收款"/>
+                        <h3><input type="submit" value="批量收款" id="btn"/></h3>
                     </div>
                 </form>
             </div>
