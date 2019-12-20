@@ -31,6 +31,12 @@ public interface UsualCollDao {
 //    List<UsualColl> queryOne(String mainAcc);
     List<UsualColl> queryUsualColl(String mainAcc);
 
+    /**
+     * 查询常用收款人是否已存在
+     * @return
+     */
+    public int queryUsualByAccIn(UsualColl usualColl);
+
 
 
 }

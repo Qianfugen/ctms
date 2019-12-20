@@ -31,12 +31,12 @@ public class UsualCollController {
     private UserService us;
 
     @RequestMapping("/deleteUsuslColl")
-    public ModelAndView deleteUsuslColl(@RequestParam("accIn") String accIn){
-        ModelAndView mv=new ModelAndView();
-        int flag=ucs.deleteUsualColl(accIn);
-        if(flag>0){
+    public ModelAndView deleteUsuslColl(@RequestParam("accIn") String accIn) {
+        ModelAndView mv = new ModelAndView();
+        int flag = ucs.deleteUsualColl(accIn);
+        if (flag > 0) {
             mv.setViewName("queryUsualCollByFy");
-        }else {
+        } else {
             System.out.println("错误");
         }
         return mv;
@@ -44,18 +44,18 @@ public class UsualCollController {
 
 
     @RequestMapping("/queryUsualCollByFy")
-    public ModelAndView queryUsualCollByFy(UFenYe uFenYe, HttpSession session ){
-        ModelAndView mv=new ModelAndView();
-        String loginAccNo= (String) session.getAttribute("loginAccNo");
-        if (uFenYe.getUquery()!=null){
+    public ModelAndView queryUsualCollByFy(UFenYe uFenYe, HttpSession session) {
+        ModelAndView mv = new ModelAndView();
+        String loginAccNo = (String) session.getAttribute("loginAccNo");
+        if (uFenYe.getUquery() != null) {
             uFenYe.getUquery().setqMainAcc(loginAccNo);
-        }else{
-            Uquery uquery=new Uquery();
+        } else {
+            Uquery uquery = new Uquery();
             uquery.setqMainAcc(loginAccNo);
             uFenYe.setUquery(uquery);
         }
         List<UsualColl> usualColls = ucs.queryUsualCollByFy(uFenYe);
-        mv.addObject("usualColls",usualColls);
+        mv.addObject("usualColls", usualColls);
         int flag = 0;
         for (UsualColl u :
                 usualColls) {
@@ -64,43 +64,43 @@ public class UsualCollController {
 
         }
         System.out.println(flag);
-        mv.addObject("uFenYe",uFenYe);
+        mv.addObject("uFenYe", uFenYe);
         mv.setViewName("payeeManagement");
-        System.out.println(uFenYe+"lllll");
+        System.out.println(uFenYe + "lllll");
         return mv;
     }
 
 
     @RequestMapping("toAdd")
-    public String toAdd(){
+    public String toAdd() {
         return "payeeManagement01";
     }
 
     @RequestMapping("/addUsualColl")
-    public ModelAndView addUsualColl(@RequestParam("accIn")String accIn, @RequestParam("accInName")String accInName, @RequestParam("transFund") BigDecimal transFund, HttpSession ss){
-        ModelAndView mv=new ModelAndView();
-        UsualColl uc=new UsualColl();
-        String loginAccNo= (String) ss.getAttribute("loginAccNo");
-        System.out.println(loginAccNo+"***********************************");
+    public ModelAndView addUsualColl(@RequestParam("accIn") String accIn, @RequestParam("accInName") String accInName, @RequestParam("transFund") BigDecimal transFund, HttpSession ss) {
+        ModelAndView mv = new ModelAndView();
+        UsualColl uc = new UsualColl();
+        String loginAccNo = (String) ss.getAttribute("loginAccNo");
+        System.out.println(loginAccNo + "***********************************");
         uc.setAccIn(accIn);
         uc.setMainAcc(loginAccNo);
         uc.setAccInName(accInName);
         uc.setTransFund(transFund);
-        int flag=ucs.addUsualColl(uc);
+        int flag = ucs.addUsualColl(uc);
         mv.setViewName("queryUsualCollByFy");
         return mv;
     }
 
     @RequestMapping("/batchTransfer")
-    public ModelAndView batchTransfer(String[] fkcheck,String[] accIn,BigDecimal[] transFund,HttpSession session){
+    public ModelAndView batchTransfer(String[] fkcheck, String[] accIn, BigDecimal[] transFund, HttpSession session) {
         ModelAndView mv = new ModelAndView();
-        List<Transfer> transferList=new ArrayList<Transfer>();
+        List<Transfer> transferList = new ArrayList<Transfer>();
         String loginAccNo = (String) session.getAttribute("loginAccNo");
-        System.out.println(fkcheck.length+">>"+accIn.length+"hh"+transFund.length);
+        System.out.println(fkcheck.length + ">>" + accIn.length + "hh" + transFund.length);
 
-        for (int i = 0; i <fkcheck.length; i++) {
+        for (int i = 0; i < fkcheck.length; i++) {
             for (int j = 0; j < accIn.length; j++) {
-                if (fkcheck[i].equals(accIn[j])){
+                if (fkcheck[i].equals(accIn[j])) {
                     Transfer transfer = new Transfer();
                     transfer.setAccIn(accIn[j]);
                     transfer.setAccOut(loginAccNo);
@@ -109,31 +109,41 @@ public class UsualCollController {
                 }
             }
         }
-        for (Transfer t :transferList) {
+        for (Transfer t : transferList) {
             ts.transferMoney(t);
         }
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
-        mv.addObject("map",map);
+        mv.addObject("map", map);
         mv.setViewName("transferAccountResult");
         return mv;
     }
 
     /**
      * 验证卡号是否和姓名一致
+     *
      * @param accInName
-     * @param accIn
+     * @param accIn     flag 0 非法用户 1 已存在收款人列表 2 合法用户，可添加
      * @return
      */
     @RequestMapping("/regName")
     @ResponseBody
-    public Map<String,Object> regName(String accInName,String accIn){
-        Map<String,Object> map = new HashMap<>();
+    public Map<String, Object> regName(String accInName, String accIn, HttpSession session) {
+        Map<String, Object> map = new HashMap<>();
         User user = us.queryCustom(accIn);
-        if(user.getUserName().equals(accInName)){
-            map.put("flag",true);
-        }else{
-            map.put("flag",false);
+        if (user.getUserName().equals(accInName)) {
+            //合法用户
+            String mainAcc = (String) session.getAttribute("loginAccNo");
+            int count = ucs.queryUsualByAccIn(mainAcc, accIn);
+            if (count > 0) {
+                //已存在收款人列表，不可添加
+                map.put("flag", 1);
+            } else {
+                map.put("flag", 2);
+            }
+        } else {
+            //非法用户
+            map.put("flag", 0);
         }
         return map;
     }

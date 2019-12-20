@@ -25,4 +25,10 @@ public interface UsualCollService {
 //    int queryUserByAccNo(UsualColl usualColl);
 
     List<UsualColl> queryUsualColl(String mainAcc);
+
+    /**
+     * 查询常用收款人是否已存在
+     * @return
+     */
+    public int queryUsualByAccIn(String mainAcc,String accIn);
 }

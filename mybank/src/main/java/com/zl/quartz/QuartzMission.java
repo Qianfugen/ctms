@@ -36,7 +36,7 @@ public class QuartzMission {
     /**
      * 每天中午12点重新发送消息队列
      */
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0/30 * * * * ?")
     public void autoSend() {
         transferService.autoSend();
     }

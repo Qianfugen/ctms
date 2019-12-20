@@ -26,11 +26,10 @@
                         响应成功以后的回调函数,参数的data用来接收后台传递过来的数据
                  */
 				success: function (data) {
-					if (data.flag) {
-						alert("收款人已存在！！！");
-					} else {
+					if (data.flag==0) {
 						alert("收款人或者卡号有误！！！");
-						;
+					} else if(data.flag==1) {
+						alert("已存在该收款人！！！");
 					}
 				},
 				//响应失败以后执行的回调函数

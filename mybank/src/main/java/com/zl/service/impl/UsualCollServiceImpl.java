@@ -36,11 +36,6 @@ public class UsualCollServiceImpl implements UsualCollService {
         return uc.queryUsualCollByaccIn(accIn);
     }
 
-    //    @Override
-//    public List<UsualColl> queryAllUsualColl(String accNo) {
-//        return uc.queryAllUsualColl(accNo);
-//    }
-//
     @Override
     public List<UsualColl> queryUsualCollByFy(UFenYe uFenYe) {
 
@@ -68,13 +63,13 @@ public class UsualCollServiceImpl implements UsualCollService {
         return usualColls;
     }
 
-//    @Override
-//    public UsualColl queryUsualColl(String accIn) {
-//        return  uc.queryUsualColl(accIn);
-//    }
-//
-//    @Override
-//    public int queryUserByAccNo(UsualColl usualColl) {
-//        return uc.queryUserByAccNo(usualColl);
-//    }
+
+
+    @Override
+    public int queryUsualByAccIn(String mainAcc,String accIn) {
+        UsualColl usualColl=new UsualColl();
+        usualColl.setMainAcc(mainAcc);
+        usualColl.setAccIn(accIn);
+        return uc.queryUsualByAccIn(usualColl);
+    }
 }

@@ -68,7 +68,7 @@ public class Consumer {
                     Map returnMessage = new HashMap();
                     map.put("dealNo", transfer.getDealNo());
                     map.put("transStatus", 1);
-                    rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+//                    rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                     rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_D, map);
                 } else {
                     channel.basicNack(message.getMessageProperties().getDeliveryTag(),true,true);
@@ -87,7 +87,7 @@ public class Consumer {
                 Map returnMessage = new HashMap();
                 map.put("dealNo", dealNo);
                 map.put("transStatus", 1);
-                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+//                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_D, map);
             } catch (IOException e) {
                 e.printStackTrace();

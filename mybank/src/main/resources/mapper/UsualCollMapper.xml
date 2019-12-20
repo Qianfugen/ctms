@@ -57,4 +57,7 @@
     <select id="queryUsualColl" parameterType="string" resultMap="usualColl">
     　select * from T_USUALCOLL where MAIN_ACC=#{mainAcc}
     </select>
+    <select id="queryUsualByAccIn" parameterType="usualColl" resultType="int">
+        select count(1) from T_USUALCOLL where MAIN_ACC=#{mainAcc} and ACC_IN=#{accIn}
+    </select>
 </mapper>
