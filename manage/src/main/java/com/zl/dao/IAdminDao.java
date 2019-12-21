@@ -9,6 +9,7 @@ public interface IAdminDao {
 
     /**
      * 验证管理员登入
+     *
      * @param admin
      * @return
      */
@@ -16,6 +17,7 @@ public interface IAdminDao {
 
     /**
      * 修改管理员密码
+     *
      * @param admin
      * @return
      */

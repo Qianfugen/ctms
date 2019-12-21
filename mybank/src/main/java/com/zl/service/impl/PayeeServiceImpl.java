@@ -53,7 +53,7 @@ public class PayeeServiceImpl implements PayeeService {
             p.setCreditorName(u1.getUserName());
             User u2 = ud.queryCustom(p.getDebtor());
             p.setDebtorName(u2.getUserName());
-            if(p.getCreditorName().equals("") || p.getCreditorName().equals("")){
+            if (p.getCreditorName().equals("") || p.getCreditorName().equals("")) {
                 pd.updatePayee(p);
             }
         }

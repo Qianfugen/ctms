@@ -19,6 +19,7 @@ public class UsualCollServiceImpl implements UsualCollService {
     public List<UsualColl> queryUsualColl(String mainAcc) {
         return uc.queryUsualColl(mainAcc);
     }
+
     @Override
     public int deleteUsualColl(String accIn) {
         return uc.deleteUsualColl(accIn);
@@ -27,7 +28,7 @@ public class UsualCollServiceImpl implements UsualCollService {
     @Override
     public int addUsualColl(UsualColl usualColl) {
         UsualColl usualColl1 = uc.queryUsualCollByaccIn(usualColl.getAccIn());
-            return uc.addUsualColl(usualColl);
+        return uc.addUsualColl(usualColl);
 
     }
 
@@ -47,27 +48,26 @@ public class UsualCollServiceImpl implements UsualCollService {
          */
         //设置当前页码
         if (uFenYe.getPage() != null) {
-            if (uFenYe.getPage()  <= 0) {
+            if (uFenYe.getPage() <= 0) {
                 uFenYe.setPage(1);
             }
             //如果大于最大页数
-            if (uFenYe.getPage()  > uFenYe.getPageCount()) {
+            if (uFenYe.getPage() > uFenYe.getPageCount()) {
                 uFenYe.setPage(uFenYe.getPageCount());
             }
         } else {
             uFenYe.setPage(1);
         }
-        System.out.println("總tiao數"+uFenYe.getRowsCount());
-        System.out.println("總頁ma數"+uFenYe.getPageCount());
+        System.out.println("總tiao數" + uFenYe.getRowsCount());
+        System.out.println("總頁ma數" + uFenYe.getPageCount());
         List<UsualColl> usualColls = uc.queryUsualCollByFy(uFenYe);
         return usualColls;
     }
 
 
-
     @Override
-    public int queryUsualByAccIn(String mainAcc,String accIn) {
-        UsualColl usualColl=new UsualColl();
+    public int queryUsualByAccIn(String mainAcc, String accIn) {
+        UsualColl usualColl = new UsualColl();
         usualColl.setMainAcc(mainAcc);
         usualColl.setAccIn(accIn);
         return uc.queryUsualByAccIn(usualColl);

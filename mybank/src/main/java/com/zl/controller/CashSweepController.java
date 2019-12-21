@@ -30,37 +30,37 @@ public class CashSweepController {
 
     @RequestMapping("/queryMainAccCollStatus")
     @ResponseBody
-    public Map<String,Object> queryMainAccCollStatus(@RequestParam("mainAcc") String mainAcc,@RequestParam("username") String username) {
-        Map<String, Object> result=new HashMap<>();
+    public Map<String, Object> queryMainAccCollStatus(@RequestParam("mainAcc") String mainAcc, @RequestParam("username") String username) {
+        Map<String, Object> result = new HashMap<>();
         //查询账号
         Account account = cashSweepService.queryAccount(mainAcc);
         //如果账号不存在
-        if(account==null){
-            result.put("flag",false);
-            result.put("error","账号不存在");
+        if (account == null) {
+            result.put("flag", false);
+            result.put("error", "账号不存在");
             //直接返回
             return result;
         }
         // 账号存在，判断账号的签约状态
-        String collStatus=account.getCollStatus();
+        String collStatus = account.getCollStatus();
         //如果账号签约状态为已签约，校验失败
-        if("已签约".equals(collStatus)){
+        if ("已签约".equals(collStatus)) {
             //不可签约
-            result.put("flag",false);
-            result.put("error","该账号不可签约");
+            result.put("flag", false);
+            result.put("error", "该账号不可签约");
             return result;
         }
 
         //如果可以签约，校验用户名
         Map<String, String> message = transferService.queryBankAndUserName(mainAcc);
-        if(username.equals(message.get("userName"))){
+        if (username.equals(message.get("userName"))) {
             //名字通过校验,返回账号的开户行
-            result.put("flag",true);
-            result.put("bankName",message.get("bankName"));
-        }else {
+            result.put("flag", true);
+            result.put("bankName", message.get("bankName"));
+        } else {
             //用户名与卡号不对应
-            result.put("flag",false);
-            result.put("error","用户名与卡号不对应");
+            result.put("flag", false);
+            result.put("error", "用户名与卡号不对应");
             return result;
         }
         return result;
@@ -83,7 +83,7 @@ public class CashSweepController {
 
         //如果签约状态为"未签约"或者null
         if (collStatus == null || "".equals(collStatus) || collStatus1.equals(collStatus)) {
-            mv.addObject("message","您还没有签约资金归集，请先签约！");
+            mv.addObject("message", "您还没有签约资金归集，请先签约！");
             mv.setViewName("fundCollectionl01");
         }
 
@@ -105,7 +105,7 @@ public class CashSweepController {
         ModelAndView mv = new ModelAndView();
 
         //获取当前登录的用户
-        User loginUser= (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
         Account loginAccount = loginUser.getAccount();
 
         //调用签约方法
@@ -131,7 +131,7 @@ public class CashSweepController {
         ModelAndView mv = new ModelAndView();
 
         //获取当前登录的用户
-        User loginUser= (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
         Account loginAccount = loginUser.getAccount();
 
         //解除签约是否成功的标志
@@ -179,9 +179,9 @@ public class CashSweepController {
 
     @RequestMapping("/beforeUpdate")
     @ResponseBody
-    public ModelAndView beforeUpdate(Coll coll){
-        ModelAndView mv=new ModelAndView();
-        mv.addObject("coll",coll);
+    public ModelAndView beforeUpdate(Coll coll) {
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("coll", coll);
         mv.setViewName("fundCollectionl03");
         return mv;
     }
@@ -214,7 +214,7 @@ public class CashSweepController {
         ModelAndView mv = new ModelAndView();
 
         //获取当前登录的用户
-        User loginUser= (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
         Account loginAccount = loginUser.getAccount();
 
         //查询当前账号（子账号）的归集签约信息
@@ -227,25 +227,25 @@ public class CashSweepController {
 
     @RequestMapping("/queryMainCollByFenYe")
     @ResponseBody
-    public ModelAndView queryMainCollByFenYe(HttpSession session,FenYe fenYe) {
+    public ModelAndView queryMainCollByFenYe(HttpSession session, FenYe fenYe) {
         ModelAndView mv = new ModelAndView();
 
         //获取当前登录的用户
-        User loginUser= (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
         Account loginAccount = loginUser.getAccount();
 
-        if(fenYe.getQuery()==null){
-            Query query=new Query();
+        if (fenYe.getQuery() == null) {
+            Query query = new Query();
             query.setqMainAccNo(loginAccount.getAccNo());
             fenYe.setQuery(query);
-        }else {
+        } else {
             fenYe.getQuery().setqMainAccNo(loginAccount.getAccNo());
         }
         //查询当前账号（主账号）的归集签约信息
         List<Coll> colls = cashSweepService.queryMainCollByFenYe(fenYe);
 
         mv.addObject("colls", colls);
-        mv.addObject("fenYe",fenYe);
+        mv.addObject("fenYe", fenYe);
         mv.setViewName("fundCollectionl04");
         return mv;
     }
@@ -259,10 +259,10 @@ public class CashSweepController {
         List<Transfer> trans = cashSweepService.queryTransfersByFenYe(fenYe);
 
         //如果没有查询到相关内容，显示“没有相关归集记录”；否则显示相关信息
-        if(trans==null||trans.size()==0){
-            mv.addObject("message","没有相关归集记录！");
-        }else {
-            mv.addObject("fenYe",fenYe);
+        if (trans == null || trans.size() == 0) {
+            mv.addObject("message", "没有相关归集记录！");
+        } else {
+            mv.addObject("fenYe", fenYe);
             mv.addObject("trans", trans);
         }
         mv.setViewName("fundCollectionl05");

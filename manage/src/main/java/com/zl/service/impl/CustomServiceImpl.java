@@ -22,18 +22,18 @@ public class CustomServiceImpl implements ICustomService {
 
     @Override
     public List<User> queryAllCustom(FenYe fenYe) {
-        int flag=cd.queryByLike(fenYe.getQuery());
-        if (flag<2){
-            flag=1;
+        int flag = cd.queryByLike(fenYe.getQuery());
+        if (flag < 2) {
+            flag = 1;
         }
         fenYe.setRowCount(flag);
-        if (fenYe.getPage()!=null){
-            if (fenYe.getPage()<1){
+        if (fenYe.getPage() != null) {
+            if (fenYe.getPage() < 1) {
                 fenYe.setPage(1);
-            }else if (fenYe.getPage()>fenYe.getPageCount()){
+            } else if (fenYe.getPage() > fenYe.getPageCount()) {
                 fenYe.setPage(fenYe.getPageCount());
             }
-        }else {
+        } else {
             fenYe.setPage(1);
         }
         return cd.queryAllCustom(fenYe);
@@ -41,11 +41,11 @@ public class CustomServiceImpl implements ICustomService {
 
     @Override
     public int updateCustom(User user) {
-        int flag=0;
-        int a=cd.updateUser(user);
-        int b=cd.updateAccount(user);
-        if (a==1&&b==1){
-            flag=1;
+        int flag = 0;
+        int a = cd.updateUser(user);
+        int b = cd.updateAccount(user);
+        if (a == 1 && b == 1) {
+            flag = 1;
         }
         return flag;
     }
@@ -77,16 +77,16 @@ public class CustomServiceImpl implements ICustomService {
     @Override
     public List<Transfer> queryAllTransfer(FenYe fenYe) {
         fenYe.setRowCount(cd.queryTransByLike(fenYe.getQuery()));
-        if (fenYe.getRowCount()==0){
+        if (fenYe.getRowCount() == 0) {
             return null;
         }
-        if (fenYe.getPage()!=null){
-            if (fenYe.getPage()<1){
+        if (fenYe.getPage() != null) {
+            if (fenYe.getPage() < 1) {
                 fenYe.setPage(1);
-            }else if (fenYe.getPage()>fenYe.getPageCount()){
+            } else if (fenYe.getPage() > fenYe.getPageCount()) {
                 fenYe.setPage(fenYe.getPageCount());
             }
-        }else {
+        } else {
             fenYe.setPage(1);
         }
 
@@ -102,16 +102,16 @@ public class CustomServiceImpl implements ICustomService {
     @Override
     public List<Login> queryLoginByAccNo(FenYe fenYe) {
         fenYe.setRowCount(cd.queryLoginByLike(fenYe.getQuery()));
-        if (fenYe.getRowCount()==0){
+        if (fenYe.getRowCount() == 0) {
             return null;
         }
-        if (fenYe.getPage()!=null){
-            if (fenYe.getPage()<1){
+        if (fenYe.getPage() != null) {
+            if (fenYe.getPage() < 1) {
                 fenYe.setPage(1);
-            }else if (fenYe.getPage()>fenYe.getPageCount()){
+            } else if (fenYe.getPage() > fenYe.getPageCount()) {
                 fenYe.setPage(fenYe.getPageCount());
             }
-        }else {
+        } else {
             fenYe.setPage(1);
         }
         return cd.queryLoginByAccNo(fenYe);

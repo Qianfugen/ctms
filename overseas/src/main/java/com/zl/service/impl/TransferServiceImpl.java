@@ -90,7 +90,7 @@ public class TransferServiceImpl implements TransferService {
     public Boolean checkUser(String userName, String accNo) {
         User user = new User();
         user.setUserName(userName);
-        Account account=new Account();
+        Account account = new Account();
         account.setAccNo(accNo);
         user.setAccount(account);
         System.out.println(user);
@@ -124,7 +124,7 @@ public class TransferServiceImpl implements TransferService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public int processMessage(Transfer transfer) {
         System.out.println("开始处理消息");
-        int flag=-1;
+        int flag = -1;
         //添加事务管理
 //        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 //        def.setName("SomeTxName");
@@ -132,18 +132,18 @@ public class TransferServiceImpl implements TransferService {
 //        //设置回滚点
 //        TransactionStatus status = transactionManager.getTransaction(def);
         System.out.println(transfer);
-        int addOK=transferMoney(transfer);
+        int addOK = transferMoney(transfer);
         System.out.println(addOK);
         try {
-            System.out.println("addOK:"+addOK);
-            if(addOK>0){
+            System.out.println("addOK:" + addOK);
+            if (addOK > 0) {
                 System.out.println("加钱成功！");
                 transfer.setTransStatus("1");
                 writeDeal(transfer);
                 System.out.println("写入记录成功！");
-                flag=1;
+                flag = 1;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 //            transactionManager.rollback(status);
         }

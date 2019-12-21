@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zl.dao.ICustomDao">
-<!--    登入记录表字段映射文件-->
+    <!--    登入记录表字段映射文件-->
     <resultMap id="allLogin" type="com.zl.pojo.Login">
         <result property="accNO" column="ACC_NO"></result>
         <result property="loginTime" column="LOGIN_TIME"></result>
@@ -14,7 +14,7 @@
         <result property="loginOdd" column="LOGIN_ODD"></result>
         <result property="hostName" column="HOSTNAME"></result>
     </resultMap>
-<!--    交易记录表字段映射文件-->
+    <!--    交易记录表字段映射文件-->
     <resultMap id="allTransFor" type="com.zl.pojo.Transfer">
         <id column="DEAL_NO" property="dealNo"></id>
         <result property="dealDate" column="DEAL_DATE"></result>
@@ -30,7 +30,7 @@
         <result property="transFund" column="TRANS_FUND"></result>
         <result property="kind" column="KIND"></result>
     </resultMap>
-<!--    客户信息和银行卡信息字段映射文件-->
+    <!--    客户信息和银行卡信息字段映射文件-->
     <resultMap id="userCustom" type="com.zl.pojo.User">
         <id property="userId" column="USER_ID"></id>
         <result property="userName" column="USER_NAME"></result>
@@ -55,31 +55,31 @@
             <result property="accPwd" column="ACC_PWD"></result>
         </collection>
     </resultMap>
-<!--    分页条件查询所有用户信息-->
+    <!--    分页条件查询所有用户信息-->
     <select id="queryAllCustom" parameterType="com.zl.pojo.FenYe" resultMap="userCustom">
         select * from(
-            select e.*,rownum r from(
-                select u.USER_ID, USER_NAME, USER_SEX, USER_BIRTHDATE, USER_CERTNO, USER_ADDR, USER_ZIPCODE, USER_TELNO,
-                USER_PHONENO, USER_EMAIL, USER_PWD, ACC_NO, CURR_TYPE, ACC_BANKID, ACC_STATUS, ACC_LIMIT, ACC_FUND, ACC_TYPE,
-                ACC_DATE, ACC_PWD from T_USER u,T_ACCOUNT a
-                    <where>
-                        and u.USER_ID=a.USER_ID
-                        <if test="query!=null">
-                            <if test="query.qname!=null and query.qname!=''">
-                                and USER_CERTNO=#{query.qname,jdbcType=VARCHAR}
-                            </if>
-                            <if test="query.qAccNo!=null and query.qAccNo!=''">
-                                and Acc_no=#{query.qAccNo}
-                            </if>
-                            <if test="query.qType!=null and query.qType!=''">
-                                and acc_status=#{query.qType}
-                            </if>
-                        </if>
-                        and rownum<![CDATA[<]]>#{rowEnd}
-                    </where>
-            ) e) where r>#{rowStart}
+        select e.*,rownum r from(
+        select u.USER_ID, USER_NAME, USER_SEX, USER_BIRTHDATE, USER_CERTNO, USER_ADDR, USER_ZIPCODE, USER_TELNO,
+        USER_PHONENO, USER_EMAIL, USER_PWD, ACC_NO, CURR_TYPE, ACC_BANKID, ACC_STATUS, ACC_LIMIT, ACC_FUND, ACC_TYPE,
+        ACC_DATE, ACC_PWD from T_USER u,T_ACCOUNT a
+        <where>
+            and u.USER_ID=a.USER_ID
+            <if test="query!=null">
+                <if test="query.qname!=null and query.qname!=''">
+                    and USER_CERTNO=#{query.qname,jdbcType=VARCHAR}
+                </if>
+                <if test="query.qAccNo!=null and query.qAccNo!=''">
+                    and Acc_no=#{query.qAccNo}
+                </if>
+                <if test="query.qType!=null and query.qType!=''">
+                    and acc_status=#{query.qType}
+                </if>
+            </if>
+            and rownum<![CDATA[<]]>#{rowEnd}
+        </where>
+        ) e) where r>#{rowStart}
     </select>
-<!--    条件查询用户信息总条数-->
+    <!--    条件查询用户信息总条数-->
     <select id="queryByLike" resultType="int" parameterType="com.zl.pojo.Query">
         select count(1) from T_ACCOUNT
         <where>
@@ -94,7 +94,7 @@
             </if>
         </where>
     </select>
-<!--    修改用户信息-->
+    <!--    修改用户信息-->
     <update id="updateUser" parameterType="com.zl.pojo.User">
         update T_USER set user_name=#{userName,jdbcType=VARCHAR}, user_sex=#{userSex,jdbcType=INTEGER}, user_birthdate=#{userBirthdate,jdbcType=TIMESTAMP}, user_certno=#{userCertNo,jdbcType=VARCHAR}, user_addr=#{userAddr,jdbcType=VARCHAR}, user_zipcode=#{userZipCode,jdbcType=VARCHAR}, user_telno=#{userTelNo,jdbcType=VARCHAR}, user_phoneno=#{userPhoneNo,jdbcType=VARCHAR}, user_email=#{userEmail,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
     </update>
@@ -102,23 +102,23 @@
     <update id="updateCustomPwd" parameterType="com.zl.pojo.User">
         update T_ACCOUNT set ACC_PWD=#{userPwd,jdbcType=VARCHAR} where ACC_NO=#{account.accNo,jdbcType=VARCHAR}
     </update>
-<!--    修改银行卡信息-->
+    <!--    修改银行卡信息-->
     <update id="updateAccount" parameterType="com.zl.pojo.User">
         update T_ACCOUNT set acc_status=#{account.accStatus,jdbcType=INTEGER}, acc_limit=#{account.accLimit,jdbcType=DECIMAL}, acc_fund=#{account.accFund,jdbcType=DECIMAL}, acc_type=#{account.accType,jdbcType=VARCHAR}, acc_pwd=#{account.accPwd,jdbcType=VARCHAR} where USER_ID=#{userId,jdbcType=VARCHAR}
     </update>
-<!--    修改银行卡状态-->
+    <!--    修改银行卡状态-->
     <update id="updateStatus" parameterType="com.zl.pojo.User">
         update CUSTOM set acc_status=#{account.accStatus,jdbcType=INTEGER} where USER_ID=#{userId,jdbcType=VARCHAR}
     </update>
-<!--    删除用户-->
+    <!--    删除用户-->
     <delete id="deleteCustom" parameterType="string">
         delete from CUSTOM where USER_ID=#{userId}
 </delete>
-<!--    根据用户ID查询用户详细信息-->
+    <!--    根据用户ID查询用户详细信息-->
     <select id="queryCustom" parameterType="string" resultMap="userCustom">
         select * from CUSTOM where ACC_NO=#{userId}
 </select>
-<!--    分页条件查询所有交易信息-->
+    <!--    分页条件查询所有交易信息-->
     <select id="queryAllTransfer" parameterType="com.zl.pojo.FenYe" resultMap="allTransFor">
         select * from(
         select e.*,ROWNUM r from(
@@ -135,9 +135,10 @@
                     and DEAL_DATE<![CDATA[<]]>#{query.endDate}
                 </if>
                 <if test="query.qAccNo!=null and query.qAccNo!=''">
-                    and ACC_IN=#{query.qAccNo,jdbcType=VARCHAR} and rownum<![CDATA[<]]>#{rowEnd} or ACC_OUT=#{query.qAccNo,jdbcType=VARCHAR}
+                    and ACC_IN=#{query.qAccNo,jdbcType=VARCHAR} and rownum<![CDATA[<]]>#{rowEnd} or
+                    ACC_OUT=#{query.qAccNo,jdbcType=VARCHAR}
                     <if test="query.qType!=null and query.qType!=''">
-                    and TRANS_STATUS=#{query.qType}
+                        and TRANS_STATUS=#{query.qType}
                     </if>
                     <if test="query.startDate!=null">
                         and DEAL_DATE>#{query.startDate}
@@ -151,7 +152,7 @@
         </where>
         ) e) where r>#{rowStart}
     </select>
-<!--    条件查询用户交易信息总条数-->
+    <!--    条件查询用户交易信息总条数-->
     <select id="queryTransByLike" parameterType="com.zl.pojo.Query" resultType="int">
         select count(1) from T_TRANSFER
         <where>
@@ -178,11 +179,11 @@
             </if>
         </where>
     </select>
-<!--    根据银行卡查询用户交易信息-->
+    <!--    根据银行卡查询用户交易信息-->
     <select id="queryTransferByAccNo" resultMap="allTransFor" parameterType="string">
         select * from T_TRANSFER where ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
     </select>
-<!--    根据银行卡分页查询登入信息-->
+    <!--    根据银行卡分页查询登入信息-->
     <select id="queryLoginByAccNo" resultMap="allLogin" parameterType="com.zl.pojo.FenYe">
         select * from(
         select e.*,ROWNUM r from(
@@ -206,17 +207,17 @@
         </where>
         ) e) where r>#{rowStart}
     </select>
-<!--    根据银行卡查询用户登入异常信息-->
+    <!--    根据银行卡查询用户登入异常信息-->
     <select id="queryExLoginByAccNo" resultMap="allLogin" parameterType="string">
         select * from T_LOGIN where ACC_NO=#{accNo,jdbcType=VARCHAR} and LOGIN_STATUS='失败'
     </select>
-<!--    根据银行卡号查询用户交易异常信息-->
+    <!--    根据银行卡号查询用户交易异常信息-->
     <select id="queryExTransferByAccNo" resultMap="allTransFor" parameterType="string">
     select * from(
         select * from T_TRANSFER where ACC_IN=#{accNo,jdbcType=VARCHAR} or ACC_OUT=#{accNo,jdbcType=VARCHAR}
         )where TRANS_STATUS='失败'
     </select>
-<!--    根据用户条件查询登入总条数-->
+    <!--    根据用户条件查询登入总条数-->
     <select id="queryLoginByLike" resultType="int" parameterType="com.zl.pojo.Query">
         select count(1) from T_LOGIN
         <where>

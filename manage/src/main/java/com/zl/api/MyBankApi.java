@@ -14,6 +14,7 @@ public interface MyBankApi {
 
     /**
      * 提供加密密码的接口
+     *
      * @param user
      * @return
      */

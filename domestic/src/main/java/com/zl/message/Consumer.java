@@ -68,10 +68,9 @@ public class Consumer {
                     Map returnMessage = new HashMap();
                     map.put("dealNo", transfer.getDealNo());
                     map.put("transStatus", 1);
-//                    rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                     rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_D, map);
                 } else {
-                    channel.basicNack(message.getMessageProperties().getDeliveryTag(),true,true);
+                    channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
                     System.out.println("处理失败。。。");
                 }
             } catch (Exception e) {
@@ -87,7 +86,6 @@ public class Consumer {
                 Map returnMessage = new HashMap();
                 map.put("dealNo", dealNo);
                 map.put("transStatus", 1);
-//                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_D, map);
             } catch (IOException e) {
                 e.printStackTrace();

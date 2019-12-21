@@ -42,7 +42,7 @@ public class Login implements Serializable {
      */
     private Integer loginError;
     /**
-     *登入异常原因
+     * 登入异常原因
      */
     private String loginOdd;
 

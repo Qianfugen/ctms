@@ -9,11 +9,11 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice(basePackages = "com.zl")
 public class ErrorController {
     @ExceptionHandler
-    public ModelAndView error(Exception e){
-        ModelAndView mv=new ModelAndView();
+    public ModelAndView error(Exception e) {
+        ModelAndView mv = new ModelAndView();
         System.out.println("出错啦！");
         e.printStackTrace();
-        mv.addObject("msg",e.getMessage());
+        mv.addObject("msg", e.getMessage());
         mv.setViewName("error");
         return mv;
     }

@@ -30,6 +30,7 @@ public interface UserService {
 
     /**
      * 根据卡号查询用户详细信息
+     *
      * @param accNo
      * @return
      */
@@ -37,6 +38,7 @@ public interface UserService {
 
     /**
      * 根据用户卡号查询交易记录
+     *
      * @param fenYe
      * @return
      */

@@ -75,7 +75,7 @@
 			<div class="rightbox">
 
 				<h1><#if map.status==200>转账成功<#elseif map.status==1>取消定时转账成功！<#elseif map.status==2>定时转账受理中！
-					<#elseif map.status==400>余额不足<#elseif map.status==0>您的账户已冻结，请去银行办理解冻！<#elseif map.status==100>超过最大交易额</#if></h1>
+					<#elseif map.status==400>余额不足<#elseif map.status==0>您的账户已冻结，请去银行办理解冻！<#elseif map.status==100>超过最大交易额<#elseif map.status==500>请勾选常用收款人</#if></h1>
 			</div>
 
 			</div>

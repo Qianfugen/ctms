@@ -80,16 +80,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Transfer> queryTransferByAccNo(FenYe fenYe) {
         fenYe.setRowCount(ud.queryTransByLike(fenYe.getQuery()));
-        if (fenYe.getRowCount()==0){
+        if (fenYe.getRowCount() == 0) {
             return null;
         }
-        if (fenYe.getPage()!=null){
-            if (fenYe.getPage()<1){
+        if (fenYe.getPage() != null) {
+            if (fenYe.getPage() < 1) {
                 fenYe.setPage(1);
-            }else if (fenYe.getPage()>fenYe.getPageCount()){
+            } else if (fenYe.getPage() > fenYe.getPageCount()) {
                 fenYe.setPage(fenYe.getPageCount());
             }
-        }else {
+        } else {
             fenYe.setPage(1);
         }
 

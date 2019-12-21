@@ -26,7 +26,7 @@ public class Coll implements Serializable {
      */
     private String mainAcc;
     /**
-     *主账号持卡人
+     * 主账号持卡人
      */
     private String mainUser;
     /**
@@ -38,7 +38,7 @@ public class Coll implements Serializable {
      */
     private String followAcc;
     /**
-     *子账号持卡人
+     * 子账号持卡人
      */
     private String followUser;
     /**

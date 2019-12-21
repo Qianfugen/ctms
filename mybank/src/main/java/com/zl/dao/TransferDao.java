@@ -30,6 +30,7 @@ public interface TransferDao {
 
     /**
      * 写入交易记录
+     *
      * @param transfer
      * @return
      */
@@ -37,6 +38,7 @@ public interface TransferDao {
 
     /**
      * 根据卡号查询余额
+     *
      * @param accNo 卡号
      * @return
      */
@@ -44,6 +46,7 @@ public interface TransferDao {
 
     /**
      * 根据卡号查询银行
+     *
      * @param accNo 卡号
      * @return
      */
@@ -51,6 +54,7 @@ public interface TransferDao {
 
     /**
      * 根据卡号查询用户名
+     *
      * @param accNo 卡号
      * @return
      */
@@ -58,6 +62,7 @@ public interface TransferDao {
 
     /**
      * 根据用户名和卡号判断是否存在
+     *
      * @param user 用户对象
      * @return
      */
@@ -65,6 +70,7 @@ public interface TransferDao {
 
     /**
      * 根据流水号查询交易记录
+     *
      * @param dealNo
      * @return 流水号
      */
@@ -72,6 +78,7 @@ public interface TransferDao {
 
     /**
      * 根据流水号查询未完成的记录
+     *
      * @param dealNo
      * @return
      */
@@ -79,6 +86,7 @@ public interface TransferDao {
 
     /**
      * 流水记录处理成功
+     *
      * @param dealNo
      * @return
      */
@@ -86,18 +94,21 @@ public interface TransferDao {
 
     /**
      * 查询所有境外转账未完成记录
+     *
      * @return
      */
     public List<Transfer> queryAllOverDealing();
 
     /**
      * 查询所有跨行转账未完成记录
+     *
      * @return
      */
     public List<Transfer> queryAllDomeDealing();
 
     /**
      * 查询最大上限
+     *
      * @param accNo
      * @return
      */
@@ -105,6 +116,7 @@ public interface TransferDao {
 
     /**
      * 查询启用状态
+     *
      * @param accNo
      * @return
      */
@@ -112,6 +124,7 @@ public interface TransferDao {
 
     /**
      * 查询常用收款人信息
+     *
      * @param accNo
      * @return
      */

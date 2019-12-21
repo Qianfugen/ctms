@@ -2,10 +2,12 @@ package com.zl.pojo;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 
 /**
  * 主动收款分页工具类
+ *
  * @author 徐浩杰
  * @version 1.0 2019-12-10
  */
@@ -13,7 +15,7 @@ import java.io.Serializable;
 @Scope("prototype")
 public class Paging implements Serializable {
     private Integer currentPage;//当前页码
-    private Integer rowsPage=5;//每页显示多少条
+    private Integer rowsPage = 5;//每页显示多少条
     private Integer pages;//总页码
     private Integer rowsCount;//符合要求的记录数
     private Integer rowStart;//当前页码的开始条数
@@ -37,7 +39,7 @@ public class Paging implements Serializable {
     }
 
     public Integer getPages() {
-        pages = (int)Math.ceil(getRowsCount()/(getRowsPage()*1.0));
+        pages = (int) Math.ceil(getRowsCount() / (getRowsPage() * 1.0));
         return pages;
     }
 
@@ -54,7 +56,7 @@ public class Paging implements Serializable {
     }
 
     public Integer getRowStart() {
-        rowStart = (getCurrentPage()-1)*getRowsPage();
+        rowStart = (getCurrentPage() - 1) * getRowsPage();
         return rowStart;
     }
 
@@ -63,7 +65,7 @@ public class Paging implements Serializable {
     }
 
     public Integer getRowEnd() {
-        rowEnd = getCurrentPage()*getRowsPage();
+        rowEnd = getCurrentPage() * getRowsPage();
         return rowEnd;
     }
 

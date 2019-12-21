@@ -23,30 +23,30 @@ public interface JobAPI {
      * 执行一次定时器
      */
     @RequestMapping("/quart-job/job/runJob")
-    public String runJob ();
+    public String runJob();
 
     /**
      * 更新定时器
      */
     @RequestMapping("/quart-job/job/updateJob")
-    public String updateJob ();
+    public String updateJob();
 
     /**
      * 停止定时器
      */
     @RequestMapping("/quart-job/job/pauseJob")
-    public String pauseJob ();
+    public String pauseJob();
 
     /**
      * 恢复定时器
      */
     @RequestMapping("/quart-job/job/resumeJob")
-    public String resumeJob ();
+    public String resumeJob();
 
     /**
      * 删除定时器
      */
     @RequestMapping("/quart-job/job/deleteJob")
-    public String deleteJob (@RequestParam("accNo") String accNo);
+    public String deleteJob(@RequestParam("accNo") String accNo);
 
 }

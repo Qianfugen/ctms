@@ -39,55 +39,41 @@ public class Consumer {
         String dealNo = (String) map.get("dealNo");
         if (ts.queryTransferByDealNo(dealNo) == null) {
             System.out.println("未处理的消息。。。。。");
-            //添加事务管理
-//            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//            def.setName("SomeTxName");
-//            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//            //设置回滚点
-//            TransactionStatus status = transactionManager.getTransaction(def);
-//
-//            try {
-                Transfer transfer = new Transfer();
-                transfer.setDealNo(dealNo);
-                transfer.setTransFund(new BigDecimal(map.get("transFund").toString()));
-                transfer.setCurrency(map.get("currency").toString());
-                transfer.setTransType(Integer.valueOf(map.get("transType").toString()));
-                transfer.setAccIn(map.get("accIn").toString());
-                transfer.setAccInBank(map.get("accInBank").toString());
-                transfer.setAccInName(map.get("accInName").toString());
-                transfer.setAccOut(map.get("accOut").toString());
-                transfer.setAccOutBank(map.get("accOutBank").toString());
-                transfer.setAccOutName(map.get("accOutName").toString());
-                transfer.setKind(map.get("kind").toString());
-                //处理消息
-                System.out.println("处理中。。。");
-                if (ts.processMessage(transfer) > 0) {
-                    System.out.println("插入成功。。。");
-                    try {
-                        channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    Map returnMessage = new HashMap();
-                    map.put("dealNo", transfer.getDealNo());
-                    map.put("transStatus", 1);
-//                    rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
-                    rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_C, map);
-                    System.out.println("---->消息处理成功，返回通知！！");
-                } else {
-                    try {
-                        channel.basicNack(message.getMessageProperties().getDeliveryTag(),true,true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("处理失败。。。");
+            Transfer transfer = new Transfer();
+            transfer.setDealNo(dealNo);
+            transfer.setTransFund(new BigDecimal(map.get("transFund").toString()));
+            transfer.setCurrency(map.get("currency").toString());
+            transfer.setTransType(Integer.valueOf(map.get("transType").toString()));
+            transfer.setAccIn(map.get("accIn").toString());
+            transfer.setAccInBank(map.get("accInBank").toString());
+            transfer.setAccInName(map.get("accInName").toString());
+            transfer.setAccOut(map.get("accOut").toString());
+            transfer.setAccOutBank(map.get("accOutBank").toString());
+            transfer.setAccOutName(map.get("accOutName").toString());
+            transfer.setKind(map.get("kind").toString());
+            //处理消息
+            System.out.println("处理中。。。");
+            if (ts.processMessage(transfer) > 0) {
+                System.out.println("插入成功。。。");
+                try {
+                    channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-//            } catch (Exception e) {
-//                //事务回滚
-//                transactionManager.rollback(status);
-//                e.printStackTrace();
-//            }
+
+                Map returnMessage = new HashMap();
+                map.put("dealNo", transfer.getDealNo());
+                map.put("transStatus", 1);
+                rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_C, map);
+                System.out.println("---->消息处理成功，返回通知！！");
+            } else {
+                try {
+                    channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("处理失败。。。");
+            }
 
         } else {
             System.out.println("--->消息已处理过");
@@ -96,7 +82,6 @@ public class Consumer {
                 Map returnMessage = new HashMap();
                 map.put("dealNo", dealNo);
                 map.put("transStatus", 1);
-//                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.convertAndSend("directExchange2", RabbitMqConfig.ROUTINGKEY_C, map);
                 System.out.println("--->返回消息");
             } catch (IOException e) {

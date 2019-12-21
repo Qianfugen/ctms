@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public interface TransferService {
     public int transferMoney(Transfer transfer);
+
     /**
      * 写入交易记录
      *
@@ -40,8 +41,9 @@ public interface TransferService {
 
     /**
      * 根据卡号和用户名验证用户是否存在
+     *
      * @param userName 用户名
-     * @param accNo 卡号
+     * @param accNo    卡号
      * @return
      */
     public Boolean checkUser(String userName, String accNo);
@@ -56,6 +58,7 @@ public interface TransferService {
     /**
      * 处理消息
      * 1 处理成功 ，-1 处理失败
+     *
      * @param transfer
      * @return
      */

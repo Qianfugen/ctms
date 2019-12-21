@@ -18,6 +18,7 @@ import java.util.Map;
 public class TransferController {
     @Autowired
     private TransferService transferService;
+
     /**
      * 根据卡号和用户名验证用户是否存在
      *
@@ -30,7 +31,7 @@ public class TransferController {
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
         System.out.println("到达domestic的controller层。。。");
         Map<String, Boolean> map = new HashMap<>();
-        System.out.println("userName:"+userName+" accNo:"+accNo);
+        System.out.println("userName:" + userName + " accNo:" + accNo);
         Boolean flag = transferService.checkUser(userName, accNo);
         //存在返回true,不存在返回false
         System.out.println("执行结果：" + flag);

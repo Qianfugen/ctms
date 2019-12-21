@@ -14,6 +14,7 @@ public class AdminServiceImpl implements IAdminService {
 
     @Autowired
     private IAdminDao ad;
+
     @Override
     public Admin loginAdmin(Admin admin) {
         return ad.loginAdmin(admin);

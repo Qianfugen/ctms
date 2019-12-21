@@ -94,26 +94,45 @@ public class UsualCollController {
     @RequestMapping("/batchTransfer")
     public ModelAndView batchTransfer(String[] fkcheck, String[] accIn, BigDecimal[] transFund, HttpSession session) {
         ModelAndView mv = new ModelAndView();
-        List<Transfer> transferList = new ArrayList<Transfer>();
-        String loginAccNo = (String) session.getAttribute("loginAccNo");
-        System.out.println(fkcheck.length + ">>" + accIn.length + "hh" + transFund.length);
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        if (fkcheck == null || accIn == null || transFund == null) {
+            //请勾选常用收款人
+            map.put("status", 500);
+        } else {
+            List<Transfer> transferList = new ArrayList<Transfer>();
+            String loginAccNo = (String) session.getAttribute("loginAccNo");
+            System.out.println(fkcheck.length + ">>" + accIn.length + "hh" + transFund.length);
 
-        for (int i = 0; i < fkcheck.length; i++) {
-            for (int j = 0; j < accIn.length; j++) {
-                if (fkcheck[i].equals(accIn[j])) {
-                    Transfer transfer = new Transfer();
-                    transfer.setAccIn(accIn[j]);
-                    transfer.setAccOut(loginAccNo);
-                    transfer.setTransFund(transFund[j]);
-                    transferList.add(transfer);
+            for (int i = 0; i < fkcheck.length; i++) {
+                for (int j = 0; j < accIn.length; j++) {
+                    if (fkcheck[i].equals(accIn[j])) {
+                        Transfer transfer = new Transfer();
+                        transfer.setAccIn(accIn[j]);
+                        transfer.setAccOut(loginAccNo);
+                        transfer.setTransFund(transFund[j]);
+                        transferList.add(transfer);
+                    }
                 }
             }
+            //判断转账总金额是否大于余额
+
+            BigDecimal total = new BigDecimal("0");
+            BigDecimal balance = ts.queryBalance(loginAccNo);
+            for (Transfer t : transferList) {
+                total.add(t.getTransFund());
+            }
+            if (total.compareTo(balance) < 0) {
+                for (Transfer t : transferList) {
+//            ts.transferMoney(t);
+                    //同行及时转账
+                    t.setKind("0");
+                    map = ts.verifyTransfer(t, "0");
+                }
+            } else {
+                //余额不足
+                map.put("status", 400);
+            }
         }
-        for (Transfer t : transferList) {
-            ts.transferMoney(t);
-        }
-        Map<String, Integer> map = new HashMap<>();
-        map.put("status", 200);
         mv.addObject("map", map);
         mv.setViewName("transferAccountResult");
         return mv;

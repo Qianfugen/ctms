@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 登录认证类
+ *
  * @author 徐浩杰
  * @version 1.0 2019-12-12
  */
@@ -23,6 +24,7 @@ public class MyRealm extends AuthorizingRealm {
 
     /**
      * 权限认证
+     *
      * @param principalCollection
      * @return
      */
@@ -33,6 +35,7 @@ public class MyRealm extends AuthorizingRealm {
 
     /**
      * 登录认证
+     *
      * @param token
      * @return
      * @throws AuthenticationException
@@ -42,9 +45,9 @@ public class MyRealm extends AuthorizingRealm {
         //获取用户输入的账号
         String loginAccNo = (String) token.getPrincipal();
 
-        System.out.println("token:"+token);
+        System.out.println("token:" + token);
         User user = us.queryCustom(loginAccNo);
-        if(user == null){
+        if (user == null) {
             throw new UnknownAccountException();
         }
         Session session = SecurityUtils.getSubject().getSession();

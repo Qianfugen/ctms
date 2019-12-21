@@ -38,7 +38,6 @@ public class PayeeController {
     private PayInfoService pis;
 
 
-
     /**
      * 去主动收款界面前查询出当前账户的借款人集合
      *
@@ -53,7 +52,7 @@ public class PayeeController {
         System.out.println("当前账户" + loginAccNo);
         if (paging.getQuery() != null) {
             paging.getQuery().setCreditorAcc(loginAccNo);
-        }else {
+        } else {
             Query query = new Query();
             query.setCreditorAcc(loginAccNo);
             paging.setQuery(query);
@@ -79,7 +78,7 @@ public class PayeeController {
         int index = 0;//成功的条数
 
         for (int i = 0; i < debtor.length; i++) {
-            System.out.println("debtor[i] "+debtor[i]);
+            System.out.println("debtor[i] " + debtor[i]);
             PayInfo payInfo = new PayInfo();
             Payee payee = new Payee();
             payee.setCreditorAcc(loginAccNo);
@@ -91,9 +90,9 @@ public class PayeeController {
             payInfo.setInfoTime(new Date());
             payInfo.setCreditorName(loginUser.getUserName());
             payInfo.setDebtorName(us.queryCustom(debtor[i]).getUserName());
-            if(pis.queryPayInfo(payInfo)==null){
+            if (pis.queryPayInfo(payInfo) == null) {
                 index = pis.addPayInfo(payInfo);
-            }else{
+            } else {
                 System.out.println("有重复催款通知发送");
             }
         }

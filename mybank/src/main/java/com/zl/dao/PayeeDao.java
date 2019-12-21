@@ -14,16 +14,18 @@ public interface PayeeDao {
 
     /**
      * 分页查询所有的贷方信息
+     *
      * @return
      */
-     List<Payee> queryPayeeByPaging(Paging paging);
+    List<Payee> queryPayeeByPaging(Paging paging);
 
     /**
      * 查询符合条件的贷方记录数
+     *
      * @param query 查询条件
      * @return 符合条件记录数
      */
-     int queryPayeeCount(Query query);
+    int queryPayeeCount(Query query);
 
     /**
      * 根据贷方和借方账户查询出payee
@@ -34,7 +36,6 @@ public interface PayeeDao {
      * 设置payee的姓名
      */
     int updatePayee(Payee payee);
-
 
 
 }

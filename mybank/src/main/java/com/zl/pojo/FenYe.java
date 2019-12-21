@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Component
 public class FenYe implements Serializable {
     private Integer page;
-    private Integer rows=10;
+    private Integer rows = 10;
     private Integer pageCount;
     private Integer rowCount;
     private Integer rowStart;
@@ -34,7 +34,7 @@ public class FenYe implements Serializable {
     }
 
     public Integer getPageCount() {
-        pageCount=(int)Math.ceil(getRowCount()/(getRows()*1.0));
+        pageCount = (int) Math.ceil(getRowCount() / (getRows() * 1.0));
         return pageCount;
     }
 
@@ -51,7 +51,7 @@ public class FenYe implements Serializable {
     }
 
     public Integer getRowStart() {
-        rowStart=(getPage()-1)*10;
+        rowStart = (getPage() - 1) * 10;
         return rowStart;
     }
 
@@ -60,7 +60,7 @@ public class FenYe implements Serializable {
     }
 
     public Integer getRowEnd() {
-        rowEnd=(getPage()*10)+1;
+        rowEnd = (getPage() * 10) + 1;
         return rowEnd;
     }
 

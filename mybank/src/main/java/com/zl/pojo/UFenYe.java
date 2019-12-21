@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class UFenYe implements Serializable {
 
     private Integer page;//当前的页码
-    private Integer pageRows=4;//每页显示多少行
+    private Integer pageRows = 4;//每页显示多少行
     private Integer pageCount;//总页码数
     private Integer rowsCount;//符合要求的记录数
     private Integer rowStart;//当前页码的开始条
@@ -34,8 +34,8 @@ public class UFenYe implements Serializable {
     }
 
     public Integer getPageCount() {
-        pageCount = (int)Math.ceil(getRowsCount()/(getPageRows()*1.0));
-        System.out.println("多少頁"+pageCount);
+        pageCount = (int) Math.ceil(getRowsCount() / (getPageRows() * 1.0));
+        System.out.println("多少頁" + pageCount);
         return pageCount;
     }
 
@@ -52,7 +52,7 @@ public class UFenYe implements Serializable {
     }
 
     public Integer getRowStart() {
-        rowStart=(getPage()-1)*getPageRows();
+        rowStart = (getPage() - 1) * getPageRows();
         return rowStart;
     }
 
@@ -61,7 +61,7 @@ public class UFenYe implements Serializable {
     }
 
     public Integer getRowEnd() {
-        rowEnd=getPage()*getPageRows();
+        rowEnd = getPage() * getPageRows();
         return rowEnd;
     }
 

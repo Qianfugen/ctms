@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 /**
  * 收款
+ *
  * @author root
  */
 public class Payee implements Serializable {

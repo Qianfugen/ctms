@@ -41,7 +41,7 @@ public class PayInfoController {
      * @return
      */
     @RequestMapping("/dealPayee")
-    public ModelAndView dealPayee(HttpSession session,PayInfo payInfo) {
+    public ModelAndView dealPayee(HttpSession session, PayInfo payInfo) {
         ModelAndView mv = new ModelAndView();
 
         Transfer transfer = new Transfer();
@@ -54,7 +54,7 @@ public class PayInfoController {
         ts.transferMoney(transfer);
         Map<String, Integer> map = new HashMap<>();
         map.put("status", 200);
-        mv.addObject("map",map);
+        mv.addObject("map", map);
         mv.setViewName("transferAccountResult");
         return mv;
     }
@@ -121,7 +121,7 @@ public class PayInfoController {
         pi.setCreditorAcc(creditorAcc);
         pi.setDebtor(loginAccNo);
         PayInfo payInfo = pis.queryPayInfo(pi);
-        System.out.println("payInfo "+payInfo);
+        System.out.println("payInfo " + payInfo);
         mv.addObject("payInfo", payInfo);
         mv.setViewName("message03");
         return mv;
@@ -129,15 +129,16 @@ public class PayInfoController {
 
     /**
      * 验证余额是否充足
+     *
      * @return
      */
     @RequestMapping("/checkFund")
     @ResponseBody
-    public Map<String,Object> checkFund(HttpSession session,@RequestParam("fund") BigDecimal fund){
+    public Map<String, Object> checkFund(HttpSession session, @RequestParam("fund") BigDecimal fund) {
         String loginAccNo = (String) session.getAttribute("loginAccNo");
         BigDecimal balance = ts.queryBalance(loginAccNo);
-        System.out.println("余额： "+balance);
-        Map<String,Object> result = new HashMap<>();
+        System.out.println("余额： " + balance);
+        Map<String, Object> result = new HashMap<>();
         /**
          * 比较余额和转账金额
          *  a = -1,表示balance小于fund；
@@ -145,11 +146,11 @@ public class PayInfoController {
          *  a = 1,表示balance大于fund；
          */
         int a = balance.compareTo(fund);
-        if(a==-1){
-            result.put("flag",false);
-        }else {
-            result.put("flag",true);
+        if (a == -1) {
+            result.put("flag", false);
+        } else {
+            result.put("flag", true);
         }
-      return result;
+        return result;
     }
 }

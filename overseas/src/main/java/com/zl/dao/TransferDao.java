@@ -27,6 +27,7 @@ public interface TransferDao {
 
     /**
      * 写入交易记录
+     *
      * @param transfer
      * @return
      */
@@ -34,6 +35,7 @@ public interface TransferDao {
 
     /**
      * 根据卡号查询余额
+     *
      * @param accNo 卡号
      * @return
      */
@@ -41,6 +43,7 @@ public interface TransferDao {
 
     /**
      * 根据卡号查询银行
+     *
      * @param accNo 卡号
      * @return
      */
@@ -48,6 +51,7 @@ public interface TransferDao {
 
     /**
      * 根据卡号查询用户名
+     *
      * @param accNo 卡号
      * @return
      */
@@ -55,6 +59,7 @@ public interface TransferDao {
 
     /**
      * 根据用户名和卡号判断是否存在
+     *
      * @param user 用户对象
      * @return
      */

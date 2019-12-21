@@ -48,14 +48,10 @@ public class TransferController {
         //结果页面
         mv.setViewName("transferAccountResult");
         //预先设置一个转出账户，本应从页面获取，这里仅做测试
-        String accOut= (String) session.getAttribute("loginAccNo");
-        System.out.println("当前用户卡号accNO:"+accOut);
-        System.out.println("transfer"+transfer);
+        String accOut = (String) session.getAttribute("loginAccNo");
+        System.out.println("当前用户卡号accNO:" + accOut);
+        System.out.println("transfer" + transfer);
         transfer.setAccOut(accOut);
-        //启动账户
-//        transfer.setAccOut("6222303626811324642");
-        //冻结账户
-//        transfer.setAccOut("6222304497903198673");
         Map<String, Integer> map = transferService.verifyTransfer(transfer, bank);
         mv.addObject("map", map);
         return mv;
@@ -92,6 +88,7 @@ public class TransferController {
         map.put("status", 200);
         return map;
     }
+
     /**
      * 跨境转账
      *
@@ -119,7 +116,7 @@ public class TransferController {
     public ModelAndView deleteJob(HttpSession session) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("transferAccountResult");
-        String accNo= (String) session.getAttribute("loginAccNo");
+        String accNo = (String) session.getAttribute("loginAccNo");
         String result = jobAPI.deleteJob(accNo);
         Map<String, Integer> map = new HashMap<>();
         if (result.equals("success")) {
@@ -182,10 +179,10 @@ public class TransferController {
     @RequestMapping("/toTransfer")
     public ModelAndView toTransfer(HttpSession session) {
         ModelAndView mv = new ModelAndView();
-        String accNo= (String) session.getAttribute("loginAccNo");
+        String accNo = (String) session.getAttribute("loginAccNo");
         List<UsualColl> usualColls = transferService.queryCusUsual(accNo);
         System.out.println(usualColls);
-        mv.addObject("usualColls",usualColls);
+        mv.addObject("usualColls", usualColls);
         mv.setViewName("transferAccounts");
         return mv;
     }
@@ -200,13 +197,13 @@ public class TransferController {
     @ResponseBody
     @RequestMapping("/checkUser")
     public Map<String, Boolean> checkUser(@RequestParam("userName") String userName, @RequestParam("accNo") String accNo) {
-        Boolean flag=false;
-        if(accNo.matches("^622230.*")){
+        Boolean flag = false;
+        if (accNo.matches("^622230.*")) {
             System.out.println("本行账户");
-             flag= transferService.checkUser(userName, accNo);
-        }else {
+            flag = transferService.checkUser(userName, accNo);
+        } else {
             System.out.println("他行账户");
-            flag=checkUser2API.checkUser(userName,accNo).get("status");
+            flag = checkUser2API.checkUser(userName, accNo).get("status");
         }
         Map<String, Boolean> map = new HashMap<>();
 
@@ -245,14 +242,14 @@ public class TransferController {
      */
     @ResponseBody
     @RequestMapping("/addUser")
-    public ModelAndView addUser(@RequestParam("accInName") String accInName, @RequestParam("accIn") String accIn,HttpSession session) {
+    public ModelAndView addUser(@RequestParam("accInName") String accInName, @RequestParam("accIn") String accIn, HttpSession session) {
         ModelAndView mv = new ModelAndView();
-        String accNo= (String) session.getAttribute("loginAccNo");
+        String accNo = (String) session.getAttribute("loginAccNo");
         List<UsualColl> usualColls = transferService.queryCusUsual(accNo);
         Map<String, String> map = new HashMap<>();
         map.put("accInName", accInName);
         map.put("accIn", accIn);
-        mv.addObject("usualColls",usualColls);
+        mv.addObject("usualColls", usualColls);
         mv.addObject("map", map);
         mv.setViewName("transferAccounts");
         return mv;

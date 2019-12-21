@@ -91,12 +91,14 @@ public interface TransferService {
 
     /**
      * 查询所有境外转账未完成记录
+     *
      * @return
      */
     public List<Transfer> queryAllOverDealing();
 
     /**
      * 查询所有跨行转账未完成记录
+     *
      * @return
      */
     public List<Transfer> queryAllDomeDealing();
@@ -141,6 +143,7 @@ public interface TransferService {
 
     /**
      * 查询常用收款人信息
+     *
      * @param accNo
      * @return
      */

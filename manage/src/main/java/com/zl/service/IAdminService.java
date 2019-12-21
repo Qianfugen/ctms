@@ -9,6 +9,7 @@ public interface IAdminService {
 
     /**
      * 验证管理员登入接口
+     *
      * @param admin
      * @return
      */
@@ -16,6 +17,7 @@ public interface IAdminService {
 
     /**
      * 修改管理员密码接口
+     *
      * @param admin
      * @return
      */

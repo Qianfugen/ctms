@@ -12,6 +12,7 @@ import java.util.List;
 public interface PayInfoService {
     /**
      * 分页查询出催款记录信息
+     *
      * @param paging
      * @return
      */
