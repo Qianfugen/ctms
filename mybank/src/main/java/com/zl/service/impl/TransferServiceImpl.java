@@ -10,16 +10,12 @@ import com.zl.utils.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -135,13 +131,6 @@ public class TransferServiceImpl implements TransferService {
         Map<String, String> mapOut = queryBankAndUserName(accOut);
         transfer.setAccOutName(mapOut.get("userName"));
         transfer.setAccOutBank(mapOut.get("bankName"));
-        //添加事务管理
-//        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//        def.setName("SomeTxName");
-//        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//        //设置回滚点
-//        TransactionStatus status = transactionManager.getTransaction(def);
-//        try {
         System.out.println(transfer);
         transferDao.subMoney(transfer);
         transferDao.addMoney(transfer);
@@ -151,11 +140,6 @@ public class TransferServiceImpl implements TransferService {
         int flag = writeDeal(transfer);
         System.out.println("执行结果：" + flag);
         System.out.println("转账成功");
-//        } catch (Exception e) {
-//            //事务回滚
-//            transactionManager.rollback(status);
-//            e.printStackTrace();
-//        }
     }
 
     /**
@@ -169,8 +153,9 @@ public class TransferServiceImpl implements TransferService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @Override
     public void transferMoneyOver(Transfer transfer) {
+        //从境外银行API读取账户信息，这里只设置一个用户
         transfer.setAccInBank("瑞士银行");
-        transfer.setAccInName("张三");
+        transfer.setAccInName("zhangsan");
 
         System.out.println("境外转账service开始");
         System.out.println("transfer" + transfer);
@@ -200,13 +185,6 @@ public class TransferServiceImpl implements TransferService {
         BigDecimal transMoney = new BigDecimal(moneyCNY);
 
 
-        //添加事务管理
-//        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//        def.setName("SomeTxName");
-//        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//        //设置回滚点
-//        TransactionStatus status = transactionManager.getTransaction(def);
-//        try {
         //生成交易流水号,32位随机不重复
         String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
         transfer.setDealNo(dealNo);
@@ -216,11 +194,6 @@ public class TransferServiceImpl implements TransferService {
 //                transfer.setTransType(2);
         transfer.setKind("跨境转账");
 
-        //收入行信息
-//                String accIn = transfer.getAccIn();
-//                Map<String, String> mapIn = queryBankAndUserName(accIn);
-//                transfer.setAccInName(mapIn.get("userName"));
-//                transfer.setAccInBank(mapIn.get("bankName"));
         //转出行信息
         String accOut = transfer.getAccOut();
         Map<String, String> mapOut = queryBankAndUserName(accOut);
@@ -274,15 +247,6 @@ public class TransferServiceImpl implements TransferService {
 //            rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_B, map);
         System.out.println("跨境转账处理中，发送消息到境外银行。。。。");
-//                TransactionStatus status2 = transactionManager.getTransaction(def);
-//                transactionManager.commit(status2);
-//        } catch (Exception e) {
-//            //事务回滚
-//            transactionManager.rollback(status);
-//            e.printStackTrace();
-//        }
-
-
     }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -297,13 +261,6 @@ public class TransferServiceImpl implements TransferService {
 
         //判断余额是否充足
         if (queryBalance(transfer.getAccOut()).compareTo(transfer.getTransFund()) > 0) {
-//            //添加事务管理
-//            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//            def.setName("SomeTxName");
-//            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//            //设置回滚点
-//            TransactionStatus status = transactionManager.getTransaction(def);
-//            try {
             //生成交易流水号,32位随机不重复
             String dealNo = Long.toHexString(UUID.randomUUID().getMostSignificantBits()) + Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
             transfer.setDealNo(dealNo);
@@ -313,11 +270,6 @@ public class TransferServiceImpl implements TransferService {
 //                transfer.setTransType(2);
             transfer.setKind("跨行转账");
 
-            //收入行信息
-//                String accIn = transfer.getAccIn();
-//                Map<String, String> mapIn = queryBankAndUserName(accIn);
-//                transfer.setAccInName(mapIn.get("userName"));
-//                transfer.setAccInBank(mapIn.get("bankName"));
             //转出行信息
             String accOut = transfer.getAccOut();
             Map<String, String> mapOut = queryBankAndUserName(accOut);
@@ -368,13 +320,6 @@ public class TransferServiceImpl implements TransferService {
 //            rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             rabbitTemplate.convertAndSend("directExchange", RabbitMqConfig.ROUTINGKEY_A, map);
             System.out.println("跨行转账处理中，发送消息到国内其他银行。。。。");
-//                TransactionStatus status2 = transactionManager.getTransaction(def);
-//                transactionManager.commit(status2);
-//            } catch (Exception e) {
-//                //事务回滚
-//                transactionManager.rollback(status);
-//                e.printStackTrace();
-//            }
         } else {
             //余额不足。。。。
         }

@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/domestic" />
-    <file type="web" url="file://$PROJECT_DIR$/manage" />
-    <file type="web" url="file://$PROJECT_DIR$/mybank" />
-    <file type="web" url="file://$PROJECT_DIR$/overseas" />
+    <file type="web" url="file://$PROJECT_DIR$" />
     <file type="web" url="file://$PROJECT_DIR$/ownbank" />
     <file type="web" url="file://$PROJECT_DIR$/quartjob" />
     <file type="web" url="file://$PROJECT_DIR$/selfbank" />
-    <file type="web" url="file://$PROJECT_DIR$/ware-quart-job" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

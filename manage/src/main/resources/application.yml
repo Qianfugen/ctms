@@ -1,6 +1,6 @@
 #客户端端口
 server:
-  port: 8090
+  port: 8055
 
 #连接注册中心的配置
 eureka:
@@ -16,7 +16,6 @@ spring:
   datasource:
     username: java38
     password: 123456
-    #    url: jdbc:oracle:thin:@10.1.13.44:1521:orcl
     url: jdbc:oracle:thin:@47.100.61.199:1521:orcl
     driver-class-name: oracle.jdbc.driver.OracleDriver
   #关于freemarker配置

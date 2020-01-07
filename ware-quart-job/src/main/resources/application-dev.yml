@@ -3,11 +3,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driverClassName: com.mysql.jdbc.Driver
-#      url: jdbc:mysql://10.1.13.44:3306/quart_job?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&useSSL=false
-      url: jdbc:mysql://localhost:3306/quart_job?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-#      username: java38
+      url: jdbc:mysql://49.234.105.222:3306/quart_job?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
-      password: 123456
+      password: Qian123#
       initial-size: 10
       max-active: 100
       min-idle: 10
@@ -28,12 +26,3 @@ spring:
       stat-view-servlet:
         enabled: true
         url-pattern: /druid/*
-#  redis:
-#    host: 10.1.13.74
-#    port: 6379
-#    ## 连接池中的最大连接数
-#    poolMaxTotal: 10
-#    ## 连接池中的最大空闲连接
-#    poolMaxIdle: 10
-#    ## 连接池最大阻塞等待时间（使用负值表示没有限制）
-#    database: 0

@@ -1,6 +1,6 @@
 #客户端端口
 server:
-  port: 8060
+  port: 8051
 
 #连接注册中心的配置
 eureka:
@@ -16,7 +16,6 @@ spring:
   datasource:
     username: java38
     password: 123456
-#    url: jdbc:oracle:thin:@10.1.13.44:1521:orcl
     url: jdbc:oracle:thin:@47.100.61.199:1521:orcl
     driver-class-name: oracle.jdbc.driver.OracleDriver
   #关于freemarker配置
@@ -29,11 +28,11 @@ spring:
       classic_compatible: true
     suffix: .html
   rabbitmq:
+    # rabbitmq访问端口为5672，web端口为15672
     port: 5672
-#    host: 10.1.13.74
-    host: localhost
+    host: 49.234.105.222
     username: admin
-    password: 123456
+    password: admin
     listener:
       simple:
         #设置消费端手动 ack
@@ -45,7 +44,6 @@ spring:
         #在单个请求中处理的消息个数，他应该大于等于事务数量(unack的最大数量)
         prefetch: 1
   redis:
-#    host: 10.1.13.74
     host: localhost
     port: 6379
     ## 连接池中的最大连接数
