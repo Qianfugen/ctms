@@ -23,7 +23,7 @@
         <mybatisplus.version>3.0.7.1</mybatisplus.version>
         <mysql.version>8.0.15</mysql.version>
         <druid.version>1.1.13</druid.version>
-        <quartz.version>2.3.0</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <joda.time.version>2.9.9</joda.time.version>
         <fastjson.version>1.2.47</fastjson.version>
         <pagehelper.version>1.2.5</pagehelper.version>
