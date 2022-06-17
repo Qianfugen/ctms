@@ -25,7 +25,7 @@
         <druid.version>1.1.13</druid.version>
         <quartz.version>2.3.0</quartz.version>
         <joda.time.version>2.9.9</joda.time.version>
-        <fastjson.version>1.2.47</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <pagehelper.version>1.2.5</pagehelper.version>
     </properties>
 
